@@ -10,12 +10,12 @@
 	</stati>
 
 	<transizioni>
-		<transizione nome="a">
+		<transizione evento="a">
 			<start>A</start>
 			<end>C</end>
 		</transizione>
 
-		<transizione nome="b">
+		<transizione evento="b">
 			<start>A</start>
 			<end>B</end>
 		</transizione>
@@ -30,12 +30,12 @@
 			<end>D</end>
 		</transizione>
 
-		<transizione nome="c">
+		<transizione evento="c">
 			<start>D</start>
 			<end>D</end>
 		</transizione>
 
-		<transizione nome="d">
+		<transizione evento="d">
 			<start>C</start>
 			<end>E</end>
 		</transizione>
@@ -55,7 +55,7 @@
 			<end>F</end>
 		</transizione>
 
-		<transizione nome="c">
+		<transizione evento="c">
 			<start>F</start>
 			<end>F</end>
 		</transizione>
