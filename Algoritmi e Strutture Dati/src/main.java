@@ -7,15 +7,15 @@
  *
  */
 public class main {
-
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("Hello");
-		
-
+		System.out.println("################");
+		System.out.println("## Parser XML ##");
+		System.out.println("################");
+		AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 	}
 
 }
