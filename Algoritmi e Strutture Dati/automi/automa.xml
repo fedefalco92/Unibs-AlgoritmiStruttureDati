@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <automa>
-	<stati>
+	<stati> 
 		<stato start="true">A</stato>
 		<stato>B</stato>
 		<stato>C</stato>
