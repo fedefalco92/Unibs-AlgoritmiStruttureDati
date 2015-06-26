@@ -9,7 +9,10 @@ package it.univr.esempio;
 public class Arco implements Comparable {
  	
   protected Object node1, node2;
-  protected Object value;
+  
+  // IN REALTA A NOI NON INTERESSA IL PESO, 
+  // PIUTTOSTO IL NOME DELLA TRANSIZIONE, GUASTO O NO, ETC
+  protected Object value; 
 
   /**
    * Costruttore senza argomenti
