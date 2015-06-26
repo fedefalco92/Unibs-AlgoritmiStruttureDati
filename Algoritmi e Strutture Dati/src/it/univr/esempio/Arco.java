@@ -1,3 +1,6 @@
+/*
+ * SAREBBE MEGLIO MODIFICARE QUEL OBJECT NODO E CREARE UN OGGETTO DI TIPO NODO/USARE LE STRINGHE COME IDENTIFICATORE
+ */
 package it.univr.esempio;
  /**
   * La classe arco serve per rappresentare un arco del grafo
