@@ -62,12 +62,15 @@ public class Transizione {
 		  return false;
 	}
 
+	
 	public int hashCode() {
-	    return statoPartenza.hashCode()+statoArrivo.hashCode()+value.hashCode()+(guasto ? 1:0);
+	    return (statoPartenza+"statoPartenza").hashCode()+(statoArrivo+"statoArrivo").hashCode()+value.hashCode()+(guasto ? 1:0);
 	}
 
 	public String toString() {
-		return "<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
+		return "\n<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
+		//return "\n<"+statoPartenza.toString()+statoPartenza.hashCode()+", "+statoArrivo.toString()+statoArrivo.hashCode()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
+
 	}
 
 	

@@ -20,13 +20,22 @@ public class main {
 		AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");*/
 		
 		Automa a = new Automa();
-		a.add("A","B","a", false);
-		a.add("B","A","b",true);
-		
+		a.add("A","B","b", false);
+		a.add("B","A","*",false);
+		a.add("B","D","*",false);
+		a.add("D","D","c",false);
+		a.add("A","C","a",false);
+		a.add("C","E","d",false);
+		a.add("E","F","*",true);
+		a.add("F","F","c",false);
+		a.add("C","F","*",false);
+		System.out.println(a.add("E","A","*",false));
+		System.out.println(a.add("E","A","*",false));
+		System.out.println(a.add("E","A","*",false));
 		
 
 	    System.out.println("L'automa a e':\n" + a);
-	    System.out.println("L'insieme delle transizioni e': " + a.getTransizioni());
+	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 	}
 
 }
