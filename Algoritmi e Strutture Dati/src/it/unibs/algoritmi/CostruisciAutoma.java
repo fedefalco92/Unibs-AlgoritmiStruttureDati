@@ -52,30 +52,16 @@ public class CostruisciAutoma {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
 		//si aggiungono le transizioni con a.add(....)
 		
 		return a;
 	}
 	
-/*
-	private static Object ottieniStatoIniziale() {
-		NodeList stati = radice.getChildNodes();
-		for(int i=0;i<stati.getLength();i++){
-			System.out.println(stati.item(i));
-		}
-		//Node statoIniziale = stati.getFirstChild();
-		//String nome = statoIniziale.getNodeValue();
-		System.out.println(stati);
-		return null;
-	}*/
-
-
-	public static void esaminaNodo(Node nodo){
+	/**
+	 * Esamina nodo.
+	 * @param nodo
+	 */
+	private static void esaminaNodo(Node nodo){
 		switch(nodo.getNodeName()){
 		case "automa":
 		case "stati":
@@ -83,41 +69,27 @@ public class CostruisciAutoma {
 			esaminaFigli(nodo.getChildNodes());
 			break;
 			
-		case "stato": gestisciStato(nodo); break;
-		case "transizione": gestisciTransizione(nodo); break;
+		case "stato": 
+			gestisciStato(nodo); 
+			break;
+			
+		case "transizione": 
+			gestisciTransizione(nodo); 
+			break;
 		}
-		/*switch(nodo.getNodeType()){
-			case Node.ELEMENT_NODE:
-				System.out.println("Elemento: " + nodo.getNodeName());
-				//gestisciElementNode(nodo);
-				
-				NamedNodeMap attributi = nodo.getAttributes();
-				if(attributi.getLength()>0){
-					System.out.println("\tAttributi: ");
-					for(int i=0;i<attributi.getLength();i++){
-						Attr attributo = (Attr) attributi.item(i);
-						System.out.println(attributo.getNodeName() + " = "+ attributo.getNodeValue()+" ");						
-					}
-					System.out.println();					
-				}
-				esaminaFigli(nodo.getChildNodes());
-				System.out.println("Fine elemento: " + nodo.getNodeName());
-				break;
-			case Node.CDATA_SECTION_NODE:
-			case Node.TEXT_NODE:
-				Text testo = (Text)nodo;
-				if(!testo.getNodeValue().trim().equals("")){
-					System.out.println("\tTesto: "+testo.getNodeValue());
-				}
-				break;
-		}*/
 	}
 	
+	/**
+	 * Gestisce ogni singola Transizione letto nel file xml.
+	 * Aggiunge la Transizione all'automa.
+	 * 
+	 * @param t
+	 */
 	private static void gestisciTransizione(Node t) {
 		Object statoPartenza = "", statoArrivo = "";
 		boolean guasto = false;
 		String evento = "*";
-		System.out.println(t);
+		//System.out.println(t);
 		
 		//gestione attributi
 		if(t.hasAttributes()){
@@ -149,7 +121,7 @@ public class CostruisciAutoma {
 				}
 			}
 			
-			System.out.println(figli.item(i));
+			//System.out.println(figli.item(i));
 		}
 		
 		a.add(statoPartenza, statoArrivo, evento, guasto);
@@ -169,25 +141,16 @@ public class CostruisciAutoma {
 		if(attributi.getLength()>0){
 			if(attributi.item(0).getNodeValue().equals("true")){
 				a.setStatoIniziale(s.getFirstChild().getNodeValue());
-				System.out.println(a.getStatoIniziale());
+				//System.out.println(a.getStatoIniziale());
 			}
 		}	
 	}
 
-	/*
-	private static void gestisciElementNode(Node nodo) {
-		switch(nodo.getNodeName()){
-		case "automa": break;
-		case "stati": esaminaNodo(nodo); break;
-		case "transizioni": esaminaNodo(nodo) break;
-		case "stato":  break;
-		case "transizione": break;
-		
-		}
-	
-	}*/
-
-	public static void esaminaFigli(NodeList figli){
+	/**
+	 * Richiama sui figli il metodo esaminaNodo.
+	 * @param figli
+	 */
+	private static void esaminaFigli(NodeList figli){
 		if(figli.getLength()>0){
 			for(int i=0;i<figli.getLength();i++){
 				esaminaNodo(figli.item(i));

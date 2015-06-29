@@ -106,12 +106,12 @@ public class Automa {
 	  public boolean add(Object x, Object y, Object value, boolean guasto) {
 	    boolean flag = false, flag1 = false;
 	    /*
-	     * se lo stato di partenza non c'è lo aggiungo automaticamente
+	     * se lo stato di partenza non c'ï¿½ lo aggiungo automaticamente
 	     */
 	    if (!stati.containsKey(x))
 	      add(x);
 	    /*
-	     * se lo stato di arrivo non c'è lo aggiungo automaticamente
+	     * se lo stato di arrivo non c'ï¿½ lo aggiungo automaticamente
 	     */
 	    if (!stati.containsKey(y))
 	      add(y);
@@ -189,8 +189,8 @@ public class Automa {
 	   * se stato &egrave; presente nell'automa, null altrimenti
 	   */
 	  public Set<Transizione> getTransizioni(Object stato) {
-	    if (stati.containsKey(stato)) //se lo stato è presente nell'automa
-	      return stati.get(stato); //ritorno il value corrispondente alla chiave, cioè l'insieme (hashset) delle transizioni
+	    if (stati.containsKey(stato)) //se lo stato ï¿½ presente nell'automa
+	      return stati.get(stato); //ritorno il value corrispondente alla chiave, cioï¿½ l'insieme (hashset) delle transizioni
 	    else
 	      return null;
 	  }

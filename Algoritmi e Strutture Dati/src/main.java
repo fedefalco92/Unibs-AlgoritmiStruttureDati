@@ -20,6 +20,8 @@ public class main {
 		System.out.println("################");
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
+		//Automa a = CostruisciAutoma.costruisciAutoma(args[1]);
+
 		
 		/*Automa a = new Automa();
 		a.add("A","B","b", false);
