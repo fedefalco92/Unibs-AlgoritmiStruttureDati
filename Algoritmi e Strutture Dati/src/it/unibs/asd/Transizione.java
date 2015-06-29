@@ -27,7 +27,7 @@ public class Transizione {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+  
 	public boolean isGuasto() {
 		// TODO Auto-generated method stub
 		return false;
