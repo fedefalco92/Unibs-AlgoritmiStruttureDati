@@ -28,6 +28,13 @@ public class CostruisciAutoma {
 	private static Element radice;
 	private static Automa a = new Automa();
 	
+	/**
+	 * Legge il documento XML contenuto nel file xmlFile e ne inizia la lettura a partire dal nodo radice.
+	 * L'avanzare della lettura comporta la costruzione dell'automa a.
+	 * 
+	 * @param xmlFile stringa contenente il nome del file
+	 * @return a oggetto di tipo Automa costruito a partire dal file
+	 */
 	public static Automa costruisciAutoma(String xmlFile){
 		
 		try{
@@ -58,7 +65,7 @@ public class CostruisciAutoma {
 	}
 	
 	/**
-	 * Esamina nodo.
+	 * Esamina il nodo nodo eseguendo metodi diversi a seconda del tipo di nodo, ottenuto con nodo.getNodeName().
 	 * @param nodo
 	 */
 	private static void esaminaNodo(Node nodo){
@@ -80,7 +87,7 @@ public class CostruisciAutoma {
 	}
 	
 	/**
-	 * Gestisce ogni singola Transizione letto nel file xml.
+	 * Gestisce ogni singola Transizione letta nel file xml.
 	 * Aggiunge la Transizione all'automa.
 	 * 
 	 * @param t
@@ -147,8 +154,8 @@ public class CostruisciAutoma {
 	}
 
 	/**
-	 * Richiama sui figli il metodo esaminaNodo.
-	 * @param figli
+	 * Richiama sulla NodeList figli il metodo esaminaNodo
+	 * @param figli NodeList ottenuta con il metodo .getChildNodes()
 	 */
 	private static void esaminaFigli(NodeList figli){
 		if(figli.getLength()>0){
