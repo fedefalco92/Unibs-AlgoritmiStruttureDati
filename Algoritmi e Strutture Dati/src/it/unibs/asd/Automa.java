@@ -3,8 +3,6 @@
  */
 package it.unibs.asd;
 
-import it.univr.esempio.Arco;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
