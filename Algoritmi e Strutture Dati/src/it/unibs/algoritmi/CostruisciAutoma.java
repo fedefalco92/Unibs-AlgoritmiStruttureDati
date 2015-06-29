@@ -114,7 +114,46 @@ public class CostruisciAutoma {
 	}
 	
 	private static void gestisciTransizione(Node t) {
-	// TODO Auto-generated method stub
+		Object statoPartenza = "", statoArrivo = "";
+		boolean guasto = false;
+		String evento = "*";
+		System.out.println(t);
+		
+		//gestione attributi
+		if(t.hasAttributes()){
+			NamedNodeMap attributi =t.getAttributes();
+			for(int i=0;i<attributi.getLength();i++){
+				Attr attr = (Attr) attributi.item(i);
+				switch(attr.getNodeName()){
+				case "guasto": 
+					if (attr.getNodeValue().equals("true"))
+						guasto = true;
+					break;
+				case "evento":
+					evento = attr.getNodeValue();
+					break;
+				}
+			}
+			//System.out.println(t);
+			
+		}
+		
+		//gestione start e end
+		NodeList figli = t.getChildNodes();
+		for(int i=0;i<figli.getLength();i++){
+			Node figlio = figli.item(i);
+			if(figlio.getNodeType() == Node.ELEMENT_NODE){
+				switch(figlio.getNodeName()){
+				case "start": statoPartenza = figlio.getFirstChild().getNodeValue(); break;
+				case "end": statoArrivo = figlio.getFirstChild().getNodeValue(); break;
+				}
+			}
+			
+			System.out.println(figli.item(i));
+		}
+		
+		a.add(statoPartenza, statoArrivo, evento, guasto);
+		
 	
 	}
 	
