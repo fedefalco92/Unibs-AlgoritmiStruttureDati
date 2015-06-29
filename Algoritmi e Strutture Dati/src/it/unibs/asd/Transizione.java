@@ -63,11 +63,11 @@ public class Transizione {
 	}
 
 	public int hashCode() {
-	    return statoPartenza.hashCode()+statoArrivo.hashCode()+value.hashCode() + Integer.parseInt(guasto + "");
+	    return statoPartenza.hashCode()+statoArrivo.hashCode()+value.hashCode()+(guasto ? 1:0);
 	}
 
 	public String toString() {
-		return "<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+value.toString()+"; "+guasto+">";
+		return "<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
 	}
 
 	
