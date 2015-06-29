@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <automa>
-	<stati> 
-		<stato start="true">A</stato>
-		<stato>B</stato>
-		<stato>C</stato>
-		<stato>D</stato>
-		<stato>E</stato>
-		<stato>F</stato>
-	</stati>
-
-	<transizioni>
+<stati> 
+<stato start="true">A</stato>
+<stato>B</stato>
+<stato>C</stato>
+<stato>D</stato>
+<stato>E</stato>
+<stato>F</stato>
+</stati>
+<transizioni>
 		<transizione evento="a">
 			<start>A</start>
 			<end>C</end>

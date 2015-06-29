@@ -1,3 +1,4 @@
+import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.asd.Automa;
 
 /**
@@ -14,12 +15,13 @@ public class main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*System.out.println("################");
+		System.out.println("################");
 		System.out.println("## Parser XML ##");
 		System.out.println("################");
-		AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");*/
+		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
+		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
 		
-		Automa a = new Automa();
+		/*Automa a = new Automa();
 		a.add("A","B","b", false);
 		a.add("B","A","*",false);
 		a.add("B","D","*",false);
@@ -33,7 +35,7 @@ public class main {
 		System.out.println(a.add("E","A","*",false));
 		System.out.println(a.add("E","A","*",false));
 		
-
+	*/
 	    System.out.println("L'automa a e':\n" + a);
 	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 	}

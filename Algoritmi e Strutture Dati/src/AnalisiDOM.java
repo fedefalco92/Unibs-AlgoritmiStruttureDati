@@ -19,7 +19,7 @@ public class AnalisiDOM {
 	public AnalisiDOM(String file){
 		try{
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setValidating(true);
+//			dbf.setValidating(true);
 			DocumentBuilder domParser = dbf.newDocumentBuilder();
 			domParser.setErrorHandler(new GestioneErrori());
 			documento = domParser.parse(new File(file));

@@ -23,14 +23,22 @@ import java.util.Set;
 
 public class Automa {
 	
-	
-	
 	HashMap<Object,Set<Transizione>> stati;
 	int numeroTransizioni;
+	Object statoIniziale;
 	 
 	public Automa(){
 		this.stati =  new HashMap<Object,Set<Transizione>>();
 		numeroTransizioni = 0;
+		statoIniziale=null;
+	}
+
+	public Object getStatoIniziale() {
+		return statoIniziale;
+	}
+
+	public void setStatoIniziale(Object statoIniziale) {
+		this.statoIniziale = statoIniziale;
 	}
 
 	/**
