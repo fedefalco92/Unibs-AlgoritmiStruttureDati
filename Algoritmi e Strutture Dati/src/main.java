@@ -1,4 +1,5 @@
 import it.unibs.algoritmi.CostruisciAutoma;
+import it.unibs.algoritmi.CostruisciFileXML;
 import it.unibs.asd.Automa;
 
 /**
@@ -40,6 +41,8 @@ public class main {
 	*/
 	    System.out.println("L'automa a e':\n" + a);
 	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
+	    
+	    //CostruisciFileXML.automaToXML(a);
 	}
 
 }
