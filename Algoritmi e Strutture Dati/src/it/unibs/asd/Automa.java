@@ -235,6 +235,21 @@ public class Automa {
 		    return setTransizioniNonOsservabili;
 	  }
 	  
+	  public Set<Transizione> getTransizioniOsservabili(){
+		  Set<Transizione> setTransizioniOsservabili= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (!t.nonOsservabile()){
+		    			setTransizioniOsservabili.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniOsservabili;
+	  }
+	  
 	  public Set<Transizione> getTransizioniDiGuasto(){
 		  Set<Transizione> setTransizioniDiGuasto= new HashSet<Transizione>();
 		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
@@ -248,6 +263,21 @@ public class Automa {
 		    }
 
 		    return setTransizioniDiGuasto;
+	  }
+	  
+	  public Set<Transizione> getTransizioniNonDiGuasto(){
+		  Set<Transizione> setTransizioniNonDiGuasto= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (!t.isGuasto()){
+		    			setTransizioniNonDiGuasto.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniNonDiGuasto;
 	  }
 
 	  public String toString() {

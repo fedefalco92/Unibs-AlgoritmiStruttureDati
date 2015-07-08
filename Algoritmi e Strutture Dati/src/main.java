@@ -46,26 +46,34 @@ public class main {
 	    
 	    //CostruisciFileXML.automaToXML(a);
 	    
-	    System.out.println("L'insieme delle transizioni non osservabili e': \n" + a.getTransizioniNonOsservabili());
-	    System.out.println("L'insieme delle transizioni di guasto e': \n" + a.getTransizioniDiGuasto());
-	    
-	    Automa b = Trasformazioni.inizializzaBadTwin1(a);
-	    System.out.println("L'automa b e':\n" + b);
-	    System.out.println("L'insieme delle transizioni e': \n" + b.getTransizioni());
-	    
+	   /*
+			System.out
+					.println("L'insieme delle transizioni non osservabili e': \n"
+							+ a.getTransizioniNonOsservabili());
+			System.out.println("L'insieme delle transizioni di guasto e': \n"
+					+ a.getTransizioniDiGuasto());
+			Automa b = Trasformazioni.inizializzaBadTwin1(a);
+			System.out.println("L'automa b e':\n" + b);
+			System.out.println("L'insieme delle transizioni e': \n"
+					+ b.getTransizioni());
+			Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+			System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
+			System.out.println("L'insieme delle transizioni e': \n"
+					+ badtwin1.getTransizioni());
+			Evento eventoComposto = new Evento();
+			Evento o = new Evento("a");
+			Evento ot = new Evento("b");
+			eventoComposto.add(o.getSetEventiSemplici());
+			eventoComposto.add(ot.getSetEventiSemplici());
+			System.out.println(eventoComposto);
+		*/
 	    Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 	    System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
-	    System.out.println("L'insieme delle transizioni e': \n" + badtwin1.getTransizioni());
-	    
-	    Evento eventoComposto = new Evento();
-	    Evento o = new Evento ("a");
-	    Evento ot = new Evento ("b");
-		eventoComposto.add(o.getSetEventiSemplici());
-		eventoComposto.add(ot.getSetEventiSemplici());
+		System.out.println("L'insieme delle transizioni e': \n"+ badtwin1.getTransizioni());
 		
-		System.out.println(eventoComposto);
-		
-		System.out.println("Insieme delle transizioni uscenti dal nodo a" + a.getTransizioniUscenti("B"));
+		Automa goodtwin1 = Trasformazioni.goodtwin1(badtwin1);
+	    System.out.println("L'automa good twin livello 1 e':\n" + goodtwin1);
+		System.out.println("L'insieme delle transizioni e': \n"+ goodtwin1.getTransizioni());
 		
 	}
 

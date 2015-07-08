@@ -99,10 +99,16 @@ public class Trasformazioni {
 				
 			}
 		}
-		
-		
-		
 		return triplette;
+	}
+	
+	public static Automa goodtwin1(Automa badtwin1){
+		Automa gt = new Automa();
+		Set<Transizione> transizioniNoGuasto = badtwin1.getTransizioniNonDiGuasto();
+		for(Transizione t:transizioniNoGuasto){
+				gt.add(t);				
+		}		
+		return gt;
 	}
 
 }
