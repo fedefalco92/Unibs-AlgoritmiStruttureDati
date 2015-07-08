@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXParseException;
 
 import it.unibs.asd.Automa;
+import it.unibs.asd.Evento;
 
 /**
  * 
@@ -95,7 +96,7 @@ public class CostruisciAutoma {
 	private static void gestisciTransizione(Node t) {
 		Object statoPartenza = "", statoArrivo = "";
 		boolean guasto = false;
-		String evento = "*";
+		Evento evento = new Evento();
 		//System.out.println(t);
 		
 		//gestione attributi
@@ -109,7 +110,7 @@ public class CostruisciAutoma {
 						guasto = true;
 					break;
 				case "evento":
-					evento = attr.getNodeValue();
+					evento.add(attr.getNodeValue());
 					break;
 				}
 			}

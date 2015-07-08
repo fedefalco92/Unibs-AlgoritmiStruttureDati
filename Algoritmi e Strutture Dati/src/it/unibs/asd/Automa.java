@@ -99,11 +99,11 @@ public class Automa {
 	   * 
 	   * @param x stato di partenza
 	   * @param y stato di arrivo
-	   * @param value nome transizione
+	   * @param Evento contenente value transizione
 	   * @param guasto boolean che indica se la transizione &egrave; di guasto
 	   * @return vero se la transizione &egrave; stata aggiunta false altrimenti
 	   */
-	  public boolean add(Object x, Object y, Object value, boolean guasto) {
+	  public boolean add(Object x, Object y, Evento evento, boolean guasto) {
 	    boolean flag = false, flag1 = false;
 	    /*
 	     * se lo stato di partenza non c'� lo aggiungo automaticamente
@@ -115,7 +115,7 @@ public class Automa {
 	     */
 	    if (!stati.containsKey(y))
 	      add(y);
-	    Transizione t = new Transizione(x,y,value,guasto);
+	    Transizione t = new Transizione(x,y,evento,guasto);
 	    flag = (stati.get(x) ).add(t);
 	    flag1 =(stati.get(y) ).add(t);
 	    flag = flag && flag1;
@@ -145,7 +145,7 @@ public class Automa {
 	   * @param guasto boolean che indica se la transizione &egrave; di guasto
 	   * @return vero se l'arco e' stato rimosso false altrimenti
 	   */
-	  public boolean remove(Object x, Object y, Object value, boolean guasto) {
+	  public boolean remove(Object x, Object y, Evento value, boolean guasto) {
 	    Transizione t = new Transizione(x,y,value, guasto);
 	    return remove(t);
 	  }
@@ -202,6 +202,36 @@ public class Automa {
 	   */
 	  public Set<Object> getStati() {
 	    return stati.keySet();
+	  }
+	  
+	  public Set<Transizione> getTransizioniNonOsservabili(){
+		  Set<Transizione> setTransizioniNonOsservabili= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (t.nonOsservabile()){
+		    			setTransizioniNonOsservabili.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniNonOsservabili;
+	  }
+	  
+	  public Set<Transizione> getTransizioniDiGuasto(){
+		  Set<Transizione> setTransizioniDiGuasto= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (t.isGuasto()){
+		    			setTransizioniDiGuasto.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniDiGuasto;
 	  }
 
 	  public String toString() {

@@ -1,5 +1,6 @@
 import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.CostruisciFileXML;
+import it.unibs.algoritmi.Trasformazioni;
 import it.unibs.asd.Automa;
 
 /**
@@ -43,6 +44,17 @@ public class main {
 	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 	    
 	    //CostruisciFileXML.automaToXML(a);
+	    
+	    System.out.println("L'insieme delle transizioni non osservabili e': \n" + a.getTransizioniNonOsservabili());
+	    System.out.println("L'insieme delle transizioni di guasto e': \n" + a.getTransizioniDiGuasto());
+	    
+	    Automa b = Trasformazioni.inizializzaBadTwin1(a);
+	    System.out.println("L'automa b e':\n" + b);
+	    System.out.println("L'insieme delle transizioni e': \n" + b.getTransizioni());
+	    
+	    Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+	    System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
+	    System.out.println("L'insieme delle transizioni e': \n" + badtwin1.getTransizioni());
 	}
 
 }
