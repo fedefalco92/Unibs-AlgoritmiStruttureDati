@@ -35,7 +35,12 @@ public class Trasformazioni {
 		
 		return badtwin1;
 	}
-
+	
+	/**
+	 * Inizializza il bad twin clonando a mantenendo le sole transizioni non di guasto e osservabili
+	 * @param a
+	 * @return
+	 */
 	public static Automa inizializzaBadTwin1(Automa a) {
 		Automa bt = new Automa();
 		
@@ -64,7 +69,6 @@ public class Trasformazioni {
 	 * @return
 	 */
 	public static Set<Transizione> find(Automa a, Object s, int n, boolean guasto, Evento ot) {
-		System.out.println(n);
 		Set<Transizione> triplette = new HashSet<Transizione>();
 		//Set<Transizione> transizioni=a.getTransizioni();
 		Set<Transizione> transizioni=a.getTransizioniUscenti(s);
@@ -102,6 +106,11 @@ public class Trasformazioni {
 		return triplette;
 	}
 	
+	/**
+	 * Restituisce il good twin di livello 1 
+	 * @param badtwin1 bad twin di livello 1
+	 * @return
+	 */
 	public static Automa goodtwin1(Automa badtwin1){
 		Automa gt = new Automa();
 		Set<Transizione> transizioniNoGuasto = badtwin1.getTransizioniNonDiGuasto();
@@ -109,6 +118,41 @@ public class Trasformazioni {
 				gt.add(t);				
 		}		
 		return gt;
+	}
+	
+	
+	/**
+	 * Sincronizza il good twin di livello 1 e il bad twin di livello 1
+	 * @param gt good twin
+	 * @param bt baad twin
+	 * @return
+	 */
+	public static Automa sincronizzazione1(Automa gt, Automa bt){
+		Automa sincronizzato = new Automa();
+		//seleziono gli stati del good twin
+		Set<Object> stati = gt.getStati();
+		for(Object s: stati){
+			//seleziono le transizioni uscenti da s nel bad twin
+			Set<Transizione> transizioni1 = bt.getTransizioniUscenti(s);
+			//seleziono le transizioni uscenti da s nel goodtwin
+			Set<Transizione> transizioni2 = gt.getTransizioniUscenti(s);
+			
+			//cerco tutte le transizioni distinte caratterizzate dallo stesso evento osservabile
+			for(Transizione t1: transizioni1){
+				for(Transizione t2: transizioni2){
+					if(!t1.equals(t2)){
+						if(t1.getEvento().equals(t2.getEvento())){
+							//se arrivo qui la transizione t è ambigua
+							String statoPartenza = (String) t1.getStatoPartenza()+ (String) t2.getStatoPartenza();
+							String statoArrivo = (String) t1.getStatoArrivo()+ (String) t2.getStatoArrivo();
+							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
+							
+						}
+					}
+				}		
+			}
+		}
+		return sincronizzato;
 	}
 
 }

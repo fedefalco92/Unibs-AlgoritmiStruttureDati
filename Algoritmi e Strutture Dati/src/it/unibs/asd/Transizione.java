@@ -75,6 +75,10 @@ public class Transizione {
 		//return "\n<"+statoPartenza.toString()+statoPartenza.hashCode()+", "+statoArrivo.toString()+statoArrivo.hashCode()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
 
 	}
+	
+	public boolean equals(Transizione t){
+		return this.hashCode() == t.hashCode();
+	}
 
 	
 }

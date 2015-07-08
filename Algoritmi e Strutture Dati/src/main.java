@@ -1,3 +1,5 @@
+import java.util.Set;
+
 import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.CostruisciFileXML;
 import it.unibs.algoritmi.Trasformazioni;
@@ -74,6 +76,8 @@ public class main {
 		Automa goodtwin1 = Trasformazioni.goodtwin1(badtwin1);
 	    System.out.println("L'automa good twin livello 1 e':\n" + goodtwin1);
 		System.out.println("L'insieme delle transizioni e': \n"+ goodtwin1.getTransizioni());
+		Set<Object> stati = goodtwin1.getStati();
+		System.out.println(stati);
 		
 	}
 
