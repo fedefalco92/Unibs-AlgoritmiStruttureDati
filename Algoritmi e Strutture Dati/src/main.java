@@ -64,6 +64,9 @@ public class main {
 		eventoComposto.add(ot.getSetEventiSemplici());
 		
 		System.out.println(eventoComposto);
+		
+		System.out.println("Insieme delle transizioni uscenti dal nodo a" + a.getTransizioniUscenti("B"));
+		
 	}
 
 }

@@ -204,7 +204,7 @@ public class Automa {
 		  Set<Transizione> tstato = getTransizioni(stato);
 		  Set<Transizione> tuscenti = new HashSet<Transizione>();
 		  for(Transizione t : tstato){
-			  if (t.getStatoPartenza().equals(stato)){
+			  if (((String) t.getStatoPartenza()).equals((String) stato)){
 				  tuscenti.add(t);
 			  }
 		  }

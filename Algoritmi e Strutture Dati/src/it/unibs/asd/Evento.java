@@ -7,9 +7,11 @@ import java.util.StringTokenizer;
 
 public class Evento {
 	private Set<String> value;
+	private double seed;	
 	
 	public Evento(){
 		this.value = new HashSet<String>();
+		seed = Math.random();
 	}
 	
 	/*
@@ -18,6 +20,7 @@ public class Evento {
 	public Evento(String value){
 		this.value = new HashSet<String>();
 		this.value.add(value);
+		seed = Math.random();
 	}
 	
 	public Set<String> getSetEventiSemplici(){
@@ -49,7 +52,7 @@ public class Evento {
 	}
 	
 	public int hashCode(){
-		return (this.toString()+"*").hashCode();
+		return (this.toString()+"*" + seed).hashCode();
 	}
 }
 
