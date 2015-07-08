@@ -46,7 +46,7 @@ public class Transizione {
 		return statoArrivo;
 	}
 
-	public Evento getValue() {
+	public Evento getEvento() {
 		return evento;
 	}
   
@@ -63,7 +63,7 @@ public class Transizione {
 	}
 
 	public boolean nonOsservabile(){
-		if(evento.equals("*")) return true; else return false;
+		if(evento.getSetEventiSemplici().isEmpty()) return true; else return false;
 	}
 	
 	public int hashCode() {

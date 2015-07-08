@@ -26,10 +26,10 @@ public class Trasformazioni {
 		Set<Transizione> tNonOsservabili = a.getTransizioniNonOsservabili();
 		for(Transizione t : tNonOsservabili){
 			if(t.isGuasto()){
-				Set<Transizione> triplette = find(a,t.getStatoArrivo(),1,t.isGuasto(),null);
+				Set<Transizione> triplette = find(a,t.getStatoArrivo(),1,t.isGuasto(),new Evento());
 				if(!triplette.isEmpty()){
 					for (Transizione tripletta:triplette){
-						badtwin1.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getValue(), tripletta.isGuasto());
+						badtwin1.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
 					}					
 				}
 			}
@@ -67,11 +67,12 @@ public class Trasformazioni {
 	 */
 	public static Set<Transizione> find(Automa a, Object s, int n, boolean guasto, Evento ot) {
 		Set<Transizione> triplette = new HashSet<Transizione>();
-		Set<Transizione> transizioni=a.getTransizioni();
+		//Set<Transizione> transizioni=a.getTransizioni();
+		Set<Transizione> transizioni=a.getTransizioniUscenti(s);
 		if(!transizioni.isEmpty()){
 			for (Transizione t: transizioni){
 				boolean _guasto;
-				Evento o = t.getValue();
+				Evento o = t.getEvento();
 				Object _s = t.getStatoArrivo();
 				
 				if(t.isGuasto()){

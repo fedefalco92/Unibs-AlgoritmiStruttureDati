@@ -2,6 +2,7 @@ import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.CostruisciFileXML;
 import it.unibs.algoritmi.Trasformazioni;
 import it.unibs.asd.Automa;
+import it.unibs.asd.Evento;
 
 /**
  * 
@@ -55,6 +56,14 @@ public class main {
 	    Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 	    System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
 	    System.out.println("L'insieme delle transizioni e': \n" + badtwin1.getTransizioni());
+	    
+	    Evento eventoComposto = new Evento();
+	    Evento o = new Evento ("a");
+	    Evento ot = new Evento ("b");
+		eventoComposto.add(o.getSetEventiSemplici());
+		eventoComposto.add(ot.getSetEventiSemplici());
+		
+		System.out.println(eventoComposto);
 	}
 
 }

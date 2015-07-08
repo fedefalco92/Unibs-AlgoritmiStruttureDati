@@ -47,5 +47,9 @@ public class Evento {
 		
 		return output.toString();
 	}
+	
+	public int hashCode(){
+		return (this.toString()+"*").hashCode();
+	}
 }
 

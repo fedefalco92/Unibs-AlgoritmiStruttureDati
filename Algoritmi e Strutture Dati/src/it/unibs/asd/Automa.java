@@ -132,7 +132,7 @@ public class Automa {
 	   * @return true se la transizione &egrave; stata aggiunta, false altrimenti
 	   */
 	  public boolean add(Transizione t) {
-	    return add(t.getStatoPartenza(), t.getStatoArrivo(), t.getValue(), t.isGuasto());
+	    return add(t.getStatoPartenza(), t.getStatoArrivo(), t.getEvento(), t.isGuasto());
 	  }
 
 	  /**
@@ -193,6 +193,22 @@ public class Automa {
 	      return stati.get(stato); //ritorno il value corrispondente alla chiave, cio� l'insieme (hashset) delle transizioni
 	    else
 	      return null;
+	  }
+	  
+	  /**
+	   * ritorna le transizioni uscenti dallo stato
+	   * @param stato
+	   * @return
+	   */
+	  public Set<Transizione> getTransizioniUscenti(Object stato){
+		  Set<Transizione> tstato = getTransizioni(stato);
+		  Set<Transizione> tuscenti = new HashSet<Transizione>();
+		  for(Transizione t : tstato){
+			  if (t.getStatoPartenza().equals(stato)){
+				  tuscenti.add(t);
+			  }
+		  }
+		  return tuscenti;
 	  }
 
 	  /**
