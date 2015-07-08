@@ -43,7 +43,7 @@ public class Trasformazioni {
 		
 		Set<Transizione> transizioni = a.getTransizioni();
 		for(Transizione t:transizioni){
-			if(!t.isGuasto()){
+			if(!t.isGuasto()&&!t.nonOsservabile()){
 				bt.add(t);				
 			}
 		}		
