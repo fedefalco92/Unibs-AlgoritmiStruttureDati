@@ -43,9 +43,9 @@ public class main {
 		System.out.println(a.add("E","A","*",false));
 		
 	*/
-	    System.out.println("L'automa a e':\n" + a);
+	    /*System.out.println("L'automa a e':\n" + a);
 	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
-	    
+	    */
 	    //CostruisciFileXML.automaToXML(a);
 	    
 	   /*
@@ -69,20 +69,40 @@ public class main {
 			eventoComposto.add(ot.getSetEventiSemplici());
 			System.out.println(eventoComposto);
 		*/
+		
 	    Automa badtwin1 = Trasformazioni.badtwin0to1(a);
-	    System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
-		System.out.println("L'insieme delle transizioni e': \n"+ badtwin1.getTransizioni());
+	    //System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
+		//System.out.println("L'insieme delle transizioni e': \n"+ badtwin1.getTransizioni());
 		
-		Automa goodtwin1 = Trasformazioni.goodtwin1(badtwin1);
-	    System.out.println("L'automa good twin livello 1 e':\n" + goodtwin1);
-		System.out.println("L'insieme delle transizioni e': \n"+ goodtwin1.getTransizioni());
-		Set<Object> stati = goodtwin1.getStati();
-		System.out.println(stati);
+		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
+	    //System.out.println("L'automa good twin livello 1 e':\n" + goodtwin1);
+		//System.out.println("L'insieme delle transizioni e': \n"+ goodtwin1.getTransizioni());
+		//Set<Object> stati = goodtwin1.getStati();
+		//System.out.println(stati);
 		
-		Automa sincronizzato = Trasformazioni.sincronizzazione1(goodtwin1, badtwin1);
+		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
 		System.out.println("L'automa sincronizzato livello 1 e':\n" + sincronizzato);
 		System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
-		System.out.println(sincronizzato.diagnosticabile());
+		System.out.println((sincronizzato.diagnosticabile()?"diagnosticabile\n":"non diagnosticabile\n"));
+		if (sincronizzato.diagnosticabile()) {
+			int i = 2;
+			Automa btiprev = badtwin1;
+			Automa gtiprev = goodtwin1;
+			while ( i<=3/*sincronizzato.diagnosticabile()*/){
+				Automa bti = Trasformazioni.badtwinlevelup(btiprev, i);
+				System.out.println("Il bad twin di livello "+i+" e':\n" + bti);
+				System.out.println("L'insieme delle transizioni e': \n"+ bti.getTransizioni());
+				btiprev =  bti;
+				Automa gti = Trasformazioni.badToGoodTwin(bti);
+				System.out.println("Il good twin di livello "+i+" e':\n" + gti);
+				System.out.println("L'insieme delle transizioni e': \n"+ gti.getTransizioni());
+				//sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
+				//System.out.println("L'automa sincronizzato livello "+i+" e':\n" + sincronizzato);
+				//System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
+				//System.out.println((sincronizzato.diagnosticabile()?"diagnosticabile\n":"non diagnosticabile\n"));
+				i++;
+			}
+		}
 	}
 
 }

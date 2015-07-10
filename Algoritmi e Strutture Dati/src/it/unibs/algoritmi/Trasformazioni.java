@@ -42,7 +42,7 @@ public class Trasformazioni {
 	 * Trasforma il bad twin di livello i-1 nel bad twin di livello i
 	 * con i >= 2
 	 * @param bt il bad twin considerato (livello i-1)
-	 * @param i livello
+	 * @param i livello. Precondizione  i>=2
 	 * @return btup il bad twin di livello i
 	 */
 	public static Automa badtwinlevelup(Automa bt, int i){
@@ -54,7 +54,7 @@ public class Trasformazioni {
 				Set<Transizione> triplette = find(bt,t.getStatoArrivo(),i-t.getEvento().cardinalita(),t.isGuasto(),t.getEvento());
 				if(!triplette.isEmpty()){
 					for (Transizione tripletta:triplette){
-						//controllo if (o non è composto dallaripetizione di i iventi semplici)
+						//controllo if (o non è composto dalla ripetizione di i eventi semplici)
 						btup.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
 					}					
 				}
@@ -156,7 +156,7 @@ public class Trasformazioni {
 	 * @param badtwin1 bad twin di livello 1
 	 * @return
 	 */
-	public static Automa goodtwin1(Automa badtwin1){
+	public static Automa badToGoodTwin(Automa badtwin1){
 		Automa gt = new Automa();
 		gt.setStatoIniziale(badtwin1.getStatoIniziale());
 		Set<Transizione> transizioniNoGuasto = badtwin1.getTransizioniNonDiGuasto();
@@ -173,7 +173,7 @@ public class Trasformazioni {
 	 * @param bt baad twin
 	 * @return
 	 */
-	public static Automa sincronizzazione1(Automa gt, Automa bt){
+	public static Automa sincronizzazione(Automa gt, Automa bt){
 		Automa sincronizzato = new Automa();
 		sincronizzato.setStatoIniziale((String) gt.getStatoIniziale() + (String) gt.getStatoIniziale());
 		
