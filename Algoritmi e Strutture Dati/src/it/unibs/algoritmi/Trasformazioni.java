@@ -42,19 +42,26 @@ public class Trasformazioni {
 	 * Trasforma il bad twin di livello i-1 nel bad twin di livello i
 	 * con i >= 2
 	 * @param bt il bad twin considerato (livello i-1)
+	 * @param i livello
 	 * @return btup il bad twin di livello i
 	 */
-	public static Automa badtwinlevelup(Automa bt){
+	public static Automa badtwinlevelup(Automa bt, int i){
 		Automa btup = inizializzaBadTwin(bt); //bad twin di livello i
-		Set<Transizione> transizioni = bt.getTransizioni();
-		for(Transizione t : transizioni){
-			Set<Transizione> triplette = find(bt,t.getStatoArrivo(),1,t.isGuasto(),new Evento());
-			if(!triplette.isEmpty()){
-				for (Transizione tripletta:triplette){
-					btup.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
-				}					
+		Set<Object> stati = bt.getStati();
+		for (Object s: stati){
+			Set<Transizione> transizioni = bt.getTransizioni(s);
+			for(Transizione t : transizioni){
+				Set<Transizione> triplette = find(bt,t.getStatoArrivo(),i-t.getEvento().cardinalita(),t.isGuasto(),t.getEvento());
+				if(!triplette.isEmpty()){
+					for (Transizione tripletta:triplette){
+						//controllo if (o non è composto dallaripetizione di i iventi semplici)
+						btup.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
+					}					
+				}
 			}
+			
 		}
+		
 		
 		return btup;
 	}
