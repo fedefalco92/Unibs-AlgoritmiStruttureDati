@@ -83,8 +83,8 @@ public class Transizione {
 	
 	public boolean equals(Object t) {
 		  if (t instanceof Transizione) {
-			Transizione trans = (Transizione) t;
-			return (statoPartenza.equals(trans.statoPartenza) && statoArrivo.equals(trans.statoArrivo) && evento.equals(trans.evento));		
+			Transizione trans = (Transizione) t;	
+			return (statoPartenza.equals(trans.statoPartenza) && statoArrivo.equals(trans.statoArrivo) && evento.equals(trans.evento) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
 		  }
 		  return false;
 	}

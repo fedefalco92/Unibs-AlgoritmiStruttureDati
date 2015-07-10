@@ -55,6 +55,7 @@ public class Trasformazioni {
 				if(!triplette.isEmpty()){
 					for (Transizione tripletta:triplette){
 						//controllo if (o non è composto dalla ripetizione di i eventi semplici)
+						if (tripletta.getEvento().eventoOk(i))
 						btup.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
 					}					
 				}
@@ -66,6 +67,7 @@ public class Trasformazioni {
 		return btup;
 	}
 	
+
 	/**
 	 * Inizializza il bad twin clonando a mantenendo le sole transizioni non di guasto e osservabili
 	 * @param a
@@ -136,14 +138,16 @@ public class Trasformazioni {
 					eventoComposto.add(o.getSetEventiSemplici());
 					eventoComposto.add(ot.getSetEventiSemplici());
 					if (cardinalita == n){
-						tripletta = new Transizione (null, _s, eventoComposto, _guasto);
+						tripletta = new Transizione ("", _s, eventoComposto, _guasto);
 						triplette.add(tripletta);
 					} else {
-						triplette.addAll((Set<Transizione>) find(a, _s, n-cardinalita, _guasto, eventoComposto));
+						Set<Transizione> risultatoChiamataRicorsiva = find(a, _s, n-cardinalita, _guasto, eventoComposto);
+						if(!risultatoChiamataRicorsiva.isEmpty())
+						triplette.addAll(risultatoChiamataRicorsiva);
 					}
 				}
 				if(t.nonOsservabile()){
-					triplette.addAll((Set<Transizione>) find(a, _s, n, _guasto, ot));
+					triplette.addAll(find(a, _s, n, _guasto, ot));
 				}
 				
 			}

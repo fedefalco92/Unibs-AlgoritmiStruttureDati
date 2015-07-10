@@ -5,29 +5,32 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+
 public class Evento {
-	private Set<String> value;
+	Multiset<String> value;
 	
 	public Evento(){
-		this.value = new HashSet<String>();
+		this.value = HashMultiset.create();
 	}
 	
 	/*
 	 * Serve per il metodo costruisciAutoma
 	 */
 	public Evento(String value){
-		this.value = new HashSet<String>();
+		this.value =  HashMultiset.create();
 		this.value.add(value);
 	}
 	
-	public Set<String> getSetEventiSemplici(){
+	public Multiset<String> getSetEventiSemplici(){
 		return value;
 	}
 	public void add(String eventoSemplice){
 		value.add(eventoSemplice);
 	}
 	
-	public void add(Set<String> eventoComposto){
+	public void add(Multiset<String> eventoComposto){
 		value.addAll(eventoComposto);
 	}
 	
@@ -63,6 +66,23 @@ public class Evento {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Restituisce vero se l'evento non &grave; composto dalla ripetizione di i eventi semplici tutti uguali
+	 * @param evento
+	 * @param i TODO
+	 * @return
+	 */
+	public boolean eventoOk(int i) {
+		boolean out = true;
+		if(!value.isEmpty() && value.size()==i){
+			String primo = value.iterator().next();
+			if(value.count(primo)==i){
+				out = false;
+			}
+		}
+		return out;
 	}
 }
 
