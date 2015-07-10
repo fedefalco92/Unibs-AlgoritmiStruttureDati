@@ -23,21 +23,21 @@ import java.util.Set;
 
 public class Automa {
 	
-	HashMap<Object,Set<Transizione>> stati;
+	HashMap<Stato,Set<Transizione>> stati;
 	int numeroTransizioni;
-	Object statoIniziale;
+	Stato statoIniziale;
 	 
 	public Automa(){
-		this.stati =  new HashMap<Object,Set<Transizione>>();
+		this.stati =  new HashMap<Stato,Set<Transizione>>();
 		numeroTransizioni = 0;
 		statoIniziale=null;
 	}
 
-	public Object getStatoIniziale() {
+	public Stato getStatoIniziale() {
 		return statoIniziale;
 	}
 
-	public void setStatoIniziale(Object statoIniziale) {
+	public void setStatoIniziale(Stato statoIniziale) {
 		this.statoIniziale = statoIniziale;
 	}
 
@@ -65,7 +65,7 @@ public class Automa {
 	   * 
 	   * @param x lo stato da aggiungere
 	   */
-	  public void add(Object x) {
+	  public void add(Stato x) {
 	    if (!stati.containsKey(x)) {
 	      Set<Transizione> lista = new HashSet<Transizione>();
 	      stati.put(x,lista);
@@ -78,11 +78,11 @@ public class Automa {
 	   * 
 	   * @param x lo stato da rimuovere
 	   */
-	  public void remove(Object x) {
+	  public void remove(Stato x) {
 	    if (stati.containsKey(x)) {
 	      Iterator transizioni = ( (HashSet) stati.get(x) ).iterator();
 	      Transizione t;
-	      Object y;
+	      Stato y;
 	      while (transizioni.hasNext()) {
 	        t = (Transizione) transizioni.next();
 	        y = ( t.getStatoPartenza().equals(x) ) ? t.getStatoArrivo() : t.getStatoPartenza();
@@ -103,7 +103,7 @@ public class Automa {
 	   * @param guasto boolean che indica se la transizione &egrave; di guasto
 	   * @return vero se la transizione &egrave; stata aggiunta false altrimenti
 	   */
-	  public boolean add(Object x, Object y, Evento evento, boolean guasto) {
+	  public boolean add(Stato x, Stato y, Evento evento, boolean guasto) {
 	    boolean flag = false, flag1 = false;
 	    /*
 	     * se lo stato di partenza non c'� lo aggiungo automaticamente
@@ -134,7 +134,7 @@ public class Automa {
 	   * @param guasto boolean che indica se la transizione &egrave; di guasto
 	   * @return vero se la transizione &egrave; stata aggiunta false altrimenti
 	   */
-	  public boolean add(Object x, Object y, Evento evento, boolean guasto, boolean ambigua) {
+	  public boolean add(Stato x, Stato y, Evento evento, boolean guasto, boolean ambigua) {
 	    boolean flag = false, flag1 = false;
 	    /*
 	     * se lo stato di partenza non c'� lo aggiungo automaticamente
@@ -177,7 +177,7 @@ public class Automa {
 	   * @param guasto boolean che indica se la transizione &egrave; di guasto
 	   * @return vero se l'arco e' stato rimosso false altrimenti
 	   */
-	  public boolean remove(Object x, Object y, Evento value, boolean guasto) {
+	  public boolean remove(Stato x, Stato y, Evento value, boolean guasto) {
 	    Transizione t = new Transizione(x,y,value, guasto);
 	    return remove(t);
 	  }
@@ -220,7 +220,7 @@ public class Automa {
 	   * @return l'insieme delle transizioni incidenti sullo stato stato
 	   * se stato &egrave; presente nell'automa, null altrimenti
 	   */
-	  public Set<Transizione> getTransizioni(Object stato) {
+	  public Set<Transizione> getTransizioni(Stato stato) {
 	    if (stati.containsKey(stato)) //se lo stato � presente nell'automa
 	      return stati.get(stato); //ritorno il value corrispondente alla chiave, cio� l'insieme (hashset) delle transizioni
 	    else
@@ -232,11 +232,11 @@ public class Automa {
 	   * @param stato
 	   * @return
 	   */
-	  public Set<Transizione> getTransizioniUscenti(Object stato){
+	  public Set<Transizione> getTransizioniUscenti(Stato stato){
 		  Set<Transizione> tstato = getTransizioni(stato);
 		  Set<Transizione> tuscenti = new HashSet<Transizione>();
 		  for(Transizione t : tstato){
-			  if (((String) t.getStatoPartenza()).equals((String) stato)){
+			  if (t.getStatoPartenza().equals(stato)){
 				  tuscenti.add(t);
 			  }
 		  }
@@ -248,7 +248,7 @@ public class Automa {
 	   * 
 	   * @return l'insieme degli stati dell'automa
 	   */
-	  public Set<Object> getStati() {
+	  public Set<Stato> getStati() {
 	    return stati.keySet();
 	  }
 	  
@@ -334,12 +334,12 @@ public class Automa {
 	  public String toString() {
 	    StringBuffer out = new StringBuffer();
 	    out.append("Stato iniziale: " + statoIniziale+"\n");
-	    Object stato;
+	    Stato stato;
 	    Transizione t;
 	    Iterator transizioneI;
 	    Iterator statoI = stati.keySet().iterator();
 	    while (statoI.hasNext()) {
-	      transizioneI = ((Set) stati.get( stato = statoI.next() )).iterator();
+	      transizioneI = ((Set) stati.get( stato = (Stato) statoI.next() )).iterator();
 	      out.append("Stato " + stato.toString() + ": ");
 	      while (transizioneI.hasNext()) {
 	        t = (Transizione) transizioneI.next();

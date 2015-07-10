@@ -10,6 +10,7 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 
 import it.unibs.asd.Automa;
 import it.unibs.asd.Evento;
+import it.unibs.asd.Stato;
 import it.unibs.asd.Transizione;
 
 /**
@@ -47,8 +48,8 @@ public class Trasformazioni {
 	 */
 	public static Automa badtwinlevelup(Automa bt, int i){
 		Automa btup = inizializzaBadTwin(bt); //bad twin di livello i
-		Set<Object> stati = bt.getStati();
-		for (Object s: stati){
+		Set<Stato> stati = bt.getStati();
+		for (Stato s: stati){
 			Set<Transizione> transizioni = bt.getTransizioni(s);
 			for(Transizione t : transizioni){
 				Set<Transizione> triplette = find(bt,t.getStatoArrivo(),i-t.getEvento().cardinalita(),t.isGuasto(),t.getEvento());
@@ -115,7 +116,7 @@ public class Trasformazioni {
 	 * @param o evento osservabile
 	 * @return
 	 */
-	public static Set<Transizione> find(Automa a, Object s, int n, boolean guasto, Evento ot) {
+	public static Set<Transizione> find(Automa a, Stato s, int n, boolean guasto, Evento ot) {
 		Set<Transizione> triplette = new HashSet<Transizione>();
 		//Set<Transizione> transizioni=a.getTransizioni();
 		Set<Transizione> transizioni=a.getTransizioniUscenti(s);
@@ -123,7 +124,7 @@ public class Trasformazioni {
 			for (Transizione t: transizioni){
 				boolean _guasto;
 				Evento o = t.getEvento();
-				Object _s = t.getStatoArrivo();
+				Stato _s = t.getStatoArrivo();
 				
 				if(t.isGuasto()){
 					_guasto = true;
@@ -138,7 +139,7 @@ public class Trasformazioni {
 					eventoComposto.add(o.getSetEventiSemplici());
 					eventoComposto.add(ot.getSetEventiSemplici());
 					if (cardinalita == n){
-						tripletta = new Transizione ("", _s, eventoComposto, _guasto);
+						tripletta = new Transizione (new Stato(""), _s, eventoComposto, _guasto);
 						triplette.add(tripletta);
 					} else {
 						Set<Transizione> risultatoChiamataRicorsiva = find(a, _s, n-cardinalita, _guasto, eventoComposto);
@@ -179,26 +180,32 @@ public class Trasformazioni {
 	 */
 	public static Automa sincronizzazione(Automa gt, Automa bt){
 		Automa sincronizzato = new Automa();
-		sincronizzato.setStatoIniziale((String) gt.getStatoIniziale() + (String) gt.getStatoIniziale());
-		
+		Stato statoIniziale = new Stato();
+		statoIniziale.add(gt.getStatoIniziale().toString());
+		statoIniziale.add(gt.getStatoIniziale().toString());
+		sincronizzato.setStatoIniziale(statoIniziale);
 		//creazione S'' implicita in creazione T''
 		Set<Transizione> daSincronizzare = gt.getTransizioni();
 		for(Transizione tr : daSincronizzare){
-			String _statoPartenza = (String) tr.getStatoPartenza() + (String) tr.getStatoPartenza();
-			String _statoArrivo = (String) tr.getStatoArrivo() + (String) tr.getStatoArrivo();
+			Stato _statoPartenza = new Stato();
+			_statoPartenza.add(tr.getStatoPartenza().toString()); 
+			_statoPartenza.add(tr.getStatoPartenza().toString());
+			Stato _statoArrivo = new Stato();
+			_statoArrivo.add(tr.getStatoArrivo().toString());
+			_statoArrivo.add(tr.getStatoArrivo().toString());
 			sincronizzato.add(_statoPartenza, _statoArrivo, tr.getEvento(), tr.isGuasto());
 		} 
 		
 		//questa parte viene eseguita solo se l'automa è non deterministico
 		
 		//salvo S'' (stati dell'automa sincronizzato)
-		Set<Object> sprev = sincronizzato.getStati();
+		Set<Stato> sprev = sincronizzato.getStati();
 		
 		//seleziono gli stati del good twin
-		Set<Object> stati = gt.getStati();
+		Set<Stato> stati = gt.getStati();
 		//creo un set di transizioni ambigue (da riempire)
 		//alternativa : attributo booleano che dice se una transizione è ambigua o no
-		for(Object s: stati){
+		for(Stato s: stati){
 			//seleziono le transizioni uscenti da s nel bad twin
 			Set<Transizione> transizioni1 = bt.getTransizioniUscenti(s);
 			//seleziono le transizioni uscenti da s nel goodtwin
@@ -210,8 +217,12 @@ public class Trasformazioni {
 					if(!t1.equals(t2)){
 						if(t1.getEvento().equals(t2.getEvento())){
 							//se arrivo qui la transizione t è ambigua
-							String statoPartenza = (String) t1.getStatoPartenza()+ (String) t2.getStatoPartenza();
-							String statoArrivo = (String) t1.getStatoArrivo()+ (String) t2.getStatoArrivo();
+							Stato statoPartenza = new Stato();
+							statoPartenza.add(t1.getStatoPartenza().toString());
+							statoPartenza.add(t2.getStatoPartenza().toString());
+							Stato statoArrivo = new Stato();
+							statoArrivo.add(t1.getStatoArrivo().toString());
+							statoArrivo.add(t2.getStatoArrivo().toString());
 							//da verificare quale stato di guasto mettere in questa transizione
 							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
 							if(t1.isGuasto()){
@@ -225,14 +236,14 @@ public class Trasformazioni {
 			}
 		}
 		
-		Set<Object> ssecondo = sincronizzato.getStati();
+		Set<Stato> ssecondo = sincronizzato.getStati();
 		while(!setUguali(sprev, ssecondo)){
-			Set<Object> sdiff = ssecondo;
+			Set<Stato> sdiff = ssecondo;
 			sdiff.removeAll(sprev);
-			for (Object sasb : sdiff){
-				String sasbstring = (String) sasb;
-				String sa = sasbstring.substring(0,1);
-				String sb = sasbstring.substring(1, 2);
+			for (Stato sasb : sdiff){
+				String sasbstring = sasb.toString();
+				Stato sa = new Stato(sasbstring.substring(0,1));
+				Stato sb = new Stato(sasbstring.substring(1, 2));
 				
 				//seleziono le transizioni uscenti da s nel bad twin
 				Set<Transizione> transizioni1 = bt.getTransizioniUscenti(sa);
@@ -242,8 +253,10 @@ public class Trasformazioni {
 					for(Transizione t2: transizioni2){
 						if(t1.getEvento().equals(t2.getEvento())){
 							//se arrivo qui la transizione t è ambigua
-							Object statoPartenza = sasb;
-							String statoArrivo = (String) t1.getStatoArrivo()+ (String) t2.getStatoArrivo();
+							Stato statoPartenza = sasb;
+							Stato statoArrivo = new Stato();
+							statoArrivo.add(t1.getStatoArrivo().toString());
+							statoArrivo.add(t2.getStatoArrivo().toString());
 							//da verificare quale stato di guasto mettere in questa transizione
 							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
 							if(t1.isGuasto()){
@@ -267,7 +280,7 @@ public class Trasformazioni {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean setUguali(Set<Object> s1, Set<Object> s2){
+	public static boolean setUguali(Set<Stato> s1, Set<Stato> s2){
 		return (s1.containsAll(s2) && s2.containsAll(s1));
 	}
 

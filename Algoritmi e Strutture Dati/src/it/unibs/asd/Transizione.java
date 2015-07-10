@@ -9,7 +9,7 @@ package it.unibs.asd;
  */
 public class Transizione {
 	
-	protected Object statoPartenza, statoArrivo;
+	protected Stato statoPartenza, statoArrivo;
 	protected Evento evento;
 	protected boolean guasto;
 	protected boolean ambigua;
@@ -30,7 +30,7 @@ public class Transizione {
 	 * @param _guasto
 	 */
 	
-	public Transizione(Object _statoPartenza, Object _statoArrivo, Evento _value, boolean _guasto, boolean _ambigua) {
+	public Transizione(Stato _statoPartenza, Stato _statoArrivo, Evento _value, boolean _guasto, boolean _ambigua) {
 		this.statoPartenza = _statoPartenza;
 		this.statoArrivo = _statoArrivo;
 		this.evento = _value;
@@ -46,7 +46,7 @@ public class Transizione {
 	 * @param _value nome della transizione
 	 * @param _guasto boolean che indica se la transizione &egrave; di guasto
 	 */
-	public Transizione(Object _statoPartenza, Object _statoArrivo, Evento _value, boolean _guasto) {
+	public Transizione(Stato _statoPartenza, Stato _statoArrivo, Evento _value, boolean _guasto) {
 		this.statoPartenza = _statoPartenza;
 		this.statoArrivo = _statoArrivo;
 		this.evento = _value;
@@ -65,11 +65,11 @@ public class Transizione {
 		this.ambigua = false;
 	}
 
-	public Object getStatoPartenza() {
+	public Stato getStatoPartenza() {
 		return statoPartenza;
 	}
 
-	public Object getStatoArrivo() {
+	public Stato getStatoArrivo() {
 		return statoArrivo;
 	}
 

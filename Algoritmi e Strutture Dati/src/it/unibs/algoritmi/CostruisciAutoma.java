@@ -19,6 +19,7 @@ import org.xml.sax.SAXParseException;
 
 import it.unibs.asd.Automa;
 import it.unibs.asd.Evento;
+import it.unibs.asd.Stato;
 
 /**
  * 
@@ -94,7 +95,8 @@ public class CostruisciAutoma {
 	 * @param t
 	 */
 	private static void gestisciTransizione(Node t) {
-		Object statoPartenza = "", statoArrivo = "";
+		Stato statoPartenza = null;
+		Stato statoArrivo =  null;
 		boolean guasto = false;
 		Evento evento = new Evento();
 		//System.out.println(t);
@@ -124,8 +126,8 @@ public class CostruisciAutoma {
 			Node figlio = figli.item(i);
 			if(figlio.getNodeType() == Node.ELEMENT_NODE){
 				switch(figlio.getNodeName()){
-				case "start": statoPartenza = figlio.getFirstChild().getNodeValue(); break;
-				case "end": statoArrivo = figlio.getFirstChild().getNodeValue(); break;
+				case "start": statoPartenza = new Stato(figlio.getFirstChild().getNodeValue()); break;
+				case "end": statoArrivo = new Stato(figlio.getFirstChild().getNodeValue()); break;
 				}
 			}
 			
@@ -148,7 +150,7 @@ public class CostruisciAutoma {
 		NamedNodeMap attributi = s.getAttributes();
 		if(attributi.getLength()>0){
 			if(attributi.item(0).getNodeValue().equals("true")){
-				a.setStatoIniziale(s.getFirstChild().getNodeValue());
+				a.setStatoIniziale(new Stato(s.getFirstChild().getNodeValue()));
 				//System.out.println(a.getStatoIniziale());
 			}
 		}	
