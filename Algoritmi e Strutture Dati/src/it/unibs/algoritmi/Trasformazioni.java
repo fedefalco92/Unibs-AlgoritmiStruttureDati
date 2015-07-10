@@ -218,6 +218,7 @@ public class Trasformazioni {
 						if(t1.getEvento().equals(t2.getEvento())){
 							//se arrivo qui la transizione t è ambigua
 							Stato statoPartenza = new Stato();
+							//gli stati di partenza in realtà sono uguali
 							statoPartenza.add(t1.getStatoPartenza().toString());
 							statoPartenza.add(t2.getStatoPartenza().toString());
 							Stato statoArrivo = new Stato();
@@ -240,6 +241,7 @@ public class Trasformazioni {
 		while(!setUguali(sprev, ssecondo)){
 			Set<Stato> sdiff = ssecondo;
 			sdiff.removeAll(sprev);
+			sprev = ssecondo;
 			for (Stato sasb : sdiff){
 				String sasbstring = sasb.toString();
 				Stato sa = new Stato(sasbstring.substring(0,1));
