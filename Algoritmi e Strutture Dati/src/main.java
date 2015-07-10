@@ -79,6 +79,10 @@ public class main {
 		Set<Object> stati = goodtwin1.getStati();
 		System.out.println(stati);
 		
+		Automa sincronizzato = Trasformazioni.sincronizzazione1(goodtwin1, badtwin1);
+		System.out.println("L'automa sincronizzato livello 1 e':\n" + sincronizzato);
+		System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
+		System.out.println(sincronizzato.diagnosticabile());
 	}
 
 }

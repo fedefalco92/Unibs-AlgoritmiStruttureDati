@@ -12,9 +12,34 @@ public class Transizione {
 	protected Object statoPartenza, statoArrivo;
 	protected Evento evento;
 	protected boolean guasto;
+	protected boolean ambigua;
+	
+	public boolean isAmbigua() {
+		return ambigua;
+	}
+
+	public void setAmbigua(boolean ambigua) {
+		this.ambigua = ambigua;
+	}
 
 	/**
-	 * costruttore con argomenti
+	 * Costruttore con argomenti (compresa ambiguit&agrave;)
+	 * @param _statoPartenza
+	 * @param _statoArrivo
+	 * @param _value
+	 * @param _guasto
+	 */
+	
+	public Transizione(Object _statoPartenza, Object _statoArrivo, Evento _value, boolean _guasto, boolean _ambigua) {
+		this.statoPartenza = _statoPartenza;
+		this.statoArrivo = _statoArrivo;
+		this.evento = _value;
+		this.guasto = _guasto;
+		this.ambigua = _ambigua;
+	}
+
+	/**
+	 * Costruttore con argomenti
 	 * 
 	 * @param _statoPartenza stato di partenza della transizione
 	 * @param _statoArrivo stato di arrivo della transizione
@@ -26,6 +51,7 @@ public class Transizione {
 		this.statoArrivo = _statoArrivo;
 		this.evento = _value;
 		this.guasto = _guasto;
+		this.ambigua = false;
 	}
 	
 	/**
@@ -36,6 +62,7 @@ public class Transizione {
 		this.statoArrivo = null;
 		this.evento = null;
 		this.guasto = false;
+		this.ambigua = false;
 	}
 
 	public Object getStatoPartenza() {
@@ -67,11 +94,11 @@ public class Transizione {
 	}
 	
 	public int hashCode() {
-	    return (statoPartenza+"statoPartenza").hashCode()+(statoArrivo+"statoArrivo").hashCode()+evento.hashCode()+(guasto ? 1:0);
+	    return (statoPartenza+"statoPartenza").hashCode()+(statoArrivo+"statoArrivo").hashCode()+evento.hashCode()+(guasto ? 1:0) +(ambigua ? 1:0);
 	}
 
 	public String toString() {
-		return "\n<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+evento.toString()+"; "+guasto+"; "+hashCode()+">";
+		return "\n<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+evento.toString()+"; "+((guasto)?"guasto; ":"") + ((ambigua)?"ambigua; ": "")+hashCode()+">";
 		//return "\n<"+statoPartenza.toString()+statoPartenza.hashCode()+", "+statoArrivo.toString()+statoArrivo.hashCode()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
 
 	}

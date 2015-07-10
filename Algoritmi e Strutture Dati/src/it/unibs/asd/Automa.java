@@ -123,6 +123,37 @@ public class Automa {
 	      numeroTransizioni++;
 	    return flag;
 	  }
+	  
+	  /**
+	   * aggiunge una transizione tra gli stati x e y se tale transizione non &egrave; gi&agrave; presente e restituisce true, 
+	   * altrimenti non modifica l'automa e restituisce false. 
+	   * 
+	   * @param x stato di partenza
+	   * @param y stato di arrivo
+	   * @param Evento contenente value transizione
+	   * @param guasto boolean che indica se la transizione &egrave; di guasto
+	   * @return vero se la transizione &egrave; stata aggiunta false altrimenti
+	   */
+	  public boolean add(Object x, Object y, Evento evento, boolean guasto, boolean ambigua) {
+	    boolean flag = false, flag1 = false;
+	    /*
+	     * se lo stato di partenza non c'� lo aggiungo automaticamente
+	     */
+	    if (!stati.containsKey(x))
+	      add(x);
+	    /*
+	     * se lo stato di arrivo non c'� lo aggiungo automaticamente
+	     */
+	    if (!stati.containsKey(y))
+	      add(y);
+	    Transizione t = new Transizione(x,y,evento,guasto, ambigua);
+	    flag = (stati.get(x) ).add(t);
+	    flag1 =(stati.get(y) ).add(t);
+	    flag = flag && flag1;
+	    if (flag)
+	      numeroTransizioni++;
+	    return flag;
+	  }
 
 	  /**
 	   * Aggiunge la transizione a all'automa se la transizione non e' presente e restituisce true,
@@ -132,7 +163,8 @@ public class Automa {
 	   * @return true se la transizione &egrave; stata aggiunta, false altrimenti
 	   */
 	  public boolean add(Transizione t) {
-	    return add(t.getStatoPartenza(), t.getStatoArrivo(), t.getEvento(), t.isGuasto());
+	    return add(t.getStatoPartenza(), t.getStatoArrivo(), t.getEvento(), t.isGuasto(), t.isAmbigua());
+	    
 	  }
 
 	  /**
@@ -279,9 +311,29 @@ public class Automa {
 
 		    return setTransizioniNonDiGuasto;
 	  }
+	  
+	  public Set<Transizione> getTransizioniAmbigue(){
+		  Set<Transizione> setTransizioniAmbigue= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (t.isAmbigua()){
+		    			setTransizioniAmbigue.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniAmbigue;
+	  }	  
+	  
+	  public boolean diagnosticabile(){
+		  return !(getTransizioniAmbigue().size() > 0);
+	  }
 
 	  public String toString() {
 	    StringBuffer out = new StringBuffer();
+	    out.append("Stato iniziale: " + statoIniziale+"\n");
 	    Object stato;
 	    Transizione t;
 	    Iterator transizioneI;
