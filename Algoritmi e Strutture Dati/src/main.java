@@ -23,11 +23,25 @@ public class main {
 		System.out.println("################");
 		System.out.println("## Parser XML ##");
 		System.out.println("################");
+		
+		
+		Evento e1 = new Evento();
+		e1.add("a");
+		e1.add("b");
+		e1.add("b");
+		System.out.println(e1);
+		Evento e2 = new Evento();
+		e2.add("b");
+		e2.add("b");
+		e2.add("a");
+		System.out.println(e2);
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
 		System.out.println("L'automa a e':\n" + a);
 	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 		//Automa a = CostruisciAutoma.costruisciAutoma(args[1]);
+	    
+	  
 
 		
 		/*Automa a = new Automa();
