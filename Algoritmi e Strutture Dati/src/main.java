@@ -35,6 +35,8 @@ public class main {
 		e2.add("b");
 		e2.add("a");
 		System.out.println(e2);
+		System.out.println(e1.equals(e2));
+		System.out.println(e1.cardinalita());
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
 		System.out.println("L'automa a e':\n" + a);
