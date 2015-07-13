@@ -26,6 +26,11 @@ public class Evento {
 	public Multiset<String> getSetEventiSemplici(){
 		return value;
 	}
+	
+	public Set<Multiset.Entry<String>> getEntrySetEventiSemplici(){
+		return value.entrySet();
+	}
+	
 	public void add(String eventoSemplice){
 		value.add(eventoSemplice);
 	}
@@ -66,13 +71,22 @@ public class Evento {
 			return true;
 		} else {
 			return false;
-		}*/
+		}*//*
 		if(value.size()==e.cardinalita()){
 			if(value.containsAll(e.getSetEventiSemplici()) && e.getSetEventiSemplici().containsAll(value)){
 				return true;
 			}
 		}
-		return false;
+		return false;*/
+		
+		Set<Multiset.Entry<String>> entrylocale = value.entrySet();
+		Set<Multiset.Entry<String>> entrye = e.getEntrySetEventiSemplici();
+		
+		if(entrylocale.containsAll(entrye) && entrye.containsAll(entrylocale)){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
