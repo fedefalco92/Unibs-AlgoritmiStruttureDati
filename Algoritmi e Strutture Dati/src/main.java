@@ -90,7 +90,7 @@ public class main {
 			Automa btiprev = badtwin1;
 			Automa gtiprev = goodtwin1;
 			while ( sincronizzato.diagnosticabile()){
-				System.out.println("***********************************************************************************************\n");
+				System.out.println("*********************************************************************************************************\n");
 				Automa bti = Trasformazioni.badtwinlevelup(btiprev, i);
 				System.out.println("Il bad twin di livello "+i+" e':\n" + bti);
 				System.out.println("L'insieme delle transizioni e': \n"+ bti.getTransizioni());
@@ -99,7 +99,7 @@ public class main {
 				System.out.println("Il good twin di livello "+i+" e':\n" + gti);
 				System.out.println("L'insieme delle transizioni e': \n"+ gti.getTransizioni());
 				sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
-				System.out.println("***********************************************\n");
+				System.out.println("*******************************************************************\n");
 				System.out.println("L'automa sincronizzato livello "+i+" e':\n");
 				System.out.println("L'insieme degli stati e':\n" + sincronizzato.getStati());
 				System.out.println("\n"+ sincronizzato);
