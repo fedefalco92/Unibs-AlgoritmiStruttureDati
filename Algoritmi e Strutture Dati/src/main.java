@@ -25,6 +25,8 @@ public class main {
 		System.out.println("################");
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
+		System.out.println("L'automa a e':\n" + a);
+	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 		//Automa a = CostruisciAutoma.costruisciAutoma(args[1]);
 
 		
