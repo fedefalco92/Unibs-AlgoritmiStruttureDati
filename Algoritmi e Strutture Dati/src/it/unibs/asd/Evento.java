@@ -61,11 +61,18 @@ public class Evento {
 	 * @return
 	 */
 	public boolean equals(Evento e){
+		/*
 		if(value.containsAll(e.getSetEventiSemplici()) && e.getSetEventiSemplici().containsAll(value) && value.size()==e.cardinalita()){
 			return true;
 		} else {
 			return false;
+		}*/
+		if(value.size()==e.cardinalita()){
+			if(value.containsAll(e.getSetEventiSemplici()) && e.getSetEventiSemplici().containsAll(value)){
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	/**
