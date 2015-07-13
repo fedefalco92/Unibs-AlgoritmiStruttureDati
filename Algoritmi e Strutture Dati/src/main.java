@@ -82,6 +82,7 @@ public class main {
 		
 		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
 		System.out.println("L'automa sincronizzato livello 1 e':\n" + sincronizzato);
+		System.out.println("L'insieme degli stati e':\n" + sincronizzato.getStati());
 		System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
 		System.out.println((sincronizzato.diagnosticabile()?"diagnosticabile\n":"non diagnosticabile\n"));
 		if (sincronizzato.diagnosticabile()) {
@@ -100,8 +101,9 @@ public class main {
 				sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
 				System.out.println("***********************************************\n");
 				System.out.println("L'automa sincronizzato livello "+i+" e':\n" + sincronizzato);
+				System.out.println("L'insieme degli stati e':\n" + sincronizzato.getStati());
 				System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
-				System.out.println((sincronizzato.diagnosticabile()?"livello "+i+"diagnosticabile\n":"non diagnosticabile\n"));
+				System.out.println("Livello "+i+" "+(sincronizzato.diagnosticabile()?"diagnosticabile\n":"non diagnosticabile\n"));
 				i++;
 			}
 		}
