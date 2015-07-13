@@ -100,8 +100,9 @@ public class main {
 				System.out.println("L'insieme delle transizioni e': \n"+ gti.getTransizioni());
 				sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
 				System.out.println("***********************************************\n");
-				System.out.println("L'automa sincronizzato livello "+i+" e':\n" + sincronizzato);
+				System.out.println("L'automa sincronizzato livello "+i+" e':\n");
 				System.out.println("L'insieme degli stati e':\n" + sincronizzato.getStati());
+				System.out.println("\n"+ sincronizzato);
 				System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
 				System.out.println("Livello "+i+" "+(sincronizzato.diagnosticabile()?"diagnosticabile\n":"non diagnosticabile\n"));
 				i++;

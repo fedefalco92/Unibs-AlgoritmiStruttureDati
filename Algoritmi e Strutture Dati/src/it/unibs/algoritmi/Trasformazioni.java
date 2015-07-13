@@ -227,7 +227,8 @@ public class Trasformazioni {
 							statoArrivo.add(t1.getStatoArrivo().toString());
 							statoArrivo.add(t2.getStatoArrivo().toString());
 							//da verificare quale stato di guasto mettere in questa transizione
-							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
+							//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
+							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), t1.isGuasto());
 							if(t1.isGuasto()){
 								ta.setAmbigua(true);
 							}
@@ -240,13 +241,14 @@ public class Trasformazioni {
 		}
 		
 		Set<Stato> ssecondo = sincronizzato.getStati();
+		
 		while(!setUguali(sprev, ssecondo)){
 			//Set<Stato> sdiff = ssecondo;
 			Set<Stato> sdiff = new HashSet<Stato>();
 			sdiff.addAll(ssecondo);
 			
 			sdiff.removeAll(sprev);
-			sprev = ssecondo;
+			sprev.addAll(ssecondo);
 			for (Stato sasb : sdiff){
 				String sasbstring = sasb.toString();
 				Stato sa = new Stato(sasbstring.substring(0,1));
@@ -258,7 +260,7 @@ public class Trasformazioni {
 				Set<Transizione> transizioni2 = gt.getTransizioniUscenti(sb);
 				for(Transizione t1: transizioni1){
 					for(Transizione t2: transizioni2){
-						//if(t1.getEvento().equals(t2.getEvento())){
+						if(t1.getEvento().equals(t2.getEvento())){
 							//se arrivo qui la transizione t � ambigua
 							Stato statoPartenza = sasb;
 							Stato statoArrivo = new Stato();
@@ -271,7 +273,7 @@ public class Trasformazioni {
 								ta.setAmbigua(true);
 							}
 							sincronizzato.add(ta);	
-						//}
+						}
 					}		
 				}
 				
