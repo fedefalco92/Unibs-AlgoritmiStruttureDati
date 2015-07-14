@@ -297,6 +297,36 @@ public class Automa {
 		    return setTransizioniDiGuasto;
 	  }
 	  
+	  public Set<Transizione> getTransizioniDiGuastoOsservabili(){
+		  Set<Transizione> setTransizioniDiGuastoOsservabili= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (t.isGuasto()&&!t.nonOsservabile()){
+		    			setTransizioniDiGuastoOsservabili.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniDiGuastoOsservabili;
+	  }
+	  
+	  public Set<Transizione> getTransizioniNonDiGuastoOsservabili(){
+		  Set<Transizione> setTransizioniNonDiGuastoOsservabili= new HashSet<Transizione>();
+		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
+		    while (hashSetI.hasNext()){
+		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
+		    	for(Transizione t : setCorrente){
+		    		if (!t.isGuasto()&&!t.nonOsservabile()){
+		    			setTransizioniNonDiGuastoOsservabili.add(t);
+		    		}
+		    	}
+		    }
+
+		    return setTransizioniNonDiGuastoOsservabili;
+	  }
+	  
 	  public Set<Transizione> getTransizioniNonDiGuasto(){
 		  Set<Transizione> setTransizioniNonDiGuasto= new HashSet<Transizione>();
 		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
@@ -350,10 +380,13 @@ public class Automa {
 		  boolean out = true;
 		  Set<Stato> stati = getStati();
 		  for(Stato s: stati){
-			  Set<Transizione> transizioni = getTransizioniUscenti(s);
-			  for(Transizione t1: transizioni){
-				  transizioni.remove(t1);
-				  for(Transizione t2:transizioni){
+			  Set<Transizione> transizioni1 = getTransizioniUscenti(s);
+			  Set<Transizione> transizioni2 = new HashSet<Transizione>();
+			  transizioni2.addAll(transizioni1);
+			  
+			  for(Transizione t1: transizioni1){
+				  transizioni2.remove(t1);
+				  for(Transizione t2:transizioni2){
 					  if(t1.getEvento().equals(t2.getEvento())){
 						  return false;	  
 					  }
@@ -365,20 +398,17 @@ public class Automa {
 	  
 	  public boolean diagnosticabilitaC3(){
 		  boolean out = true;
-		  return true;/*
-		  Set<Stato> stati = getStati();
-		  for(Stato s: stati){
-			  Set<Transizione> transizioni = getTransizioniUscenti(s);
-			  for(Transizione t1: transizioni){
-				  transizioni.remove(t1);
-				  for(Transizione t2:transizioni){
-					  if(t1.getEvento().equals(t2.getEvento())){
-						  return false;	  
-					  }
+		  
+		  Set<Transizione> tosservabiliguasto  = getTransizioniDiGuastoOsservabili();
+		  Set<Transizione> tosservabilinonguasto = getTransizioniNonDiGuastoOsservabili();
+		  for(Transizione tguasto: tosservabiliguasto){
+			  for(Transizione toss: tosservabilinonguasto){
+				  if(tguasto.getEvento().equals(toss.getEvento())){
+					  return false;
 				  }
 			  }
 		  }
-		  return out;*/
+		  return out;
 	  }
 	  
 	  public String toString() {
