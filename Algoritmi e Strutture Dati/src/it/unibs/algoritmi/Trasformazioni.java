@@ -238,7 +238,7 @@ public class Trasformazioni {
 					if(!t1.equals(t2)){
 						
 						if(t1.getEvento().equals(t2.getEvento()) && t1.getStatoPartenza().equals(t2.getStatoPartenza())){
-							System.out.println("t1: " + t1 + " - t2:"+t2);
+							//System.out.println("t1: " + t1 + " - t2:"+t2);
 							//se arrivo qui la transizione t � ambigua
 							/*
 							//gli stati di partenza in realt� sono uguali

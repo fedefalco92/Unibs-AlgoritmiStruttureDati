@@ -2,6 +2,7 @@ import java.util.Set;
 
 import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.CostruisciFileXML;
+import it.unibs.algoritmi.Metodi;
 import it.unibs.algoritmi.Trasformazioni;
 import it.unibs.asd.Automa;
 import it.unibs.asd.Evento;
@@ -24,7 +25,7 @@ public class main {
 		System.out.println("## Parser XML ##");
 		System.out.println("################");
 		
-		
+		/*
 		Evento e1 = new Evento();
 		e1.add("a");
 		e1.add("b");
@@ -36,11 +37,12 @@ public class main {
 		e2.add("a");
 		System.out.println(e2);
 		System.out.println(e1.equals(e2));
-		System.out.println(e1.cardinalita());
+		System.out.println(e1.cardinalita());*/
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
-		System.out.println("L'automa a e':\n" + a);
-	    System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
+		boolean diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, 4);
+		//System.out.println("L'automa a e':\n" + a);
+	    //System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 		//Automa a = CostruisciAutoma.costruisciAutoma(args[1]);
 	    
 	  
@@ -88,11 +90,11 @@ public class main {
 			System.out.println(eventoComposto);
 		*/
 		
-	    Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+	    //Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 	    //System.out.println("L'automa bad twin livello 1 e':\n" + badtwin1);
 		//System.out.println("L'insieme delle transizioni e': \n"+ badtwin1.getTransizioni());
 		
-		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
+		/*Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
 	    //System.out.println("L'automa good twin livello 1 e':\n" + goodtwin1);
 		//System.out.println("L'insieme delle transizioni e': \n"+ goodtwin1.getTransizioni());
 		//Set<Object> stati = goodtwin1.getStati();
@@ -125,7 +127,7 @@ public class main {
 				System.out.println("Livello "+i+" "+(sincronizzato.diagnosticabile()?"diagnosticabile\n":"non diagnosticabile\n"));
 				i++;
 			}
-		}
+		}*/
 	}
 
 }

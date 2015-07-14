@@ -327,10 +327,60 @@ public class Automa {
 		    return setTransizioniAmbigue;
 	  }	  
 	  
-	  public boolean diagnosticabile(){
+	  
+	  /**
+	   * Verifica la condizione di diagnosticabilit&agrave; C1, cio&egrave; se l'insieme della transizioni ambigue &egrave; vuoto.
+	   * @return
+	   */
+	  public boolean diagnosticabilitaC1(){
 		  return !(getTransizioniAmbigue().size() > 0);
 	  }
-
+	  
+	  /**
+	   * Verifica la condizione di diagnosticabilit&agrave; C2, cio&egrave; se il bad twin &egrave; deterministico.
+	   * Se da uno stesso stato escono due transizioni caratterizzate dallo stesso evento osservabile l'automa &egrave; non deterministico.
+	   * Infatti sussiste uno dei seguenti due casi:
+	   * 1) le transizioni sono dirette verso stati diversi.
+	   * 2) le transizioni sono dirette verso lo stesso stato ma una delle due &egrave; di guasto, l'altra no.
+	   * (Dalle precondizioni sappiamo che non &egrave; possibile alcuna alternativa a queste configurazioni).
+	   * 
+	   * @return true se &egrave; deterministico (e quindi diagnosticabile), false altrimenti.
+	   */
+	  public boolean diagnosticabilitaC2(){
+		  boolean out = true;
+		  Set<Stato> stati = getStati();
+		  for(Stato s: stati){
+			  Set<Transizione> transizioni = getTransizioniUscenti(s);
+			  for(Transizione t1: transizioni){
+				  transizioni.remove(t1);
+				  for(Transizione t2:transizioni){
+					  if(t1.getEvento().equals(t2.getEvento())){
+						  return false;	  
+					  }
+				  }
+			  }
+		  }
+		  return out;
+	  }
+	  
+	  public boolean diagnosticabilitaC3(){
+		  boolean out = true;
+		  return true;/*
+		  Set<Stato> stati = getStati();
+		  for(Stato s: stati){
+			  Set<Transizione> transizioni = getTransizioniUscenti(s);
+			  for(Transizione t1: transizioni){
+				  transizioni.remove(t1);
+				  for(Transizione t2:transizioni){
+					  if(t1.getEvento().equals(t2.getEvento())){
+						  return false;	  
+					  }
+				  }
+			  }
+		  }
+		  return out;*/
+	  }
+	  
 	  public String toString() {
 	    StringBuffer out = new StringBuffer();
 	    out.append("Stato iniziale: " + statoIniziale+"\n");
