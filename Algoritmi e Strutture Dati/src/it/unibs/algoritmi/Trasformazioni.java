@@ -221,7 +221,7 @@ public class Trasformazioni {
 			
 			//cerco tutte le transizioni distinte caratterizzate dallo stesso evento osservabile
 			for(Transizione t1: transizioni1){
-				transizioni2.remove(t1);
+				//transizioni2.remove(t1);
 				for(Transizione t2: transizioni2){
 					
 					if(!t1.equals(t2)){
@@ -281,7 +281,7 @@ public class Trasformazioni {
 				//seleziono le transizioni uscenti da s nel goodtwin
 				Set<Transizione> transizioni2 = gt.getTransizioniUscenti(sb);
 				for(Transizione t1: transizioni1){
-					transizioni2.remove(t1);
+					//transizioni2.remove(t1);
 					for(Transizione t2: transizioni2){
 						
 						if(t1.getEvento().equals(t2.getEvento())){
