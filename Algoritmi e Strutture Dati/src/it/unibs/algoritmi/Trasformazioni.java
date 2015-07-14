@@ -46,7 +46,18 @@ public class Trasformazioni {
 	 * @param i livello. Precondizione  i>=2
 	 * @return btup il bad twin di livello i
 	 */
-	public static Automa badtwinlevelup(Automa bt, int i){
+	public static Automa badtwinLevelUp(Automa bt, int i){
+		return (i==1?Trasformazioni.badtwin0to1(bt):Trasformazioni.badtwinLevelUpGenerico(bt, i));
+	}
+	
+	/**
+	 * Trasforma il bad twin di livello i-1 nel bad twin di livello i
+	 * con i >= 2
+	 * @param bt il bad twin considerato (livello i-1)
+	 * @param i livello. Precondizione  i>=2
+	 * @return btup il bad twin di livello i
+	 */
+	public static Automa badtwinLevelUpGenerico(Automa bt, int i){
 		Automa btup = inizializzaBadTwin(bt); //bad twin di livello i
 		Set<Stato> stati = bt.getStati();
 		for (Stato s: stati){

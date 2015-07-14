@@ -109,7 +109,7 @@ public class main {
 			Automa gtiprev = goodtwin1;
 			while ( sincronizzato.diagnosticabile()){
 				System.out.println("*********************************************************************************************************\n");
-				Automa bti = Trasformazioni.badtwinlevelup(btiprev, i);
+				Automa bti = Trasformazioni.badtwinLevelUpGenerico(btiprev, i);
 				System.out.println("Il bad twin di livello "+i+" e':\n" + bti);
 				System.out.println("L'insieme delle transizioni e': \n"+ bti.getTransizioni());
 				btiprev =  bti;
