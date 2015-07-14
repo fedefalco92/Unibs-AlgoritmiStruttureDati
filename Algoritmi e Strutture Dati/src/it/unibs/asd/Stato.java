@@ -13,36 +13,25 @@ import com.google.common.collect.Multiset;
  *
  */
 public class Stato {
-Multiset<String> value;
-	
-	public Stato(){
-		this.value = HashMultiset.create();
-	}
+String value;
 	
 	/*
 	 * Serve per il metodo costruisciAutoma
 	 */
+
+	public Stato(){
+		this.value = "";
+	}
 	public Stato(String value){
-		this.value =  HashMultiset.create();
-		this.value.add(value);
+		this.value = value;
 	}
 	
-	public Multiset<String> getSetStatiSemplici(){
-		return value;
-	}
-	
-	public void add(String statoSemplice){
-		value.add(statoSemplice);
+	public void add(String stato){
+		value+=stato;
 	}
 	
 	public String toString() {
-		StringBuffer output = new StringBuffer();
-		Iterator<String> valore = value.iterator();
-		while(valore.hasNext()){
-			output.append(valore.next());
-		}
-		
-		return output.toString();
+		return value;
 	}
 	
 	public int hashCode(){
@@ -57,7 +46,7 @@ Multiset<String> value;
 	public boolean equals(Object s){
 		if (s instanceof Stato){
 			Stato st = (Stato) s;
-			return (value.containsAll(st.getSetStatiSemplici()) && st.getSetStatiSemplici().containsAll(value));			
+			return (value.equalsIgnoreCase(st.toString()));			
 		}
 		return false;
 	}

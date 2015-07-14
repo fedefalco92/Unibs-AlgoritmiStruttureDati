@@ -297,7 +297,7 @@ public class Trasformazioni {
 							if(t1.isGuasto()){
 								ta.setAmbigua(true);
 							}
-							sincronizzato.add(ta);	
+							sincronizzato.add(ta);
 						}
 					}		
 				}
