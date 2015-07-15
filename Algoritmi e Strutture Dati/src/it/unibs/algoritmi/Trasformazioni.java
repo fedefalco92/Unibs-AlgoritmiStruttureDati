@@ -340,16 +340,21 @@ public class Trasformazioni {
 	 */
 	public static Automa sincronizzazioneV2(Automa sincronizzatoPrev, Automa bti, Set<Transizione> transizioniAggiunte, int i) {
 		Automa sincronizzato = inizializzaSincronizzato(sincronizzatoPrev);
+		
 		Set<Stato> stemp = new HashSet<Stato>();
 		stemp.addAll(sincronizzato.getStati());
-		Set<Stato> sprimo = sincronizzatoPrev.getStati();
+		
+		Set<Stato> sprimo = new HashSet<Stato>();
+		sprimo.addAll(sincronizzatoPrev.getStati());
+		
 		Set<Transizione> transizioniAggiunteNonGuasto = new HashSet<Transizione>();
 		for(Transizione t: transizioniAggiunte){
 			if(!t.isGuasto()){
 				transizioniAggiunteNonGuasto.add(t);
 			}
 		}
-		for(Stato sasb: sprimo){ //sasb è uno stato "doppio"
+		
+		for(Stato sasb: sprimo){ //sasb ï¿½ uno stato "doppio"
 			String sasbstring = sasb.toString();
 			Stato sa = new Stato(sasbstring.substring(0,1));
 			Stato sb = new Stato(sasbstring.substring(1, 2));
@@ -358,7 +363,7 @@ public class Trasformazioni {
 			for(Transizione t1: tAggiunteSa){
 				for(Transizione t2: tAggiunteSb){
 					if (!t1.equals(t2)) {
-						if((t1.getEvento().equals(t2.getEvento()))&&(t1.getEvento().cardinalita()==i)){ //l'ultima condizione è necessariamente soddisfatta
+						if((t1.getEvento().equals(t2.getEvento()))&&(t1.getEvento().cardinalita()==i)){ //l'ultima condizione ï¿½ necessariamente soddisfatta
 							Stato _statoPartenza = sasb;
 							Stato _statoArrivo = new Stato();
 							_statoArrivo.add(t1.getStatoArrivo().toString());
@@ -381,16 +386,20 @@ public class Trasformazioni {
 			Set<Stato> sdiff = new HashSet<Stato>();
 			sdiff.addAll(ssecondo);
 			sdiff.removeAll(stemp);
+			
 			stemp = new HashSet<Stato>();
 			stemp.addAll(ssecondo);
+			
 			for (Stato sasb : sdiff){
 				String sasbstring = sasb.toString();
 				Stato sa = new Stato(sasbstring.substring(0,1));
 				Stato sb = new Stato(sasbstring.substring(1, 2));
+				
 				//seleziono le transizioni uscenti da s nel bad twin
 				Set<Transizione> transizioni1 = bti.getTransizioniUscenti(sa);
 				//seleziono le transizioni uscenti da s nel goodtwin
 				Set<Transizione> transizioni2 = bti.getTransizioniUscentiNonDiGuasto(sb);
+				
 				for(Transizione t1: transizioni1){
 					for(Transizione t2: transizioni2){
 						if(t1.getEvento().equals(t2.getEvento())){
@@ -409,7 +418,8 @@ public class Trasformazioni {
 					}		
 				}
 			}
-			ssecondo = sincronizzato.getStati();
+			ssecondo = new HashSet<Stato>();
+			ssecondo.addAll(sincronizzato.getStati());
 		}
 		
 		return sincronizzato;

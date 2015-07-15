@@ -157,7 +157,7 @@ public class Metodi {
 		//livello dal 2 in poi
 		
 		int i = 2;
-		Automa btiprev = a;
+		Automa btiprev = badtwin1;
 		Automa sincronizzatoPrev = sincronizzato;
 		while (i<=livello){
 			System.out.println("*********************************************************************************************************\n");
@@ -219,7 +219,7 @@ public class Metodi {
 				visitati.add(successivo);
 				
 				//aggiungo agli stati visitati anche lo stato di partenza di ta (da controllare)
-				//intendendo che è possibile che la transizione faccia parte del ciclo.
+				//intendendo che ï¿½ possibile che la transizione faccia parte del ciclo.
 				Stato precedente = ta.getStatoPartenza();
 				visitati.add(precedente);
 				
