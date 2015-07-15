@@ -21,9 +21,53 @@ public class main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("################");
-		System.out.println("## Parser XML ##");
-		System.out.println("################");
+		
+		if(args.length<2){
+			System.out.println("ERRORE");
+			System.out.println(args[0] + " " + args[1]);
+			System.exit(1);
+		}
+		
+		String percorsoFile = args[0];
+		try {
+			int livelloDiagnosticabilita = Integer.parseInt(args[1]);
+			
+			Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
+			
+			System.out.println("##################################");
+			System.out.println("## Analisi di Diagnosticabilita ##");
+			System.out.println("##################################");
+			
+			long start, end;
+			boolean diagnosticabile;
+			
+			start = System.nanoTime();
+			diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
+			end = System.nanoTime();
+			long alg1 = (end-start);
+			
+			
+			start = System.nanoTime();
+			diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
+			end = System.nanoTime();
+			long alg2 = (end-start);
+			
+			
+			start = System.nanoTime();
+			diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
+			end = System.nanoTime();
+			long alg3 = (end-start);
+			
+			System.out.println("Algoritmo 1: " + alg1);
+			System.out.println("Algoritmo 2: " + alg2);
+			System.out.println("Algoritmo 3: " + alg3);
+			
+			
+		} catch (NumberFormatException e) {
+			//e.printStackTrace();
+			System.out.println("Inserire un numero intero");
+			System.exit(1);
+		}
 		
 		/*
 		Evento e1 = new Evento();
@@ -39,8 +83,10 @@ public class main {
 		System.out.println(e1.equals(e2));
 		System.out.println(e1.cardinalita());*/
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
-		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
-		boolean diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, 4);
+		
+		//Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
+		
+		
 		//System.out.println("L'automa a e':\n" + a);
 	    //System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 		//Automa a = CostruisciAutoma.costruisciAutoma(args[1]);
