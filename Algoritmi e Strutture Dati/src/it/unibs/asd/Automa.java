@@ -228,7 +228,7 @@ public class Automa {
 	  }
 	  
 	  /**
-	   * ritorna le transizioni uscenti dallo stato
+	   * Ritorna le transizioni uscenti dallo stato stato
 	   * @param stato
 	   * @return
 	   */
@@ -237,6 +237,22 @@ public class Automa {
 		  Set<Transizione> tuscenti = new HashSet<Transizione>();
 		  for(Transizione t : tstato){
 			  if (t.getStatoPartenza().equals(stato)){
+				  tuscenti.add(t);
+			  }
+		  }
+		  return tuscenti;
+	  }
+	  
+	  /**
+	   * Ritorna le transizioni uscenti (non di guasto) dallo stato stato
+	   * @param stato
+	   * @return
+	   */
+	  public Set<Transizione> getTransizioniUscentiNonDiGuasto(Stato stato){
+		  Set<Transizione> tstato = getTransizioni(stato);
+		  Set<Transizione> tuscenti = new HashSet<Transizione>();
+		  for(Transizione t : tstato){
+			  if (t.getStatoPartenza().equals(stato)&&!t.isGuasto()){
 				  tuscenti.add(t);
 			  }
 		  }

@@ -16,6 +16,7 @@ import it.unibs.asd.Transizione;
  */
 public class Metodi {
 	
+	
 	public static boolean diagnosticabilitaMetodo1(Automa a, int livello){
 		int i = 1;
 		Automa btiprev = a;
@@ -56,7 +57,7 @@ public class Metodi {
 			System.out.println("Il bad twin di livello "+i+" e':\n" + bti);
 			System.out.println("L'insieme delle transizioni e': \n"+ bti.getTransizioni());
 			if(bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3()){
-				System.out.println("Livello "+i+ "diagnosticabile\n");
+				System.out.println("Livello "+i+ " diagnosticabile\n");
 				i++;
 				continue;	
 			}
@@ -70,7 +71,7 @@ public class Metodi {
 			System.out.println("\n"+ sincronizzato);
 			System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
 			if(sincronizzato.diagnosticabilitaC1()){
-				System.out.println("Livello "+i+"diagnosticabile\n");
+				System.out.println("Livello "+i+" diagnosticabile\n");
 				i++;
 				continue;
 			}
@@ -84,6 +85,55 @@ public class Metodi {
 		}	
 		return true;		
 	}
+	/*
+	public static boolean diagnosticabilitaMetodo3(Automa a, int livello){
+		int i = 1;
+		Automa btiprev = a;
+		
+		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
+			return true;
+		}
+		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
+		Automa sincronizzato1 = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
+		
+		Automa sincronizzatoPrev = sincronizzato1;
+		while (i<=livello){
+			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
+			btiprev =  bti;
+			System.out.println("Il bad twin di livello "+i+" e':\n" + bti);
+			System.out.println("L'insieme delle transizioni e': \n"+ bti.getTransizioni());
+			if(bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3()){
+				System.out.println("Livello "+i+ " diagnosticabile\n");
+				i++;
+				continue;	
+			}
+			Automa sincronizzato;
+			if(i>1){
+				sincronizzato = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
+				
+			} else {
+				Automa gti = Trasformazioni.badToGoodTwin(bti);
+				sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
+			}
+			sincronizzatoPrev = sincronizzato;
+			if(sincronizzato.diagnosticabilitaC1()){
+				System.out.println("Livello "+i+" diagnosticabile\n");
+				i++;
+				continue;
+			}
+			if (controllaCicli(sincronizzato)) {
+				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
+				return false;
+			}
+			
+			i++;
+			
+		
+		}
+		return true;
+	}*/
 	
 	public static boolean diagnosticabilitaMetodo3(Automa a, int livello){
 		
@@ -105,45 +155,56 @@ public class Metodi {
 		}
 		
 		//livello dal 2 in poi
-		/*
+		
 		int i = 2;
 		Automa btiprev = a;
+		Automa sincronizzatoPrev = sincronizzato;
 		while (i<=livello){
 			System.out.println("*********************************************************************************************************\n");
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
+				System.out.println("Livello "+i+" diagnosticabile\n");
+				i++;
+				continue;
+			}
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			btiprev =  bti;
 			System.out.println("Il bad twin di livello "+i+" e':\n" + bti);
 			System.out.println("L'insieme delle transizioni e': \n"+ bti.getTransizioni());
-			if(bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3()){
-				System.out.println("Livello "+i+ "diagnosticabile\n");
-				i++;
-				continue;	
-			}
 			Automa gti = Trasformazioni.badToGoodTwin(bti);
 			System.out.println("Il good twin di livello "+i+" e':\n" + gti);
 			System.out.println("L'insieme delle transizioni e': \n"+ gti.getTransizioni());
-			Automa sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
+			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
+			sincronizzatoPrev = sincronizzatov2;
 			System.out.println("*******************************************************************\n");
 			System.out.println("L'automa sincronizzato livello "+i+" e':\n");
-			System.out.println("L'insieme degli stati e':\n" + sincronizzato.getStati());
-			System.out.println("\n"+ sincronizzato);
-			System.out.println("L'insieme delle transizioni e': \n"+ sincronizzato.getTransizioni());
-			if(sincronizzato.diagnosticabilitaC1()){
-				System.out.println("Livello "+i+"diagnosticabile\n");
+			System.out.println("L'insieme degli stati e':\n" + sincronizzatov2.getStati());
+			System.out.println("\n"+ sincronizzatov2);
+			System.out.println("L'insieme delle transizioni e': \n"+ sincronizzatov2.getTransizioni());
+			if(sincronizzatov2.diagnosticabilitaC1()){
+				System.out.println("Livello "+i+" diagnosticabile\n");
 				i++;
 				continue;
 			}
 			
-			if (controllaCicli(sincronizzato)) {
+			if (controllaCicli(sincronizzatov2)) {
 				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
 				return false;
 			}
 			
 			i++;
-		}	*/
+		}
+		System.out.println("Livello "+(i-1)+" diagnosticabile\n");
 		return true;		
 	}
 	
+	private static Set<Transizione> transizioniAggiunte(Automa bti, Automa btiprev) {
+		Set<Transizione> aggiunte = new HashSet<Transizione>();
+		aggiunte.addAll(bti.getTransizioni());
+		aggiunte.removeAll(btiprev.getTransizioni());
+		return aggiunte;
+	}
+
 	/**
 	 * Controlla se esiste almeno un cammino in cui la prima transizione ambigua &egrave; seguita (anche non immediatamente) da un ciclo (infinito).
 	 * (Per definizione la negazione di questa condizione &egrave; la condizione di diagnosticabilit&agrave;)
@@ -181,9 +242,9 @@ public class Metodi {
 	 * @return true se c'&egrave; un ciclo.
 	 */
 	private static boolean visitaRicorsiva(Automa sincronizzato, Set<Stato> visitati, Stato partenza){
-		
+		//System.out.println(partenza+" ");
 		Set<Transizione> uscenti = sincronizzato.getTransizioniUscenti(partenza);
-		if(uscenti.isEmpty()){
+		if(uscenti.isEmpty()){	
 			return false;
 		} else {
 			for(Transizione tuscente: uscenti){

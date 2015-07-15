@@ -40,7 +40,7 @@ public class main {
 		System.out.println(e1.cardinalita());*/
 		//AnalisiDOM nuovaAnalisi = new AnalisiDOM("./automi/automa.xml");
 		Automa a = CostruisciAutoma.costruisciAutoma("./automi/automa.xml");
-		boolean diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, 4);
+		boolean diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, 4);
 		//System.out.println("L'automa a e':\n" + a);
 	    //System.out.println("L'insieme delle transizioni e': \n" + a.getTransizioni());
 		//Automa a = CostruisciAutoma.costruisciAutoma(args[1]);

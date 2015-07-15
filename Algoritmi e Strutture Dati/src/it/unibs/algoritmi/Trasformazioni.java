@@ -17,8 +17,7 @@ import it.unibs.asd.Transizione;
  * @author Manutenzione
  *
  */
-public class Trasformazioni {
-	
+public class Trasformazioni {	
 	/**
 	 * Trasforma il bad twin di livello 0 (l'automa di partenza) 
 	 * nel bad twin di livello 1 
@@ -67,8 +66,10 @@ public class Trasformazioni {
 				if(!triplette.isEmpty()){
 					for (Transizione tripletta:triplette){
 						//controllo if (o non ï¿½ composto dalla ripetizione di i eventi semplici)
-						if (tripletta.getEvento().eventoOk(i))
-						btup.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
+						if (tripletta.getEvento().eventoOk(i)){
+							Transizione nuova = new Transizione(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
+							btup.add(nuova);
+						}
 					}					
 				}
 			}
@@ -234,9 +235,7 @@ public class Trasformazioni {
 			for(Transizione t1: transizioni1){
 				//transizioni2.remove(t1);
 				for(Transizione t2: transizioni2){
-					
-					if(!t1.equals(t2)){
-						
+					if(!t1.equals(t2)){		
 						if(t1.getEvento().equals(t2.getEvento()) && t1.getStatoPartenza().equals(t2.getStatoPartenza())){
 							//System.out.println("t1: " + t1 + " - t2:"+t2);
 							//se arrivo qui la transizione t ï¿½ ambigua
@@ -262,10 +261,7 @@ public class Trasformazioni {
 							if(t1.isGuasto()){
 								ta.setAmbigua(true);
 							}
-							sincronizzato.add(ta);
-							
-							
-							
+							sincronizzato.add(ta);						
 							
 						}
 					}
@@ -273,14 +269,15 @@ public class Trasformazioni {
 			}
 		}
 		
-		Set<Stato> ssecondo = sincronizzato.getStati();
+		Set<Stato> ssecondo = new HashSet<Stato>();
+		ssecondo.addAll(sincronizzato.getStati());
 		
 		while(!setUguali(sprev, ssecondo)){
 			//Set<Stato> sdiff = ssecondo;
 			Set<Stato> sdiff = new HashSet<Stato>();
-			sdiff.addAll(ssecondo);
-			
+			sdiff.addAll(ssecondo);		
 			sdiff.removeAll(sprev);
+			sprev = new HashSet<Stato>();
 			sprev.addAll(ssecondo);
 			for (Stato sasb : sdiff){
 				String sasbstring = sasb.toString();
@@ -294,21 +291,23 @@ public class Trasformazioni {
 				for(Transizione t1: transizioni1){
 					//transizioni2.remove(t1);
 					for(Transizione t2: transizioni2){
-						
-						if(t1.getEvento().equals(t2.getEvento())){
-							//se arrivo qui la transizione t ï¿½ ambigua
-							Stato statoPartenza = sasb;
-							Stato statoArrivo = new Stato();
-							statoArrivo.add(t1.getStatoArrivo().toString());
-							statoArrivo.add(t2.getStatoArrivo().toString());
-							//Stato statoArrivo = new Stato(t1.getStatoArrivo().toString()+t2.getStatoArrivo().toString());
-							//da verificare quale stato di guasto mettere in questa transizione
-							//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
-							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), t1.isGuasto());
-							if(t1.isGuasto()){
-								ta.setAmbigua(true);
-							}
-							sincronizzato.add(ta);
+						if (!t1.equals(t2)) {
+							if (t1.getEvento().equals(t2.getEvento())) {
+								//se arrivo qui la transizione t ï¿½ ambigua
+								Stato statoPartenza = sasb;
+								Stato statoArrivo = new Stato();
+								statoArrivo.add(t1.getStatoArrivo().toString());
+								statoArrivo.add(t2.getStatoArrivo().toString());
+								//Stato statoArrivo = new Stato(t1.getStatoArrivo().toString()+t2.getStatoArrivo().toString());
+								//da verificare quale stato di guasto mettere in questa transizione
+								//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
+								Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(),
+										t1.isGuasto());
+								if (t1.isGuasto()) {
+									ta.setAmbigua(true);
+								}
+								sincronizzato.add(ta);
+							} 
 						}
 					}		
 				}
@@ -328,6 +327,124 @@ public class Trasformazioni {
 	 */
 	public static boolean setUguali(Set<Stato> s1, Set<Stato> s2){
 		return (s1.containsAll(s2) && s2.containsAll(s1));
+	}
+	
+	/**
+	 * Sincronizza bad twin e good twin di livello i a partire non da essi ma 
+	 * a partire dall'automa sincronizzato di livello i-1, da Ti (transizioni aggiunte) e dal bad twin di livello i
+	 * @param sincronizzatoPrev Automa sincronizzato di livello i-1
+	 * @param bti Bad Twin di livello i
+	 * @param transizioniAggiunte TODO
+	 * @param i TODO
+	 * @return L'automa sincronizzato di livello i
+	 */
+	public static Automa sincronizzazioneV2(Automa sincronizzatoPrev, Automa bti, Set<Transizione> transizioniAggiunte, int i) {
+		Automa sincronizzato = inizializzaSincronizzato(sincronizzatoPrev);
+		Set<Stato> stemp = new HashSet<Stato>();
+		stemp.addAll(sincronizzato.getStati());
+		Set<Stato> sprimo = sincronizzatoPrev.getStati();
+		Set<Transizione> transizioniAggiunteNonGuasto = new HashSet<Transizione>();
+		for(Transizione t: transizioniAggiunte){
+			if(!t.isGuasto()){
+				transizioniAggiunteNonGuasto.add(t);
+			}
+		}
+		for(Stato sasb: sprimo){ //sasb è uno stato "doppio"
+			String sasbstring = sasb.toString();
+			Stato sa = new Stato(sasbstring.substring(0,1));
+			Stato sb = new Stato(sasbstring.substring(1, 2));
+			Set<Transizione> tAggiunteSa = transizioniUscenti(transizioniAggiunte, sa);
+			Set<Transizione> tAggiunteSb = transizioniUscenti(transizioniAggiunteNonGuasto, sb);
+			for(Transizione t1: tAggiunteSa){
+				for(Transizione t2: tAggiunteSb){
+					if (!t1.equals(t2)) {
+						if((t1.getEvento().equals(t2.getEvento()))&&(t1.getEvento().cardinalita()==i)){ //l'ultima condizione è necessariamente soddisfatta
+							Stato _statoPartenza = sasb;
+							Stato _statoArrivo = new Stato();
+							_statoArrivo.add(t1.getStatoArrivo().toString());
+							_statoArrivo.add(t2.getStatoArrivo().toString());
+							Transizione ta = new Transizione(_statoPartenza, _statoArrivo, t1.getEvento(), t1.isGuasto());
+							if (t1.isGuasto()) {
+								ta.setAmbigua(true);
+							}
+							sincronizzato.add(ta);
+						}
+					}
+				}
+			}
+		}
+		
+		Set<Stato> ssecondo = new HashSet<Stato>();
+		ssecondo.addAll(sincronizzato.getStati());
+		
+		while(!setUguali(stemp, ssecondo)){
+			Set<Stato> sdiff = new HashSet<Stato>();
+			sdiff.addAll(ssecondo);
+			sdiff.removeAll(stemp);
+			stemp = new HashSet<Stato>();
+			stemp.addAll(ssecondo);
+			for (Stato sasb : sdiff){
+				String sasbstring = sasb.toString();
+				Stato sa = new Stato(sasbstring.substring(0,1));
+				Stato sb = new Stato(sasbstring.substring(1, 2));
+				//seleziono le transizioni uscenti da s nel bad twin
+				Set<Transizione> transizioni1 = bti.getTransizioniUscenti(sa);
+				//seleziono le transizioni uscenti da s nel goodtwin
+				Set<Transizione> transizioni2 = bti.getTransizioniUscentiNonDiGuasto(sb);
+				for(Transizione t1: transizioni1){
+					for(Transizione t2: transizioni2){
+						if(t1.getEvento().equals(t2.getEvento())){
+							if (!t1.equals(t2)) {
+								Stato statoPartenza = sasb;
+								Stato statoArrivo = new Stato();
+								statoArrivo.add(t1.getStatoArrivo().toString());
+								statoArrivo.add(t2.getStatoArrivo().toString());
+								Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(),t1.isGuasto());
+								if (t1.isGuasto()) {
+									ta.setAmbigua(true);
+								}
+								sincronizzato.add(ta);
+							}
+						}
+					}		
+				}
+			}
+			ssecondo = sincronizzato.getStati();
+		}
+		
+		return sincronizzato;
+	}
+	
+	/**
+	 * Inizializza l'automa sincronizzato, copiando tutte le transizioni (ci&ograve; implica
+	 * anche la copia degli stati)
+	 * @param sincronizzatoPrev
+	 * @return
+	 */
+	private static Automa inizializzaSincronizzato(Automa sincronizzatoPrev) {
+		Automa sincronizzato = new Automa();
+		sincronizzato.setStatoIniziale(sincronizzatoPrev.getStatoIniziale());
+		Set<Transizione> transizioni = sincronizzatoPrev.getTransizioni();
+		for(Transizione t:transizioni){
+			sincronizzato.add(t);				
+		}		
+		return sincronizzato;
+	}
+	
+	/**
+	 * Restituisce le transizioni del set transizioni uscenti da s
+	 * @param transizioni
+	 * @param s
+	 * @return
+	 */
+	private static Set<Transizione> transizioniUscenti(Set<Transizione> transizioni, Stato s){
+		Set<Transizione> uscenti = new HashSet<Transizione>();
+		for(Transizione t: transizioni){
+			if(t.getStatoPartenza().equals(s)){
+				uscenti.add(t);
+			}
+		}
+		return uscenti;
 	}
 
 }
