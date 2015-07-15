@@ -1,5 +1,5 @@
 import java.util.Set;
-
+import java.lang.management.*;
 import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.CostruisciFileXML;
 import it.unibs.algoritmi.Metodi;
@@ -41,26 +41,26 @@ public class main {
 			long start, end;
 			boolean diagnosticabile;
 			
-			start = System.nanoTime();
+			start = getCpuTime();
 			diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
-			end = System.nanoTime();
+			end = getCpuTime();
 			long alg1 = (end-start);
 			
 			
-			start = System.nanoTime();
+			start = getCpuTime();
 			diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
-			end = System.nanoTime();
+			end = getCpuTime();
 			long alg2 = (end-start);
 			
 			
-			start = System.nanoTime();
+			start = getCpuTime();
 			diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
-			end = System.nanoTime();
+			end = getCpuTime();
 			long alg3 = (end-start);
 			
-			System.out.println("Algoritmo 1: " + alg1);
-			System.out.println("Algoritmo 2: " + alg2);
-			System.out.println("Algoritmo 3: " + alg3);
+			System.out.println("Algoritmo 1: " + alg1 + " ns");
+			System.out.println("Algoritmo 2: " + alg2 + " ns");
+			System.out.println("Algoritmo 3: " + alg3 + " ns");
 			
 			
 		} catch (NumberFormatException e) {
@@ -174,6 +174,13 @@ public class main {
 				i++;
 			}
 		}*/
+	}
+	
+	/** Get CPU time in nanoseconds. */
+	public static long getCpuTime( ) {
+	    ThreadMXBean bean = ManagementFactory.getThreadMXBean( );
+	    return bean.isCurrentThreadCpuTimeSupported( ) ?
+	        bean.getCurrentThreadCpuTime() : 0L;
 	}
 
 }
