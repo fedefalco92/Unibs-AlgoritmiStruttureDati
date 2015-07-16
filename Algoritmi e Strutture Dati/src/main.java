@@ -37,7 +37,15 @@ public class main {
 		}
 		
 		String percorsoFile = args[0];
-		boolean debug = Boolean.parseBoolean(args[2]);
+		
+		// Modalita debug
+		boolean debug;
+		try {
+			debug = Boolean.parseBoolean(args[2]);
+		} catch (Exception e1) {
+			debug = false;
+		}
+		
 		try {
 			
 			int livelloDiagnosticabilita = Integer.parseInt(args[1]);
