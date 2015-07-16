@@ -9,7 +9,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 public class Evento {
-	Multiset<String> value;
+	private Multiset<String> value;
 	
 	public Evento(){
 		this.value = HashMultiset.create();

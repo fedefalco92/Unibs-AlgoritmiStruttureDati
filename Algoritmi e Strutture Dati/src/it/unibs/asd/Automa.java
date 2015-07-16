@@ -23,9 +23,9 @@ import java.util.Set;
 
 public class Automa {
 	
-	HashMap<Stato,Set<Transizione>> stati;
-	int numeroTransizioni;
-	Stato statoIniziale;
+	private HashMap<Stato,Set<Transizione>> stati;
+	private int numeroTransizioni;
+	private Stato statoIniziale;
 	 
 	public Automa(){
 		this.stati =  new HashMap<Stato,Set<Transizione>>();

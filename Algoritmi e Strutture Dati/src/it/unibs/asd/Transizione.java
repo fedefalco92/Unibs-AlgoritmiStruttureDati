@@ -9,10 +9,10 @@ package it.unibs.asd;
  */
 public class Transizione {
 	
-	protected Stato statoPartenza, statoArrivo;
-	protected Evento evento;
-	protected boolean guasto;
-	protected boolean ambigua;
+	private Stato statoPartenza, statoArrivo;
+	private Evento evento;
+	private boolean guasto;
+	private boolean ambigua;
 	
 	public boolean isAmbigua() {
 		return ambigua;
