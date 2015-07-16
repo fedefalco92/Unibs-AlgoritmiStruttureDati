@@ -49,7 +49,7 @@ public class main {
 			end = getCpuTime();
 			long alg1 = (end-start);
 			
-			/*
+			
 			start = getCpuTime();
 			diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
@@ -64,7 +64,7 @@ public class main {
 			System.out.println("Algoritmo 1: " + alg1 + " ns");
 			System.out.println("Algoritmo 2: " + alg2 + " ns");
 			System.out.println("Algoritmo 3: " + alg3 + " ns");
-			*/
+			
 			
 		} catch (NumberFormatException e) {
 			//e.printStackTrace();
