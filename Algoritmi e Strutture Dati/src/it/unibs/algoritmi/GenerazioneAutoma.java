@@ -48,7 +48,7 @@ public class GenerazioneAutoma {
 		}
 		*/
 		for(Stato s1: stati){
-			int numeroTransizioniUscenti = StdRandom.poisson(lambda);
+			int numeroTransizioniUscenti = 1 + StdRandom.poisson(lambda-1);
 			Set<Transizione> aggiunte = new HashSet<Transizione>();
 			for(int i = 0; i < numeroTransizioniUscenti; i++){
 				int statoRandom = random(0, stati.size());
