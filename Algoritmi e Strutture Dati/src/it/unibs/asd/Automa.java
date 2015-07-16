@@ -85,7 +85,7 @@ public class Automa {
 	      Stato y;
 	      while (transizioni.hasNext()) {
 	        t = (Transizione) transizioni.next();
-	        y = ( t.getStatoPartenza().equals(x) ) ? t.getStatoArrivo() : t.getStatoPartenza();
+	        y = ( t.getStatoSorgente().equals(x) ) ? t.getStatoDestinazione() : t.getStatoSorgente();
 	        if ( ((HashSet) stati.get(y)).remove(t) )
 	          numeroTransizioni--;
 	      }
@@ -163,7 +163,7 @@ public class Automa {
 	   * @return true se la transizione &egrave; stata aggiunta, false altrimenti
 	   */
 	  public boolean add(Transizione t) {
-	    return add(t.getStatoPartenza(), t.getStatoArrivo(), t.getEvento(), t.isGuasto(), t.isAmbigua());
+	    return add(t.getStatoSorgente(), t.getStatoDestinazione(), t.getEvento(), t.isGuasto(), t.isAmbigua());
 	    
 	  }
 
@@ -191,9 +191,9 @@ public class Automa {
 	   */
 	  public boolean remove(Transizione t) {
 	    boolean flag = false,  flag1 = false;
-	    if (stati.containsKey(t.getStatoPartenza()) && stati.containsKey(t.getStatoArrivo())) {
-	      flag = ( (HashSet) stati.get(t.getStatoPartenza()) ).remove(t);
-	      flag1 = ( (HashSet) stati.get(t.getStatoArrivo()) ).remove(t);
+	    if (stati.containsKey(t.getStatoSorgente()) && stati.containsKey(t.getStatoDestinazione())) {
+	      flag = ( (HashSet) stati.get(t.getStatoSorgente()) ).remove(t);
+	      flag1 = ( (HashSet) stati.get(t.getStatoDestinazione()) ).remove(t);
 	    }
 	    return flag || flag1;
 	  }
@@ -236,7 +236,7 @@ public class Automa {
 		  Set<Transizione> tstato = getTransizioni(stato);
 		  Set<Transizione> tuscenti = new HashSet<Transizione>();
 		  for(Transizione t : tstato){
-			  if (t.getStatoPartenza().equals(stato)){
+			  if (t.getStatoSorgente().equals(stato)){
 				  tuscenti.add(t);
 			  }
 		  }
@@ -252,7 +252,7 @@ public class Automa {
 		  Set<Transizione> tstato = getTransizioni(stato);
 		  Set<Transizione> tuscenti = new HashSet<Transizione>();
 		  for(Transizione t : tstato){
-			  if (t.getStatoPartenza().equals(stato)&&!t.isGuasto()){
+			  if (t.getStatoSorgente().equals(stato)&&!t.isGuasto()){
 				  tuscenti.add(t);
 			  }
 		  }

@@ -9,7 +9,7 @@ package it.unibs.asd;
  */
 public class Transizione {
 	
-	private Stato statoPartenza, statoArrivo;
+	private Stato statoSorgente, statoDestinazione;
 	private Evento evento;
 	private boolean guasto;
 	private boolean ambigua;
@@ -31,8 +31,8 @@ public class Transizione {
 	 */
 	
 	public Transizione(Stato _statoPartenza, Stato _statoArrivo, Evento _value, boolean _guasto, boolean _ambigua) {
-		this.statoPartenza = _statoPartenza;
-		this.statoArrivo = _statoArrivo;
+		this.statoSorgente = _statoPartenza;
+		this.statoDestinazione = _statoArrivo;
 		this.evento = _value;
 		this.guasto = _guasto;
 		this.ambigua = _ambigua;
@@ -47,8 +47,8 @@ public class Transizione {
 	 * @param _guasto boolean che indica se la transizione &egrave; di guasto
 	 */
 	public Transizione(Stato _statoPartenza, Stato _statoArrivo, Evento _value, boolean _guasto) {
-		this.statoPartenza = _statoPartenza;
-		this.statoArrivo = _statoArrivo;
+		this.statoSorgente = _statoPartenza;
+		this.statoDestinazione = _statoArrivo;
 		this.evento = _value;
 		this.guasto = _guasto;
 		this.ambigua = false;
@@ -58,19 +58,19 @@ public class Transizione {
 	 *  costruttore senza argomenti
 	 */
 	public Transizione() {
-		this.statoPartenza =  null;
-		this.statoArrivo = null;
+		this.statoSorgente =  null;
+		this.statoDestinazione = null;
 		this.evento = null;
 		this.guasto = false;
 		this.ambigua = false;
 	}
 
-	public Stato getStatoPartenza() {
-		return statoPartenza;
+	public Stato getStatoSorgente() {
+		return statoSorgente;
 	}
 
-	public Stato getStatoArrivo() {
-		return statoArrivo;
+	public Stato getStatoDestinazione() {
+		return statoDestinazione;
 	}
 
 	public Evento getEvento() {
@@ -84,7 +84,7 @@ public class Transizione {
 	public boolean equals(Object t) {
 		  if (t instanceof Transizione) {
 			Transizione trans = (Transizione) t;	
-			return (statoPartenza.equals(trans.statoPartenza) && statoArrivo.equals(trans.statoArrivo) && evento.equals(trans.evento) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
+			return (statoSorgente.equals(trans.statoSorgente) && statoDestinazione.equals(trans.statoDestinazione) && evento.equals(trans.evento) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
 		  }
 		  return false;
 	}
@@ -94,11 +94,11 @@ public class Transizione {
 	}
 	
 	public int hashCode() {
-	    return (statoPartenza+"statoPartenza").hashCode()+(statoArrivo+"statoArrivo").hashCode()+evento.hashCode()+(guasto ? 1:0) +(ambigua ? 1:0);
+	    return (statoSorgente+"statoPartenza").hashCode()+(statoDestinazione+"statoArrivo").hashCode()+evento.hashCode()+(guasto ? 1:0) +(ambigua ? 1:0);
 	}
 
 	public String toString() {
-		return "\n<"+statoPartenza.toString()+", "+statoArrivo.toString()+"; "+evento.toString()+"; "+((guasto)?"guasto; ":"") + ((ambigua)?"ambigua; ": "")+hashCode()+">";
+		return "\n<"+statoSorgente.toString()+", "+statoDestinazione.toString()+"; "+evento.toString()+"; "+((guasto)?"guasto; ":"") + ((ambigua)?"ambigua; ": "")+hashCode()+">";
 		//return "\n<"+statoPartenza.toString()+statoPartenza.hashCode()+", "+statoArrivo.toString()+statoArrivo.hashCode()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
 
 	}

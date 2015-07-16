@@ -354,12 +354,12 @@ public class Metodi {
 		if(!tambigue.isEmpty()){
 			for(Transizione ta: tambigue){
 				Set<Stato> visitati = new HashSet<Stato>();
-				Stato successivo = ta.getStatoArrivo();
+				Stato successivo = ta.getStatoDestinazione();
 				visitati.add(successivo);
 				
 				//aggiungo agli stati visitati anche lo stato di partenza di ta (da controllare)
 				//intendendo che � possibile che la transizione faccia parte del ciclo.
-				Stato precedente = ta.getStatoPartenza();
+				Stato precedente = ta.getStatoSorgente();
 				visitati.add(precedente);
 				
 				return visitaRicorsiva(sincronizzato, visitati,successivo);
@@ -387,7 +387,7 @@ public class Metodi {
 			return false;
 		} else {
 			for(Transizione tuscente: uscenti){
-				Stato statoArrivo = tuscente.getStatoArrivo();
+				Stato statoArrivo = tuscente.getStatoDestinazione();
 				if(visitati.contains(statoArrivo)){
 					return true;
 				}

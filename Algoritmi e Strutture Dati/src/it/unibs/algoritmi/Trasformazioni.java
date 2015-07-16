@@ -27,10 +27,10 @@ public class Trasformazioni {
 		Automa badtwin1 = inizializzaBadTwin1(a);
 		Set<Transizione> tNonOsservabili = a.getTransizioniNonOsservabili();
 		for(Transizione t : tNonOsservabili){
-			Set<Transizione> triplette = find(a,t.getStatoArrivo(),1,t.isGuasto(),new Evento());
+			Set<Transizione> triplette = find(a,t.getStatoDestinazione(),1,t.isGuasto(),new Evento());
 			if(!triplette.isEmpty()){
 				for (Transizione tripletta:triplette){
-					badtwin1.add(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
+					badtwin1.add(t.getStatoSorgente(), tripletta.getStatoDestinazione(), tripletta.getEvento(), tripletta.isGuasto());
 				}					
 			}
 		}
@@ -62,12 +62,12 @@ public class Trasformazioni {
 		for (Stato s: stati){
 			Set<Transizione> transizioni = bt.getTransizioni(s);
 			for(Transizione t : transizioni){
-				Set<Transizione> triplette = find(bt,t.getStatoArrivo(),i-t.getEvento().cardinalita(),t.isGuasto(),t.getEvento());
+				Set<Transizione> triplette = find(bt,t.getStatoDestinazione(),i-t.getEvento().cardinalita(),t.isGuasto(),t.getEvento());
 				if(!triplette.isEmpty()){
 					for (Transizione tripletta:triplette){
 						//controllo if (o non � composto dalla ripetizione di i eventi semplici)
 						if (tripletta.getEvento().eventoOk(i)){
-							Transizione nuova = new Transizione(t.getStatoPartenza(), tripletta.getStatoArrivo(), tripletta.getEvento(), tripletta.isGuasto());
+							Transizione nuova = new Transizione(t.getStatoSorgente(), tripletta.getStatoDestinazione(), tripletta.getEvento(), tripletta.isGuasto());
 							btup.add(nuova);
 						}
 					}					
@@ -136,7 +136,7 @@ public class Trasformazioni {
 			for (Transizione t: transizioni){
 				boolean _guasto;
 				Evento o = t.getEvento();
-				Stato _s = t.getStatoArrivo();
+				Stato _s = t.getStatoDestinazione();
 				
 				if(t.isGuasto()){
 					_guasto = true;
@@ -206,11 +206,11 @@ public class Trasformazioni {
 			//Stato _statoPartenza = new Stato(tr.getStatoPartenza().toString() + tr.getStatoPartenza().toString());
 			//Stato _statoArrivo = new Stato(tr.getStatoArrivo().toString() + tr.getStatoArrivo().toString());
 			Stato _statoPartenza = new Stato();
-			_statoPartenza.add(tr.getStatoPartenza().toString()); 
-			_statoPartenza.add(tr.getStatoPartenza().toString());
+			_statoPartenza.add(tr.getStatoSorgente().toString()); 
+			_statoPartenza.add(tr.getStatoSorgente().toString());
 			Stato _statoArrivo = new Stato();
-			_statoArrivo.add(tr.getStatoArrivo().toString());
-			_statoArrivo.add(tr.getStatoArrivo().toString());
+			_statoArrivo.add(tr.getStatoDestinazione().toString());
+			_statoArrivo.add(tr.getStatoDestinazione().toString());
 			sincronizzato.add(_statoPartenza, _statoArrivo, tr.getEvento(), tr.isGuasto(), tr.isAmbigua());
 		} 
 		
@@ -236,7 +236,7 @@ public class Trasformazioni {
 				//transizioni2.remove(t1);
 				for(Transizione t2: transizioni2){
 					if(!t1.equals(t2)){		
-						if(t1.getEvento().equals(t2.getEvento()) && t1.getStatoPartenza().equals(t2.getStatoPartenza())){
+						if(t1.getEvento().equals(t2.getEvento()) && t1.getStatoSorgente().equals(t2.getStatoSorgente())){
 							//System.out.println("t1: " + t1 + " - t2:"+t2);
 							//se arrivo qui la transizione t � ambigua
 							/*
@@ -250,11 +250,11 @@ public class Trasformazioni {
 							//se arrivo qui la transizione t � ambigua
 							Stato statoPartenza = new Stato();
 							//gli stati di partenza in realt� sono uguali
-							statoPartenza.add(t1.getStatoPartenza().toString());
-							statoPartenza.add(t2.getStatoPartenza().toString());
+							statoPartenza.add(t1.getStatoSorgente().toString());
+							statoPartenza.add(t2.getStatoSorgente().toString());
 							Stato statoArrivo = new Stato();
-							statoArrivo.add(t1.getStatoArrivo().toString());
-							statoArrivo.add(t2.getStatoArrivo().toString());
+							statoArrivo.add(t1.getStatoDestinazione().toString());
+							statoArrivo.add(t2.getStatoDestinazione().toString());
 							//da verificare quale stato di guasto mettere in questa transizione
 							//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
 							Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), t1.isGuasto());
@@ -296,8 +296,8 @@ public class Trasformazioni {
 								//se arrivo qui la transizione t � ambigua
 								Stato statoPartenza = sasb;
 								Stato statoArrivo = new Stato();
-								statoArrivo.add(t1.getStatoArrivo().toString());
-								statoArrivo.add(t2.getStatoArrivo().toString());
+								statoArrivo.add(t1.getStatoDestinazione().toString());
+								statoArrivo.add(t2.getStatoDestinazione().toString());
 								//Stato statoArrivo = new Stato(t1.getStatoArrivo().toString()+t2.getStatoArrivo().toString());
 								//da verificare quale stato di guasto mettere in questa transizione
 								//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
@@ -366,8 +366,8 @@ public class Trasformazioni {
 						if((t1.getEvento().equals(t2.getEvento()))&&(t1.getEvento().cardinalita()==i)){ //l'ultima condizione � necessariamente soddisfatta
 							Stato _statoPartenza = sasb;
 							Stato _statoArrivo = new Stato();
-							_statoArrivo.add(t1.getStatoArrivo().toString());
-							_statoArrivo.add(t2.getStatoArrivo().toString());
+							_statoArrivo.add(t1.getStatoDestinazione().toString());
+							_statoArrivo.add(t2.getStatoDestinazione().toString());
 							Transizione ta = new Transizione(_statoPartenza, _statoArrivo, t1.getEvento(), t1.isGuasto());
 							if (t1.isGuasto()) {
 								ta.setAmbigua(true);
@@ -406,8 +406,8 @@ public class Trasformazioni {
 							if (!t1.equals(t2)) {
 								Stato statoPartenza = sasb;
 								Stato statoArrivo = new Stato();
-								statoArrivo.add(t1.getStatoArrivo().toString());
-								statoArrivo.add(t2.getStatoArrivo().toString());
+								statoArrivo.add(t1.getStatoDestinazione().toString());
+								statoArrivo.add(t2.getStatoDestinazione().toString());
 								Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(),t1.isGuasto());
 								if (t1.isGuasto()) {
 									ta.setAmbigua(true);
@@ -450,7 +450,7 @@ public class Trasformazioni {
 	private static Set<Transizione> transizioniUscenti(Set<Transizione> transizioni, Stato s){
 		Set<Transizione> uscenti = new HashSet<Transizione>();
 		for(Transizione t: transizioni){
-			if(t.getStatoPartenza().equals(s)){
+			if(t.getStatoSorgente().equals(s)){
 				uscenti.add(t);
 			}
 		}
