@@ -62,7 +62,7 @@ public class Metodi {
 		writer.close();
 		return true;		
 	}
-	public static boolean diagnosticabilitaMetodo1(Automa a, int livello, String nomeDir){
+	public static boolean diagnosticabilitaMetodo1(Automa a, int livello){
 		
 		int i = 1;
 		Automa btiprev = a;
@@ -80,7 +80,7 @@ public class Metodi {
 		return true;		
 	}
 	
-	public static boolean diagnosticabilitaMetodo2(Automa a, int livello, String nomeDir){
+	public static boolean diagnosticabilitaMetodo2debug(Automa a, int livello, String nomeDir){
 		String nomeFile = nomeDir + "metodo2.txt";
 		File file = new File(nomeFile);			
 		PrintWriter writer = null;
@@ -130,6 +130,32 @@ public class Metodi {
 			i++;
 		}
 		writer.close();
+		return true;		
+	}
+	
+	public static boolean diagnosticabilitaMetodo2(Automa a, int livello){
+		int i = 1;
+		Automa btiprev = a;
+		while (i<=livello){
+			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			btiprev =  bti;
+			if(bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3()){
+				i++;
+				continue;	
+			}
+			Automa gti = Trasformazioni.badToGoodTwin(bti);
+			Automa sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
+			if(sincronizzato.diagnosticabilitaC1()){
+				i++;
+				continue;
+			}
+			
+			if (controllaCicli(sincronizzato)) {
+				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
+				return false;
+			}
+			i++;
+		}
 		return true;		
 	}
 	/*
@@ -182,7 +208,7 @@ public class Metodi {
 		return true;
 	}*/
 	
-	public static boolean diagnosticabilitaMetodo3(Automa a, int livello, String nomeDir){
+	public static boolean diagnosticabilitaMetodo3debug(Automa a, int livello, String nomeDir){
 		String nomeFile = nomeDir + "metodo3.txt";
 		File file = new File(nomeFile);			
 		PrintWriter writer = null;
@@ -262,6 +288,52 @@ public class Metodi {
 		}
 		writer.println("Livello "+(i-1)+" diagnosticabile\n");
 		writer.close();
+		return true;		
+	}
+	public static boolean diagnosticabilitaMetodo3(Automa a, int livello){
+		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
+			return true;
+		}
+		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
+		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
+		if(sincronizzato.diagnosticabilitaC1()&&(livello==1)){
+			return true;			
+		}
+		
+		if(controllaCicli(sincronizzato)){
+			System.out.println("Il livello di diagnosticabilita' massimo e' " + 0);
+			return false;
+		} else if(livello==1) {
+			return true;
+		}
+		
+		//livello dal 2 in poi
+		
+		int i = 2;
+		Automa btiprev = badtwin1;
+		Automa sincronizzatoPrev = sincronizzato;
+		while (i<=livello){
+			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
+				i++;
+				continue;
+			}
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
+			btiprev =  bti;
+			Automa gti = Trasformazioni.badToGoodTwin(bti);
+			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
+			sincronizzatoPrev = sincronizzatov2;
+			if(sincronizzatov2.diagnosticabilitaC1()){
+				i++;
+				continue;
+			}
+			
+			if (controllaCicli(sincronizzatov2)) {
+				return false;
+			}
+			i++;
+		}
 		return true;		
 	}
 	

@@ -446,10 +446,10 @@ public class Automa {
 	      out.append("\n");
 	    }
 	    
-	    out.append("Transizioni: \n");
+	    out.append("Transizioni: \n"+ getTransizioni());/*
 	    for(Transizione t1: getTransizioni()){
 	    	out.append("\t" + t1 + "\n");
-	    }
+	    }*/
 	    return out.toString();
 	  }
 
