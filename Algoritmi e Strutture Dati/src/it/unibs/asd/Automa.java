@@ -430,6 +430,7 @@ public class Automa {
 	  public String toString() {
 	    StringBuffer out = new StringBuffer();
 	    out.append("Stato iniziale: " + statoIniziale+"\n");
+	    out.append("Stati: " + stati.keySet() + "\n");
 	    Stato stato;
 	    Transizione t;
 	    Iterator transizioneI;
