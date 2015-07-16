@@ -445,6 +445,11 @@ public class Automa {
 	      }
 	      out.append("\n");
 	    }
+	    
+	    out.append("Transizioni: \n");
+	    for(Transizione t1: getTransizioni()){
+	    	out.append("\t" + t1 + "\n");
+	    }
 	    return out.toString();
 	  }
 

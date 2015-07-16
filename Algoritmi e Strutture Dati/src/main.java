@@ -1,4 +1,10 @@
 import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.lang.management.*;
 import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.CostruisciFileXML;
@@ -20,8 +26,9 @@ public class main {
 	
 	/**
 	 * @param args
+	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
 		if(args.length<2){
 			System.out.println("ERRORE");
@@ -31,39 +38,69 @@ public class main {
 		
 		String percorsoFile = args[0];
 		try {
+			
 			int livelloDiagnosticabilita = Integer.parseInt(args[1]);
+			String nomeDir = "./output/time-" + System.currentTimeMillis() + "/";
+			File dir = new File(nomeDir);
+			dir.mkdir();
+			
+			String nomeFile = nomeDir + "automa.txt";
+			File file = new File(nomeFile);			
+			try {
+				file.createNewFile();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			PrintWriter writer = new PrintWriter(file);
+			
+			
 			
 			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
-			Automa a = GenerazioneAutoma.generaAutoma(5, 3, 2);
+			int numeroStati = 5;
+			int numeroEventiSemplici = 3;
+			double lambda = 2;
+			Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
 			System.out.println(a);
-			
-			System.out.println("##################################");
-			System.out.println("## Analisi di Diagnosticabilita ##");
-			System.out.println("##################################");
+			writer.println("Numero stati:" + a.numeroStati());
+			writer.println("Numero transizioni:" + a.numeroTransizioni());
+			writer.println(a);
+			writer.println("Parametri costruzione automa:");
+			writer.println("\tNumero stati:" + numeroStati);
+			writer.println("\tNumero eventi semplici: "+ numeroEventiSemplici);
+			writer.println("\tNumero medio di transizioni uscenti da ogni stato: " +  lambda);
+			writer.flush();
 			
 			long start, end;
 			boolean diagnosticabile;
-			
+			System.out.println("Sto eseguento metodo 1...");
 			start = getCpuTime();
-			diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
+			diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita, nomeDir);
 			end = getCpuTime();
 			long alg1 = (end-start);
+			diagnosticabile = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir);
+			System.out.println("\tTempo: " + alg1 + " ns");
 			
-			
+			System.out.println("Sto eseguento metodo 2...");
 			start = getCpuTime();
-			diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
+			diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita, nomeDir);
 			end = getCpuTime();
 			long alg2 = (end-start);
+			System.out.println("\tTempo: " + alg2 + " ns");
 			
-			
+			System.out.println("Sto eseguento metodo 3...");
 			start = getCpuTime();
-			diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
+			diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita, nomeDir);
 			end = getCpuTime();
 			long alg3 = (end-start);
+			System.out.println("\tTempo: " + alg3 + " ns");
 			
-			System.out.println("Algoritmo 1: " + alg1 + " ns");
-			System.out.println("Algoritmo 2: " + alg2 + " ns");
-			System.out.println("Algoritmo 3: " + alg3 + " ns");
+			writer.println("Prestazioni:");
+			writer.println("\tAlgoritmo 1: " + alg1 + " ns");
+			writer.println("\tAlgoritmo 2: " + alg2 + " ns");
+			writer.println("\tAlgoritmo 3: " + alg3 + " ns");
+			writer.close();
 			
 			
 		} catch (NumberFormatException e) {
