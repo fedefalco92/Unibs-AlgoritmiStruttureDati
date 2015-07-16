@@ -118,7 +118,6 @@ public class main {
 				diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			long alg1 = (end-start);
-			diagnosticabile = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir);
 			System.out.println("\tTempo: " + alg1 + " ns");
 			writer.println("\tAlgoritmo 1: " + alg1 + " ns");
 			writer.close();
