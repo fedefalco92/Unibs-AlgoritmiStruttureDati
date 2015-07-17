@@ -167,6 +167,24 @@ public class main {
 			writer.close();
 			System.out.println("Terminato.");
 			
+			if(alg1>alg2){
+				if(alg2>alg3){
+					System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
+					writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+				}else{
+					System.out.println("Il metodo 2 e' il piu' veloce con " + alg2);
+					writer.println("Il metodo 2 e' il piu' veloce con " + alg2 + "\n");
+				}
+			}else{
+				if(alg1<alg3){
+					System.out.println("Il metodo 1 e' il piu' veloce con " + alg1);
+					writer.println("Il metodo 1 e' il piu' veloce con " + alg1 + "\n");
+				}else{
+					System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
+					writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+				}
+			}
+			
 		} catch (NumberFormatException e) {
 			//e.printStackTrace();
 			System.out.println("Inserire un numero intero");
