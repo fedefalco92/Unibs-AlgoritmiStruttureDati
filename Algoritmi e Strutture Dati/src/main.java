@@ -79,47 +79,75 @@ public class main {
 			writer.println("\tNumero stati:" + numeroStati);
 			writer.println("\tNumero eventi semplici: "+ numeroEventiSemplici);
 			writer.println("\tNumero medio di transizioni uscenti da ogni stato: " +  lambda);
+			writer.println("Livello di diagnosticabilità di input: " + livelloDiagnosticabilita);
 			writer.println("Prestazioni:");
 			writer.flush();
 			
 			long start, end;
-			boolean diagnosticabile;
+			int livelloMax;
 			System.out.println("\n****************************************************************\n");
 			
+			/* METODO 3 *******************************************************************************/
 			System.out.println("Sto eseguento metodo 3...");
 			start = getCpuTime();
 			if(debug)
-				diagnosticabile = Metodi.diagnosticabilitaMetodo3debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo3debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				diagnosticabile = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			long alg3 = (end-start);
 			System.out.println("\tTempo: " + alg3 + " ns");
+			if(livelloMax == livelloDiagnosticabilita)
+				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				System.out.println("\tLivello max: " + livelloMax);
 			writer.println("\tAlgoritmo 3: " + alg3 + " ns");
+			if(livelloMax == livelloDiagnosticabilita)
+				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				writer.println("\tLivello max: " + livelloMax);
 			writer.flush();
 			
+			/* METODO 2 *******************************************************************************/
 			System.out.println("Sto eseguento metodo 2...");
 			start = getCpuTime();
 			if(debug)
-				diagnosticabile = Metodi.diagnosticabilitaMetodo2debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				diagnosticabile = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			long alg2 = (end-start);
 			System.out.println("\tTempo: " + alg2 + " ns");
-			writer.println("\tAlgoritmo 2: " + alg2 + " ns");
+			if(livelloMax == livelloDiagnosticabilita)
+				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				System.out.println("\tLivello max: " + livelloMax);
+			writer.println("\tAlgoritmo 2: " + alg2 + " ns" );
+			if(livelloMax == livelloDiagnosticabilita)
+				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				writer.println("\tLivello max: " + livelloMax);
 			writer.flush();
 			
+			/* METODO 1 *******************************************************************************/
 			System.out.println("Sto eseguento metodo 1...");
 			start = getCpuTime();
 			if(debug)
-				diagnosticabile = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				diagnosticabile = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			long alg1 = (end-start);
-			System.out.println("\tTempo: " + alg1 + " ns");
+			System.out.println("\tTempo: " + alg1 + " ns" );
+			if(livelloMax == livelloDiagnosticabilita)
+				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				System.out.println("\tLivello max: " + livelloMax);
 			writer.println("\tAlgoritmo 1: " + alg1 + " ns");
+			if(livelloMax == livelloDiagnosticabilita)
+				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				writer.println("\tLivello max: " + livelloMax);
 			writer.close();
 			System.out.println("Terminato.");
 			

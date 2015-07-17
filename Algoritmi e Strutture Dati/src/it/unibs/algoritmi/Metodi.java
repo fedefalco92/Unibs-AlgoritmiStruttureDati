@@ -20,8 +20,14 @@ import it.unibs.asd.Transizione;
  */
 public class Metodi {
 	
-	
-	public static boolean diagnosticabilitaMetodo1debug(Automa a, int livello, String nomeDir){
+	/**
+	 * Rispetta la prima versione del metodo risolvente riportato nelle specifiche.
+	 * @param a
+	 * @param livello
+	 * @param nomeDir nome della cartella in cui salvare il file di dump.
+	 * @return il livello di diagnosticabilità massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo1debug(Automa a, int livello, String nomeDir){
 		String nomeFile = nomeDir + "metodo1.txt";
 		File file = new File(nomeFile);
 		PrintWriter writer = null;
@@ -49,10 +55,10 @@ public class Metodi {
 			writer.println("*******************************************************************\n");
 			writer.println("L'automa sincronizzato livello "+i+" e':\n" + sincronizzato);
 			if(controllaCicli(sincronizzato)){
-				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i-1));
+				//System.out.println("Il livello di diagnosticabilita' massimo e' " + (i-1));
 				writer.println("Il livello di diagnosticabilita' massimo e' " + (i-1));
 				writer.close();
-				return false;
+				return i-1;
 			}
 			
 			writer.println("Livello "+i+" diagnosticabile\n");
@@ -60,9 +66,16 @@ public class Metodi {
 			i++;
 		}
 		writer.close();
-		return true;		
+		return livello;		
 	}
-	public static boolean diagnosticabilitaMetodo1(Automa a, int livello){
+	
+	/**
+	 * Rispetta la prima versione del metodo risolvente riportato nelle specifiche.
+	 * @param a
+	 * @param livello
+	 * @return il livello di diagnosticabilità massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo1(Automa a, int livello){
 		
 		int i = 1;
 		Automa btiprev = a;
@@ -72,15 +85,22 @@ public class Metodi {
 			Automa gti = Trasformazioni.badToGoodTwin(bti);
 			Automa sincronizzato = Trasformazioni.sincronizzazione(gti, bti);
 			if(controllaCicli(sincronizzato)){
-				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i-1));
-				return false;
+				//System.out.println("Il livello di diagnosticabilita' massimo e' " + (i-1));
+				return i-1;
 			}
 			i++;
 		}
-		return true;		
+		return livello;		
 	}
 	
-	public static boolean diagnosticabilitaMetodo2debug(Automa a, int livello, String nomeDir){
+	/**
+	 * Rispetta la seconda versione del metodo risolvente riportato nelle specifiche.
+	 * @param a
+	 * @param livello
+	 * @param nomeDir nome della cartella in cui salvare il file di dump.
+	 * @return il livello di diagnosticabilità massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo2debug(Automa a, int livello, String nomeDir){
 		String nomeFile = nomeDir + "metodo2.txt";
 		File file = new File(nomeFile);			
 		PrintWriter writer = null;
@@ -103,6 +123,7 @@ public class Metodi {
 			btiprev =  bti;
 			writer.println("Il bad twin di livello "+i+" e':\n" + bti);
 			if(bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3()){
+				System.out.println("Livello "+i+" diagnosticabile\n");
 				writer.println("Livello "+i+ " diagnosticabile\n");
 				writer.flush();
 				i++;
@@ -114,6 +135,7 @@ public class Metodi {
 			writer.println("*******************************************************************\n");
 			writer.println("L'automa sincronizzato livello "+i+" e':\n" +  sincronizzato);
 			if(sincronizzato.diagnosticabilitaC1()){
+				System.out.println("Livello "+i+" diagnosticabile\n");
 				writer.println("Livello "+i+" diagnosticabile\n");
 				writer.flush();
 				i++;
@@ -121,19 +143,25 @@ public class Metodi {
 			}
 			
 			if (controllaCicli(sincronizzato)) {
-				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
+				//System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
 				writer.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
 				writer.close();
-				return false;
+				return i-1;
 			}
 			writer.flush();
 			i++;
 		}
 		writer.close();
-		return true;		
+		return livello;		
 	}
 	
-	public static boolean diagnosticabilitaMetodo2(Automa a, int livello){
+	/**
+	 * Rispetta la seconda versione del metodo risolvente riportato nelle specifiche.
+	 * @param a
+	 * @param livello
+	 * @return il livello di diagnosticabilità massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo2(Automa a, int livello){
 		int i = 1;
 		Automa btiprev = a;
 		while (i<=livello){
@@ -151,12 +179,12 @@ public class Metodi {
 			}
 			
 			if (controllaCicli(sincronizzato)) {
-				System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
-				return false;
+				//System.out.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
+				return i-1;
 			}
 			i++;
 		}
-		return true;		
+		return livello;		
 	}
 	/*
 	public static boolean diagnosticabilitaMetodo3(Automa a, int livello){
@@ -208,7 +236,17 @@ public class Metodi {
 		return true;
 	}*/
 	
-	public static boolean diagnosticabilitaMetodo3debug(Automa a, int livello, String nomeDir){
+	/**
+	 * Rispetta la terza versione del metodo risolvente riportato nelle specifiche. 
+	 * In particolare il calcolo dell'automa sincronizzato di livello i-1 viene eseguito 
+	 * nel ciclo corrispondente al livello i se non &egrave; stato eseguito nel ciclo 
+	 * corrispondente al livello i-1.
+	 * @param a
+	 * @param livello
+	 * @param nomeDir nome della cartella in cui salvare il file di dump.
+	 * @return il livello di diagnosticabilità massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo3debug(Automa a, int livello, String nomeDir){
 		String nomeFile = nomeDir + "metodo3.txt";
 		File file = new File(nomeFile);			
 		PrintWriter writer = null;
@@ -226,26 +264,28 @@ public class Metodi {
 		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 		writer.println("Il bad twin di livello 1 e':\n" + badtwin1);
 		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
+			System.out.println("Livello 1 diagnosticabile\n");
 			writer.close();
-			return true;
+			return livello;
 		}
 		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
 		writer.println("Il good twin di livello 1 e':\n" + goodtwin1);
 		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
 		writer.println("L'automa sincronizzato livello 1 e':\n" +  sincronizzato);
 		if(sincronizzato.diagnosticabilitaC1()&&(livello==1)){
+			System.out.println("Livello 1 diagnosticabile\n");
 			writer.close();
-			return true;			
+			return livello;			
 		}
 		
 		if(controllaCicli(sincronizzato)){
 			System.out.println("Il livello di diagnosticabilita' massimo e' " + 0);
 			writer.println("Il livello di diagnosticabilita' massimo e' " + 0);
 			writer.close();
-			return false;
+			return 0;
 		} else if(livello==1) {
 			writer.close();
-			return true;
+			return livello;
 		}
 		
 		//livello dal 2 in poi
@@ -253,25 +293,34 @@ public class Metodi {
 		int i = 2;
 		Automa btiprev = badtwin1;
 		Automa sincronizzatoPrev = sincronizzato;
+		int livelloSincronizzatoPrev = 1;
 		while (i<=livello){
 			writer.println("*********************************************************************************************************\n");
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
+				btiprev =  bti;
+				System.out.println("Livello "+i+" diagnosticabile\n");
 				writer.println("Livello "+i+" diagnosticabile\n");
 				i++;
 				writer.flush();
 				continue;
 			}
-			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
-			btiprev =  bti;
 			writer.println("Il bad twin di livello "+i+" e':\n" + bti);
-			Automa gti = Trasformazioni.badToGoodTwin(bti);
-			writer.println("Il good twin di livello "+i+" e':\n" + gti);
+			
+			if(livelloSincronizzatoPrev < (i-1)){ // allora devo calcolare l'automa sincronizzato di livello i-1
+				Automa gtiprev = Trasformazioni.badToGoodTwin(btiprev);
+				writer.println("Il good twin di livello "+i+" e':\n" + gtiprev);
+				sincronizzatoPrev = Trasformazioni.sincronizzazione(gtiprev, btiprev);
+			}
+			btiprev =  bti;			
 			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
 			sincronizzatoPrev = sincronizzatov2;
+			livelloSincronizzatoPrev++;
 			writer.println("*******************************************************************\n");
 			writer.println("L'automa sincronizzato livello "+i+" e':\n"+sincronizzatov2);
 			if(sincronizzatov2.diagnosticabilitaC1()){
+				System.out.println("Livello "+i+" diagnosticabile\n");
 				writer.println("Livello "+i+" diagnosticabile\n");
 				i++;
 				writer.flush();
@@ -281,31 +330,39 @@ public class Metodi {
 			if (controllaCicli(sincronizzatov2)) {
 				writer.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
 				writer.close();
-				return false;
+				return i-1;
 			}
 			writer.flush();
 			i++;
 		}
-		writer.println("Livello "+(i-1)+" diagnosticabile\n");
+		//System.out.println("Livello "+livello+" diagnosticabile\n");
+		writer.println("Livello "+livello+" diagnosticabile\n");
 		writer.close();
-		return true;		
+		return livello;		
 	}
-	public static boolean diagnosticabilitaMetodo3(Automa a, int livello){
+	
+	/**
+	 * Rispetta la terza versione del metodo risolvente riportato nelle specifiche.
+	 * @param a
+	 * @param livello
+	 * @return il livello di diagnosticabilità massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo3(Automa a, int livello){
 		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
-			return true;
+			return livello;
 		}
 		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
 		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
 		if(sincronizzato.diagnosticabilitaC1()&&(livello==1)){
-			return true;			
+			return livello;			
 		}
 		
 		if(controllaCicli(sincronizzato)){
-			System.out.println("Il livello di diagnosticabilita' massimo e' " + 0);
-			return false;
+			//System.out.println("Il livello di diagnosticabilita' massimo e' " + 0);
+			return 0;
 		} else if(livello==1) {
-			return true;
+			return livello;
 		}
 		
 		//livello dal 2 in poi
@@ -313,15 +370,21 @@ public class Metodi {
 		int i = 2;
 		Automa btiprev = badtwin1;
 		Automa sincronizzatoPrev = sincronizzato;
+		int livelloSincronizzatoPrev = 1;
 		while (i<=livello){
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
 			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
+				btiprev = bti;
 				i++;
 				continue;
 			}
+			if(livelloSincronizzatoPrev < (i-1)){ // allora devo calcolare l'automa sincronizzato di livello i-1
+				Automa gtiprev = Trasformazioni.badToGoodTwin(btiprev);
+				sincronizzatoPrev = Trasformazioni.sincronizzazione(gtiprev, btiprev);
+			}
+			btiprev =  bti;	
 			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			btiprev =  bti;
-			Automa gti = Trasformazioni.badToGoodTwin(bti);
 			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
 			sincronizzatoPrev = sincronizzatov2;
 			if(sincronizzatov2.diagnosticabilitaC1()){
@@ -330,11 +393,11 @@ public class Metodi {
 			}
 			
 			if (controllaCicli(sincronizzatov2)) {
-				return false;
+				return i-1;
 			}
 			i++;
 		}
-		return true;		
+		return livello;		
 	}
 	
 	private static Set<Transizione> transizioniAggiunte(Automa bti, Automa btiprev) {
