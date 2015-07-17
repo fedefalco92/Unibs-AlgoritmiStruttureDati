@@ -87,7 +87,7 @@ public class main {
 			
 			/* METODO 1 *******************************************************************************/
 			System.out.println("\n#############################");
-			System.out.println("Sto eseguento metodo 1...");
+			System.out.println("Sto eseguendo metodo 1...");
 			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
@@ -108,10 +108,11 @@ public class main {
 			else
 				writer.println("\tLivello max: " + livelloMax);
 			writer.flush();
+			System.gc();
 			
 			/* METODO 2 *******************************************************************************/
 			System.out.println("\n#############################");
-			System.out.println("Sto eseguento metodo 2...");
+			System.out.println("Sto eseguendo metodo 2...");
 			
 			// Inizio misura tempo
 			start = getCpuTime();
@@ -134,11 +135,12 @@ public class main {
 			else
 				writer.println("\tLivello max: " + livelloMax);
 			writer.flush();
+			System.gc();
 			
 			
 			/* METODO 3 *******************************************************************************/
 			System.out.println("\n#############################");
-			System.out.println("Sto eseguento metodo 3...");
+			System.out.println("Sto eseguendo metodo 3...");
 			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
@@ -159,6 +161,7 @@ public class main {
 			else
 				writer.println("\tLivello max: " + livelloMax);
 			writer.flush();
+			System.gc();
 			
 			/* FINE ******************/
 			writer.close();
