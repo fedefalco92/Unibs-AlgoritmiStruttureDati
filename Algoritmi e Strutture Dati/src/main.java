@@ -64,8 +64,6 @@ public class main {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			
-			
 			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
 			int numeroStati = 5;
 			int numeroEventiSemplici = 3;
@@ -79,29 +77,32 @@ public class main {
 			writer.println("\tNumero stati:" + numeroStati);
 			writer.println("\tNumero eventi semplici: "+ numeroEventiSemplici);
 			writer.println("\tNumero medio di transizioni uscenti da ogni stato: " +  lambda);
-			writer.println("Livello di diagnosticabilità di input: " + livelloDiagnosticabilita);
+			writer.println("Livello di diagnosticabilita' di input: " + livelloDiagnosticabilita);
 			writer.println("Prestazioni:");
 			writer.flush();
 			
 			long start, end;
 			int livelloMax;
-			System.out.println("\n****************************************************************\n");
+			System.out.println("\n****************************************************************");
 			
-			/* METODO 3 *******************************************************************************/
-			System.out.println("Sto eseguento metodo 3...");
+			/* METODO 1 *******************************************************************************/
+			System.out.println("\n#############################");
+			System.out.println("Sto eseguento metodo 1...");
+			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
-				livelloMax = Metodi.diagnosticabilitaMetodo3debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				livelloMax = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
-			long alg3 = (end-start);
-			System.out.println("\tTempo: " + alg3 + " ns");
+			// Fine misura tempo
+			long alg1 = (end-start);
+			System.out.println("\tTempo: " + alg1 + " ns" );
 			if(livelloMax == livelloDiagnosticabilita)
 				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
 				System.out.println("\tLivello max: " + livelloMax);
-			writer.println("\tAlgoritmo 3: " + alg3 + " ns");
+			writer.println("\tAlgoritmo 1: " + alg1 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
@@ -109,13 +110,18 @@ public class main {
 			writer.flush();
 			
 			/* METODO 2 *******************************************************************************/
+			System.out.println("\n#############################");
 			System.out.println("Sto eseguento metodo 2...");
+			
+			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
+			// Fine misura tempo
+			
 			long alg2 = (end-start);
 			System.out.println("\tTempo: " + alg2 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
@@ -129,28 +135,34 @@ public class main {
 				writer.println("\tLivello max: " + livelloMax);
 			writer.flush();
 			
-			/* METODO 1 *******************************************************************************/
-			System.out.println("Sto eseguento metodo 1...");
+			
+			/* METODO 3 *******************************************************************************/
+			System.out.println("\n#############################");
+			System.out.println("Sto eseguento metodo 3...");
+			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
-				livelloMax = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo3debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
 			end = getCpuTime();
-			long alg1 = (end-start);
-			System.out.println("\tTempo: " + alg1 + " ns" );
+			// Fine misura tempo
+			long alg3 = (end-start);
+			System.out.println("\tTempo: " + alg3 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
 				System.out.println("\tLivello max: " + livelloMax);
-			writer.println("\tAlgoritmo 1: " + alg1 + " ns");
+			writer.println("\tAlgoritmo 3: " + alg3 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
 				writer.println("\tLivello max: " + livelloMax);
+			writer.flush();
+			
+			/* FINE ******************/
 			writer.close();
 			System.out.println("Terminato.");
-			
 			
 		} catch (NumberFormatException e) {
 			//e.printStackTrace();
