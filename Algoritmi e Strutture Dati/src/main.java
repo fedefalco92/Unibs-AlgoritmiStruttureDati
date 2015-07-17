@@ -167,19 +167,19 @@ public class main {
 			writer.close();
 			System.out.println("Terminato.");
 			
-			if(alg1>alg2){
-				if(alg2>alg3){
+			if(alg1>alg2){ // 1 impiega di piu' di 2
+				if(alg2>alg3){ // 2 impiega piu' di 3
 					System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
 					writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
-				}else{
+				}else{ // 2 impiega meno di 3 e meno di 1
 					System.out.println("Il metodo 2 e' il piu' veloce con " + alg2);
 					writer.println("Il metodo 2 e' il piu' veloce con " + alg2 + "\n");
 				}
-			}else{
-				if(alg1<alg3){
+			}else{ // 1 impiega meno di 2
+				if(alg1<alg3){ // 1 impiega meno di 3
 					System.out.println("Il metodo 1 e' il piu' veloce con " + alg1);
 					writer.println("Il metodo 1 e' il piu' veloce con " + alg1 + "\n");
-				}else{
+				}else{ // 3 impiega meno di 1
 					System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
 					writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
 				}
