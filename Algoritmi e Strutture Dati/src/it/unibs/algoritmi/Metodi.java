@@ -373,6 +373,7 @@ public class Metodi {
 		int livelloSincronizzatoPrev = 1;
 		while (i<=livello){
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
 				btiprev = bti;
 				i++;
@@ -382,8 +383,6 @@ public class Metodi {
 				Automa gtiprev = Trasformazioni.badToGoodTwin(btiprev);
 				sincronizzatoPrev = Trasformazioni.sincronizzazione(gtiprev, btiprev);
 			}
-			btiprev =  bti;	
-			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			btiprev =  bti;
 			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
 			sincronizzatoPrev = sincronizzatov2;

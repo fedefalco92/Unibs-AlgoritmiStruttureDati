@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automa>
+<stati> 
+<stato start="true">A</stato>
+<stato>B</stato>
+<stato>C</stato>
+<stato>D</stato>
+<stato>E</stato>
+</stati>
+<transizioni>
+		<transizione evento="a">
+			<start>B</start>
+			<end>D</end>
+		</transizione>
+
+		<transizione evento="c">
+			<start>D</start>
+			<end>D</end>
+		</transizione>
+
+		<transizione evento="b">
+			<start>B</start>
+			<end>D</end>
+		</transizione>
+
+		<transizione evento="c">
+			<start>A</start>
+			<end>D</end>
+		</transizione>
+
+		<transizione evento="a">
+			<start>D</start>
+			<end>B</end>
+		</transizione>
+
+		<transizione evento="a" guasto="true">
+			<start>A</start>
+			<end>C</end>
+		</transizione>
+
+		<transizione evento="c">
+			<start>D</start>
+			<end>E</end>
+		</transizione>
+
+		<transizione evento="b" guasto="true">
+			<start>C</start>
+			<end>C</end>
+		</transizione>
+
+		<transizione>
+			<start>D</start>
+			<end>C</end>
+		</transizione>
+
+		<transizione evento="c">
+			<start>C</start>
+			<end>A</end>
+		</transizione>
+
+		<transizione>
+			<start>D</start>
+			<end>A</end>
+		</transizione>
+
+		<transizione evento="b" guasto="true">
+			<start>A</start>
+			<end>B</end>
+		</transizione>
+
+		<transizione evento="c">
+			<start>E</start>
+			<end>E</end>
+		</transizione>
+		
+	</transizioni>
+</automa>
