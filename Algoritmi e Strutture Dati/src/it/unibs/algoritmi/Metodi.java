@@ -298,6 +298,7 @@ public class Metodi {
 		while (i<=livello){
 			writer.println("*********************************************************************************************************\n");
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			writer.println("Il bad twin di livello "+i+" e':\n" + bti);
 			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
 				btiprev =  bti;
@@ -307,7 +308,7 @@ public class Metodi {
 				writer.flush();
 				continue;
 			}
-			writer.println("Il bad twin di livello "+i+" e':\n" + bti);
+			
 			
 			if(livelloSincronizzatoPrev < (i-1)){ // allora devo calcolare l'automa sincronizzato di livello i-1
 				Automa gtiprev = Trasformazioni.badToGoodTwin(btiprev);
@@ -387,6 +388,165 @@ public class Metodi {
 			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
 			sincronizzatoPrev = sincronizzatov2;
 			livelloSincronizzatoPrev=i;
+			if(sincronizzatov2.diagnosticabilitaC1()){
+				i++;
+				continue;
+			}
+			
+			if (controllaCicli(sincronizzatov2)) {
+				return i-1;
+			}
+			i++;
+		}
+		return livello;		
+	}
+	
+	
+	/**
+	 * Nuova versione algoritmo.
+	 * 
+	 * @param a
+	 * @param livello
+	 * @param nomeDir nome della cartella in cui salvare il file di dump.
+	 * @return il livello di diagnosticabilit&agrave; massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo4debug(Automa a, int livello, String nomeDir){
+		String nomeFile = nomeDir + "metodo4.txt";
+		File file = new File(nomeFile);			
+		PrintWriter writer = null;
+		try {
+			file.createNewFile();
+			writer = new PrintWriter(file);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		writer.println("############################################");
+		writer.println("## Analisi di Diagnosticabilita - Metodo 4##");
+		writer.println("############################################");
+		
+		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+		writer.println("Il bad twin di livello 1 e':\n" + badtwin1);
+		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
+			System.out.println("Livello 1 diagnosticabile  (Condizione C2 || C3 verificate)");
+			writer.println("Livello 1 diagnosticabile  (Condizione C2 || C3 verificate)\n");
+			writer.close();
+			return livello;
+		}
+		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
+		writer.println("Il good twin di livello 1 e':\n" + goodtwin1);
+		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
+		writer.println("L'automa sincronizzato livello 1 e':\n" +  sincronizzato);
+		if(sincronizzato.diagnosticabilitaC1()&&(livello==1)){
+			System.out.println("Livello 1 diagnosticabile  (Condizione C1 verificata)");
+			writer.println("Livello 1 diagnosticabile  (Condizione C1 verificata)\n");
+			writer.close();
+			return livello;			
+		}
+		
+		if(controllaCicli(sincronizzato)){
+			System.out.println("Il livello di diagnosticabilita' massimo e' " + 0);
+			writer.println("Il livello di diagnosticabilita' massimo e' " + 0);
+			writer.close();
+			return 0;
+		} else if(livello==1) {
+			writer.close();
+			return livello;
+		}
+		
+		//livello dal 2 in poi
+		
+		int i = 2;
+		Automa btiprev = badtwin1;
+		Automa sincronizzatoPrev = sincronizzato;
+		while (i<=livello){
+			writer.println("*********************************************************************************************************\n");
+			
+			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
+			btiprev =  bti;
+			writer.println("Il bad twin di livello "+i+" e':\n" + bti);
+			
+			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
+			sincronizzatoPrev = sincronizzatov2;
+			writer.println("*******************************************************************\n");
+			writer.println("L'automa sincronizzato livello "+i+" e':\n"+sincronizzatov2);
+			
+			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
+				System.out.println("Livello "+i+" diagnosticabile (Condizione C2 || C3 verificate)");
+				writer.println("Livello "+i+" diagnosticabile (Condizione C2 || C3 verificate)\n");
+				i++;
+				writer.flush();
+				continue;
+			}	
+			
+			if(sincronizzatov2.diagnosticabilitaC1()){
+				System.out.println("Livello "+i+" diagnosticabile (Condizione C1 verificata)"); // Tengo traccia di dove sono arrivato
+				writer.println("Livello "+i+" diagnosticabile (Condizione C1 verificata)\n");
+				i++;
+				writer.flush();
+				continue;
+			}
+			
+			if (controllaCicli(sincronizzatov2)) {
+				writer.println("Il livello di diagnosticabilita' massimo e' " + (i - 1));
+				writer.close();
+				return i-1;
+			}
+			System.out.println("Livello "+i+" diagnosticabile (Nessuna Condizione Verificata)"); // Tengo traccia di dove sono arrivato
+			writer.flush();
+			i++;
+		}
+		writer.println("Livello "+livello+" diagnosticabile\n");
+		writer.close();
+		return livello;		
+	}
+	
+	/**
+	 * Nuova versione algoritmo.
+	 * 
+	 * @param a
+	 * @param livello
+	 * @param nomeDir nome della cartella in cui salvare il file di dump.
+	 * @return il livello di diagnosticabilit&agrave; massimo, &le; livello.
+	 */
+	public static int diagnosticabilitaMetodo4(Automa a, int livello){
+		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
+		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
+			return livello;
+		}
+		
+		Automa goodtwin1 = Trasformazioni.badToGoodTwin(badtwin1);
+		Automa sincronizzato = Trasformazioni.sincronizzazione(goodtwin1, badtwin1);
+		if(sincronizzato.diagnosticabilitaC1()&&(livello==1)){
+			return livello;			
+		}
+		
+		if(controllaCicli(sincronizzato)){
+			return 0;
+		} else if(livello==1) {
+			return livello;
+		}
+		
+		//livello dal 2 in poi
+		
+		int i = 2;
+		Automa btiprev = badtwin1;
+		Automa sincronizzatoPrev = sincronizzato;
+		while (i<=livello){
+			
+			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
+			btiprev =  bti;
+			
+			Automa sincronizzatov2 = Trasformazioni.sincronizzazioneV2(sincronizzatoPrev, bti, transizioniAggiunte, i);
+			sincronizzatoPrev = sincronizzatov2;
+			
+			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
+				i++;
+				continue;
+			}	
+			
 			if(sincronizzatov2.diagnosticabilitaC1()){
 				i++;
 				continue;

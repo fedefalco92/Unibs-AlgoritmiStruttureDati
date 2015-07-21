@@ -64,11 +64,11 @@ public class main {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
+			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
 			int numeroStati = 5;
 			int numeroEventiSemplici = 3;
 			double lambda = 2;
-			//Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
+			Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
 			System.out.println(a);
 			writer.println("Numero stati:" + a.numeroStati());
 			writer.println("Numero transizioni:" + a.numeroTransizioni()); // Non so perche' ma prende solo quelle non di guasto
@@ -164,25 +164,75 @@ public class main {
 			writer.flush();
 			System.gc();
 			
+			
+			/* METODO 4 *******************************************************************************/
+			System.out.println("\n#############################");
+			System.out.println("Sto eseguendo metodo 4...");
+			// Inizio misura tempo
+			start = getCpuTime();
+			if(debug)
+				livelloMax = Metodi.diagnosticabilitaMetodo4debug(a, livelloDiagnosticabilita, nomeDir);
+			else 
+				livelloMax = Metodi.diagnosticabilitaMetodo4(a, livelloDiagnosticabilita);
+			end = getCpuTime();
+			// Fine misura tempo
+			long alg4 = (end-start);
+			System.out.println("\tTempo: " + alg4 + " ns");
+			if(livelloMax == livelloDiagnosticabilita)
+				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				System.out.println("\tLivello max: " + livelloMax);
+			writer.println("\tAlgoritmo 4: " + alg4 + " ns");
+			if(livelloMax == livelloDiagnosticabilita)
+				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
+			else
+				writer.println("\tLivello max: " + livelloMax);
+			writer.flush();
+			System.gc();
+			
 			/* FINE ******************/
 			writer.close();
 			System.out.println("Terminato.");
 			
+			// Confronto tempi
 			if(alg1>alg2){ // 1 impiega di piu' di 2
 				if(alg2>alg3){ // 2 impiega piu' di 3
-					System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
-					writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+					if(alg3<alg4){
+						System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
+						writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+					} else{
+						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
+						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+					}
+					
 				}else{ // 2 impiega meno di 3 e meno di 1
-					System.out.println("Il metodo 2 e' il piu' veloce con " + alg2);
-					writer.println("Il metodo 2 e' il piu' veloce con " + alg2 + "\n");
+					if(alg2<alg4){
+						System.out.println("Il metodo 2 e' il piu' veloce con " + alg2);
+						writer.println("Il metodo 2 e' il piu' veloce con " + alg2 + "\n");
+					} else{
+						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
+						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+					}
+					
 				}
 			}else{ // 1 impiega meno di 2
 				if(alg1<alg3){ // 1 impiega meno di 3
-					System.out.println("Il metodo 1 e' il piu' veloce con " + alg1);
-					writer.println("Il metodo 1 e' il piu' veloce con " + alg1 + "\n");
+					if(alg1<alg4){
+						System.out.println("Il metodo 1 e' il piu' veloce con " + alg1);
+						writer.println("Il metodo 1 e' il piu' veloce con " + alg1 + "\n");
+					}else{
+						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
+						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+					}
+					
 				}else{ // 3 impiega meno di 1
-					System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
-					writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+					if (alg3<alg4) {
+						System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
+						writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+					} else{
+						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
+						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+					}
 				}
 			}
 			
