@@ -22,8 +22,8 @@ public class GenerazioneAutoma {
 	
 	private static final double PROBABILITA_GUASTO = 0.2;
 	private static final double PROBABILITA_NON_OSSERVABILE = 0.3;
-	private static final String [] EVENTI_SEMPLICI = new String []{"a","b","c","d","e","f","g"};
-	private static final String[] STATI = new String[]{"A","B","C","D","E","F","G","H","I","J"};
+	private static final String [] EVENTI_SEMPLICI = new String []{"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"};
+	private static final String[] STATI = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"};
 	private static final int NUMERO_MAX_EVENTI = EVENTI_SEMPLICI.length;
 	private static final int NUMERO_MAX_STATI = STATI.length;
 	
