@@ -29,8 +29,8 @@ public class Automa {
 	 
 	public Automa(){
 		this.stati =  new HashMap<Stato,Set<Transizione>>();
-		numeroTransizioni = 0;
-		statoIniziale=null;
+		this.numeroTransizioni = 0;
+		this.statoIniziale=null;
 	}
 
 	public Stato getStatoIniziale() {
@@ -117,7 +117,11 @@ public class Automa {
 	      add(y);
 	    Transizione t = new Transizione(x,y,evento,guasto);
 	    flag = (stati.get(x) ).add(t);
-	    flag1 =(stati.get(y) ).add(t);
+	    flag1 = true;
+	    if(!x.equals(y)){
+	    	flag1 =(stati.get(y) ).add(t);
+	    }
+	    
 	    flag = flag && flag1;
 	    if (flag)
 	      numeroTransizioni++;
@@ -146,9 +150,13 @@ public class Automa {
 	     */
 	    if (!stati.containsKey(y))
 	      add(y);
+	    
 	    Transizione t = new Transizione(x,y,evento,guasto, ambigua);
 	    flag = (stati.get(x) ).add(t);
-	    flag1 =(stati.get(y) ).add(t);
+	    flag1 = true;
+	    if(!x.equals(y)){
+	    	flag1 =(stati.get(y) ).add(t);	    	
+	    }
 	    flag = flag && flag1;
 	    if (flag)
 	      numeroTransizioni++;

@@ -64,15 +64,14 @@ public class main {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
+			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
 			int numeroStati = 5;
 			int numeroEventiSemplici = 3;
 			double lambda = 2;
-			//Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
+			Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
 			System.out.println(a);
 			writer.println("Numero stati:" + a.numeroStati());
 			writer.println("Numero transizioni:" + a.numeroTransizioni()); // Non so perche' ma prende solo quelle non di guasto
-			writer.println("Numero transizioni (Corretto):" + a.getTransizioni().size());
 			writer.println(a);
 			writer.println("Parametri costruzione automa:");
 			writer.println("\tNumero stati:" + numeroStati);
