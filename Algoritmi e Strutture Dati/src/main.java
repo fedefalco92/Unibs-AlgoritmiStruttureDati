@@ -369,16 +369,25 @@ public class main {
 		int nstatimax = 15;
 		
 		int lambdamin = 2;
-		int lambdamax = 5;
+		int lambdamax = 2;
 		
 		int neventimin = 3;
-		int neventimax = 8;
+		int neventimax = 3;
 		
 		int niterazionitripletta = 5;
 		
 		String nomeDir = "./simulazioni/simulazione - " + System.currentTimeMillis() + "/";
 		File dir = new File(nomeDir);
 		dir.mkdir();
+		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + "_l" + lambdamin + "-" + lambdamax + "_e" + neventimin + "-" + neventimax ;
+		File csvfile = new File(nomeDir + nomef);
+		try {
+			csvfile.createNewFile();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter writercsv = new PrintWriter(csvfile);
 		
 		for(int nstati = nstatimin; nstati <= nstatimax; nstati++){
 			for(int lambda = lambdamin; lambda <= lambdamax; lambda++){
@@ -411,7 +420,7 @@ public class main {
 							writer.println("Prestazioni:");
 							writer.flush();
 							long start, end;
-							int livelloMax;
+							int livelloMax = 0;
 							System.out.println("\n****************************************************************");
 							/* METODO 1 *******************************************************************************/
 							System.out.println("\n#############################");
@@ -500,6 +509,15 @@ public class main {
 							/* FINE ******************/
 							writer.close();
 							System.out.println("Terminato.");
+							
+							
+							//////////////////////////////////////////////////////////////////////////////////////////////////
+							// SCRIVO I TEMPI NEL writercsw 
+							///////////////////////////////////////////////////////////////////////////////////////////////////
+							
+							String riga = nstati + "," + lambda + "," + neventi + "," + livelloMax + "," + alg1 + "," + alg2 + "," + alg3v1 + "," + alg3v2;
+							writercsv.println(riga);
+							writercsv.flush();
 						} catch (StackOverflowError e) {
 							System.out.println("Automa non valido ha generato eccezione");
 							contatoreAutomiScartati++;
@@ -511,6 +529,8 @@ public class main {
 				}
 			}
 		}
+		
+		writercsv.close();
 		System.out.println("Automi scartati: " + contatoreAutomiScartati);
 	}
 	
