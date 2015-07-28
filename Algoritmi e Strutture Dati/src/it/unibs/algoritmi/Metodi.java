@@ -237,7 +237,7 @@ public class Metodi {
 	
 	/**
 	 * Rispetta la terza versione del metodo risolvente riportato nelle specifiche. 
-	 * In particolare il calcolo dell'automa sincronizzato di livello i-1 viene eseguito 
+	 * In particolare il calcolo dell'automa sincronizzato di livello i-1 viene eseguito, se necessario,
 	 * nel ciclo corrispondente al livello i se non &egrave; stato eseguito nel ciclo 
 	 * corrispondente al livello i-1.
 	 * @param a
@@ -245,8 +245,8 @@ public class Metodi {
 	 * @param nomeDir nome della cartella in cui salvare il file di dump.
 	 * @return il livello di diagnosticabilit&agrave; massimo, &le; livello.
 	 */
-	public static int diagnosticabilitaMetodo3debug(Automa a, int livello, String nomeDir){
-		String nomeFile = nomeDir + "metodo3.txt";
+	public static int diagnosticabilitaMetodo3v1debug(Automa a, int livello, String nomeDir){
+		String nomeFile = nomeDir + "metodo3v1.txt";
 		File file = new File(nomeFile);			
 		PrintWriter writer = null;
 		try {
@@ -256,9 +256,9 @@ public class Metodi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		writer.println("############################################");
-		writer.println("## Analisi di Diagnosticabilita - Metodo 3##");
-		writer.println("############################################");
+		writer.println("##########################################################");
+		writer.println("## Analisi di Diagnosticabilita - Metodo 3  - VERSIONE 1##");
+		writer.println("##########################################################");
 		
 		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 		writer.println("Il bad twin di livello 1 e':\n" + badtwin1);
@@ -345,11 +345,14 @@ public class Metodi {
 	
 	/**
 	 * Rispetta la terza versione del metodo risolvente riportato nelle specifiche.
+	 * In particolare il calcolo dell'automa sincronizzato di livello i-1 viene eseguito, se necessario,
+	 * nel ciclo corrispondente al livello i se non &egrave; stato eseguito nel ciclo 
+	 * corrispondente al livello i-1.
 	 * @param a
 	 * @param livello
 	 * @return il livello di diagnosticabilit&agrave; massimo, &le; livello.
 	 */
-	public static int diagnosticabilitaMetodo3(Automa a, int livello){
+	public static int diagnosticabilitaMetodo3v1(Automa a, int livello){
 		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
 			return livello;
@@ -404,14 +407,18 @@ public class Metodi {
 	
 	/**
 	 * Nuova versione algoritmo.
+	 * L'automa sincronizzato secondo il secondo algorimo di sincronizzazione &egrave;
+	 * calcolato in ogni caso, anche se non &egrave; necessario. In questo modo si evita 
+	 * di calcolare l'automa sincronizzato di livello i-1 secondo il primo algoritmo di 
+	 * sincronizzazione qualora non fosse stato calcolato al ciclo i-1
 	 * 
 	 * @param a
 	 * @param livello
 	 * @param nomeDir nome della cartella in cui salvare il file di dump.
 	 * @return il livello di diagnosticabilit&agrave; massimo, &le; livello.
 	 */
-	public static int diagnosticabilitaMetodo4debug(Automa a, int livello, String nomeDir){
-		String nomeFile = nomeDir + "metodo4.txt";
+	public static int diagnosticabilitaMetodo3v2debug(Automa a, int livello, String nomeDir){
+		String nomeFile = nomeDir + "metodo3v2.txt";
 		File file = new File(nomeFile);			
 		PrintWriter writer = null;
 		try {
@@ -421,9 +428,9 @@ public class Metodi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		writer.println("############################################");
-		writer.println("## Analisi di Diagnosticabilita - Metodo 4##");
-		writer.println("############################################");
+		writer.println("#########################################################");
+		writer.println("## Analisi di Diagnosticabilita - Metodo 3 - VERSIONE 2##");
+		writer.println("#########################################################");
 		
 		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 		writer.println("Il bad twin di livello 1 e':\n" + badtwin1);
@@ -504,13 +511,17 @@ public class Metodi {
 	
 	/**
 	 * Nuova versione algoritmo.
+	 * L'automa sincronizzato secondo il secondo algorimo di sincronizzazione &egrave;
+	 * calcolato in ogni caso, anche se non &egrave; necessario. In questo modo si evita 
+	 * di calcolare l'automa sincronizzato di livello i-1 secondo il primo algoritmo di 
+	 * sincronizzazione qualora non fosse stato calcolato al ciclo i-1
 	 * 
 	 * @param a
 	 * @param livello
 	 * @param nomeDir nome della cartella in cui salvare il file di dump.
 	 * @return il livello di diagnosticabilit&agrave; massimo, &le; livello.
 	 */
-	public static int diagnosticabilitaMetodo4(Automa a, int livello){
+	public static int diagnosticabilitaMetodo3v2(Automa a, int livello){
 		Automa badtwin1 = Trasformazioni.badtwin0to1(a);
 		if((badtwin1.diagnosticabilitaC2()||badtwin1.diagnosticabilitaC3())&&(livello==1)){
 			return livello;

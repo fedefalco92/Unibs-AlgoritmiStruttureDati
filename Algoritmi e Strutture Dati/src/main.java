@@ -139,24 +139,24 @@ public class main {
 			System.gc();
 			
 			
-			/* METODO 3 *******************************************************************************/
+			/* METODO 3v1*******************************************************************************/
 			System.out.println("\n#############################");
-			System.out.println("Sto eseguendo metodo 3...");
+			System.out.println("Sto eseguendo metodo 3v1...");
 			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
-				livelloMax = Metodi.diagnosticabilitaMetodo3debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo3v1debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				livelloMax = Metodi.diagnosticabilitaMetodo3(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			// Fine misura tempo
-			long alg3 = (end-start);
-			System.out.println("\tTempo: " + alg3 + " ns");
+			long alg3v1= (end-start);
+			System.out.println("\tTempo: " + alg3v1+ " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
 				System.out.println("\tLivello max: " + livelloMax);
-			writer.println("\tAlgoritmo 3: " + alg3 + " ns");
+			writer.println("\tAlgoritmo 3: " + alg3v1+ " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
@@ -165,24 +165,24 @@ public class main {
 			System.gc();
 			
 			
-			/* METODO 4 *******************************************************************************/
+			/* METODO 3v2 *******************************************************************************/
 			System.out.println("\n#############################");
-			System.out.println("Sto eseguendo metodo 4...");
+			System.out.println("Sto eseguendo metodo 3v2...");
 			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
-				livelloMax = Metodi.diagnosticabilitaMetodo4debug(a, livelloDiagnosticabilita, nomeDir);
+				livelloMax = Metodi.diagnosticabilitaMetodo3v2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
-				livelloMax = Metodi.diagnosticabilitaMetodo4(a, livelloDiagnosticabilita);
+				livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			// Fine misura tempo
-			long alg4 = (end-start);
-			System.out.println("\tTempo: " + alg4 + " ns");
+			long alg3v2 = (end-start);
+			System.out.println("\tTempo: " + alg3v2 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				System.out.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
 				System.out.println("\tLivello max: " + livelloMax);
-			writer.println("\tAlgoritmo 4: " + alg4 + " ns");
+			writer.println("\tAlgoritmo 3v2: " + alg3v2 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
 				writer.println("\tLivello " + livelloDiagnosticabilita + " diagnosticabile.");
 			else
@@ -196,42 +196,42 @@ public class main {
 			
 			// Confronto tempi
 			if(alg1>alg2){ // 1 impiega di piu' di 2
-				if(alg2>alg3){ // 2 impiega piu' di 3
-					if(alg3<alg4){
-						System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
-						writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+				if(alg2>alg3v1){ // 2 impiega piu' di 3v1
+					if(alg3v1<alg3v2){
+						System.out.println("Il metodo 3v1e' il piu' veloce con " + alg3v1);
+						writer.println("Il metodo 3v1e' il piu' veloce con " + alg3v1+ "\n");
 					} else{
-						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
-						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+						System.out.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2);
+						writer.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2 + "\n");
 					}
 					
-				}else{ // 2 impiega meno di 3 e meno di 1
-					if(alg2<alg4){
+				}else{ // 2 impiega meno di 3v1 e meno di 1
+					if(alg2<alg3v2){
 						System.out.println("Il metodo 2 e' il piu' veloce con " + alg2);
 						writer.println("Il metodo 2 e' il piu' veloce con " + alg2 + "\n");
 					} else{
-						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
-						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+						System.out.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2);
+						writer.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2 + "\n");
 					}
 					
 				}
 			}else{ // 1 impiega meno di 2
-				if(alg1<alg3){ // 1 impiega meno di 3
-					if(alg1<alg4){
+				if(alg1<alg3v1){ // 1 impiega meno di 3v1
+					if(alg1<alg3v2){
 						System.out.println("Il metodo 1 e' il piu' veloce con " + alg1);
 						writer.println("Il metodo 1 e' il piu' veloce con " + alg1 + "\n");
 					}else{
-						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
-						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+						System.out.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2);
+						writer.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2 + "\n");
 					}
 					
-				}else{ // 3 impiega meno di 1
-					if (alg3<alg4) {
-						System.out.println("Il metodo 3 e' il piu' veloce con " + alg3);
-						writer.println("Il metodo 3 e' il piu' veloce con " + alg3 + "\n");
+				}else{ // 3v1impiega meno di 1
+					if (alg3v1<alg3v2) {
+						System.out.println("Il metodo 3v1e' il piu' veloce con " + alg3v1);
+						writer.println("Il metodo 3v1e' il piu' veloce con " + alg3v1+ "\n");
 					} else{
-						System.out.println("Il metodo 4 e' il piu' veloce con " + alg4);
-						writer.println("Il metodo 4 e' il piu' veloce con " + alg4 + "\n");
+						System.out.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2);
+						writer.println("Il metodo 3v2 e' il piu' veloce con " + alg3v2 + "\n");
 					}
 				}
 			}
