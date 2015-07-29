@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automa>
+<stati> 
+	<stato start="true">A</stato>
+	<stato>B</stato>
+	<stato>C</stato>
+	<stato>D</stato>
+	<stato>E</stato>
+	<stato>F</stato>
+	<stato>G</stato>
+</stati>
+<transizioni>
+	<!-- Transizione 1 -->
+	<transizione evento="c">
+		<start>A</start>
+		<end>B</end>
+	</transizione>
+
+	<!-- Transizione 2 -->
+	<transizione evento="c" guasto="true">
+		<start>A</start>
+		<end>B</end>
+	</transizione>
+
+	<!-- Transizione 3 -->
+	<transizione evento="b">
+		<start>D</start>
+		<end>F</end>
+	</transizione>
+
+	<!-- Transizione 4 -->
+	<transizione evento="b">
+		<start>F</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 5 -->
+	<transizione>
+		<start>C</start>
+		<end>G</end>
+	</transizione>
+
+	<!-- Transizione 6 -->
+	<transizione evento="a">
+		<start>G</start>
+		<end>D</end>
+	</transizione>
+
+	<!-- Transizione 7 -->
+	<transizione>
+		<start>E</start>
+		<end>D</end>
+	</transizione>
+
+	<!-- Transizione 8-->
+	<transizione evento="a">
+		<start>D</start>
+		<end>E</end>
+	</transizione>
+
+	<!-- Transizione 9 -->
+	<transizione evento="c">
+		<start>G</start>
+		<end>G</end>
+	</transizione>
+
+	<!-- Transizione 10 -->
+	<transizione evento="a">
+		<start>C</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 11 -->
+	<transizione evento="a">
+		<start>G</start>
+		<end>C</end>
+	</transizione>
+
+	<!-- Transizione 12 -->
+	<transizione guasto="true">
+		<start>B</start>
+		<end>F</end>
+	</transizione>
+
+	<!-- Transizione 13 -->
+	<transizione evento="c">
+		<start>E</start>
+		<end>G</end>
+	</transizione>
+
+	<!-- Transizione 14 -->
+	<transizione evento="b">
+		<start>E</start>
+		<end>C</end>
+	</transizione>
+
+	<!-- Transizione 15 -->
+	<transizione>
+		<start>F</start>
+		<end>E</end>
+	</transizione>
+		
+	</transizioni>
+</automa>
