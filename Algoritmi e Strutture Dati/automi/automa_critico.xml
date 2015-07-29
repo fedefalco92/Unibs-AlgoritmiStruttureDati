@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<automa>
+<stati> 
+	<stato start="true">A</stato>
+	<stato>B</stato>
+	<stato>C</stato>
+	<stato>D</stato>
+	<stato>E</stato>
+	<stato>F</stato>
+	<stato>G</stato>
+	<stato>H</stato>
+	<stato>I</stato>
+	<stato>J</stato>
+	<stato>K</stato>
+	<stato>L</stato>
+	<stato>M</stato>
+</stati>
+
+<transizioni>
+
+	<!-- Transizione 1 -->
+	<transizione evento="c">
+		<start>L</start>
+		<end>H</end>
+	</transizione>
+
+	<!-- Transizione 2 -->
+	<transizione evento="b" guasto="true">
+		<start>G</start>
+		<end>F</end>
+	</transizione>
+
+	<!-- Transizione 3 -->
+	<transizione evento="c">
+		<start>M</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 4 -->
+	<transizione evento="b" guasto="true">
+		<start>H</start>
+		<end>F</end>
+	</transizione>
+
+	<!-- Transizione 5 -->
+	<transizione>
+		<start>D</start>
+		<end>H</end>
+	</transizione>
+
+	<!-- Transizione 6 -->
+	<transizione evento="a">
+		<start>B</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 7 -->
+	<transizione evento="c">
+		<start>F</start>
+		<end>H</end>
+	</transizione>
+
+	<!-- Transizione 8 -->
+	<transizione>
+		<start>J</start>
+		<end>K</end>
+	</transizione>
+
+	<!-- Transizione 9 -->
+	<transizione evento="a">
+		<start>J</start>
+		<end>K</end>
+	</transizione>
+
+	<!-- Transizione 10 -->
+	<transizione>
+		<start>L</start>
+		<end>E</end>
+	</transizione>
+
+	<!-- Transizione 11 -->
+	<transizione evento="b">
+		<start>A</start>
+		<end>M</end>
+	</transizione>
+
+	<!-- Transizione 12 -->
+	<transizione evento="a">
+		<start>I</start>
+		<end>E</end>
+	</transizione>
+
+	<!-- Transizione 13 -->
+	<transizione evento="a">
+		<start>M</start>
+		<end>K</end>
+	</transizione>
+
+	<!-- Transizione 14 -->
+	<transizione evento="b">
+		<start>M</start>
+		<end>M</end>
+	</transizione>
+
+	<!-- Transizione 15 -->
+	<transizione evento="c">
+		<start>B</start>
+		<end>K</end>
+	</transizione>
+
+	<!-- Transizione 16 -->
+	<transizione evento="c">
+		<start>E</start>
+		<end>D</end>
+	</transizione>
+
+	<!-- Transizione 17 -->
+	<transizione evento="c">
+		<start>C</start>
+		<end>C</end>
+	</transizione>
+
+	<!-- Transizione 18 -->
+	<transizione evento="a">
+		<start>E</start>
+		<end>J</end>
+	</transizione>
+
+	<!-- Transizione 19 -->
+	<transizione evento="b">
+		<start>H</start>
+		<end>B</end>
+	</transizione>
+
+	<!-- Transizione 20 -->
+	<transizione evento="b">
+		<start>E</start>
+		<end>L</end>
+	</transizione>
+
+	<!-- Transizione 21 -->
+	<transizione evento="c">
+		<start>L</start>
+		<end>D</end>
+	</transizione>
+
+	<!-- Transizione 22 -->
+	<transizione evento="b">
+		<start>H</start>
+		<end>I</end>
+	</transizione>
+
+	<!-- Transizione 23 -->
+	<transizione evento="b">
+		<start>J</start>
+		<end>J</end>
+	</transizione>
+
+	<!-- Transizione 24 -->
+	<transizione evento="b">
+		<start>A</start>
+		<end>H</end>
+	</transizione>
+
+	<!-- Transizione 25 -->
+	<transizione>
+		<start>H</start>
+		<end>M</end>
+	</transizione>
+
+	<!-- Transizione 26 -->
+	<transizione evento="b">
+		<start>J</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 27 -->
+	<transizione evento="a">
+		<start>L</start>
+		<end>C</end>
+	</transizione>
+
+	<!-- Transizione 28 -->
+	<transizione evento="a">
+		<start>A</start>
+		<end>I</end>
+	</transizione>
+
+	<!-- Transizione 29 -->
+	<transizione evento="c" guasto="true">
+		<start>E</start>
+		<end>M</end>
+	</transizione>
+
+	<!-- Transizione 30 -->
+	<transizione>
+		<start>J</start>
+		<end>M</end>
+	</transizione>
+
+	<!-- Transizione 31 -->
+	<transizione evento="c">
+		<start>L</start>
+		<end>C</end>
+	</transizione>
+
+	<!-- Transizione 32 -->
+	<transizione>
+		<start>M</start>
+		<end>C</end>
+	</transizione>
+
+	<!-- Transizione 33 -->
+	<transizione evento="c">
+		<start>F</start>
+		<end>B</end>
+	</transizione>
+
+	<!-- Transizione 34 -->
+	<transizione evento="b">
+		<start>K</start>
+		<end>K</end>
+	</transizione>
+
+	<!-- Transizione 35 -->
+	<transizione evento="b">
+		<start>J</start>
+		<end>K</end>
+	</transizione>
+
+	<!-- Transizione 36 -->
+	<transizione evento="c">
+		<start>B</start>
+		<end>M</end>
+	</transizione>
+
+	<!-- Transizione 37 -->
+	<transizione evento="a">
+		<start>K</start>
+		<end>I</end>
+	</transizione>
+
+	<!-- Transizione 38 -->
+	<transizione evento="c">
+		<start>G</start>
+		<end>E</end>
+	</transizione>
+
+	<!-- Transizione 39 -->
+	<transizione evento="b" guasto="true">
+		<start>L</start>
+		<end>I</end>
+	</transizione>
+
+	<!-- Transizione 40 -->
+	<transizione evento="c">
+		<start>H</start>
+		<end>E</end>
+	</transizione>
+
+	<!-- Transizione 41 -->
+	<transizione evento="a">
+		<start>D</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 42 -->
+	<transizione evento="b">
+		<start>K</start>
+		<end>D</end>
+	</transizione>
+
+	<!-- Transizione 43 -->
+	<transizione evento="c">
+		<start>J</start>
+		<end>B</end>
+	</transizione>
+
+	<!-- Transizione 44 -->
+	<transizione evento="c">
+		<start>K</start>
+		<end>F</end>
+	</transizione>
+
+
+</transizioni>
+</automa>
