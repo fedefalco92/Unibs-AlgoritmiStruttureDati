@@ -29,12 +29,12 @@ public class main {
 	 * @throws FileNotFoundException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
-		
+			
+		/*
 		if(true){
 			simulazione(5);
 			return;
-
-		}
+		}*/
 
 		if(args.length<2){
 			System.out.println("ERRORE");
@@ -71,11 +71,11 @@ public class main {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
+			Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
 			int numeroStati = 10;
 			int numeroEventiSemplici = 8;
 			double lambda = 3;
-			Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
+			//Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
 			System.out.println(a);
 			writer.println("Numero stati:" + a.numeroStati());
 			writer.println("Numero transizioni:" + a.numeroTransizioni());
@@ -374,7 +374,7 @@ public class main {
 		int neventimin = 3;
 		int neventimax = 3;
 		
-		int niterazionitripletta = 5;
+		int niterazionitripletta = 10;
 		
 		String nomeDir = "./simulazioni/simulazione - " + System.currentTimeMillis() + "/";
 		File dir = new File(nomeDir);
@@ -408,7 +408,6 @@ public class main {
 							PrintWriter writer = new PrintWriter(file);
 							Automa a = GenerazioneAutoma.generaAutoma(nstati, neventi, lambda);
 							//System.out.println(a);
-							System.out.println(nomeFile);
 							writer.println("Numero stati:" + a.numeroStati());
 							writer.println("Numero transizioni:" + a.numeroTransizioni());
 							writer.println(a);
@@ -422,6 +421,7 @@ public class main {
 							long start, end;
 							int livelloMax = 0;
 							System.out.println("\n****************************************************************");
+							System.out.println(nomeFile);
 							/* METODO 1 *******************************************************************************/
 							System.out.println("\n#############################");
 							System.out.println("Sto eseguendo metodo 1...");
@@ -509,7 +509,6 @@ public class main {
 							/* FINE ******************/
 							writer.close();
 							System.out.println("Terminato.");
-							
 							
 							//////////////////////////////////////////////////////////////////////////////////////////////////
 							// SCRIVO I TEMPI NEL writercsw 
