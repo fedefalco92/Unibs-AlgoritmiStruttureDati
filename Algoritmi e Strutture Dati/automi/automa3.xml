@@ -9,86 +9,96 @@
 	<stato>F</stato>
 	<stato>G</stato>
 </stati>
-
 <transizioni>
-
 	<!-- Transizione 1 -->
-	<transizione evento="a">
-		<start>B</start>
-		<end>D</end>
+	<transizione evento="c">
+		<start>A</start>
+		<end>B</end>
 	</transizione>
 
 	<!-- Transizione 2 -->
-	<transizione evento="b">
-		<start>F</start>
-		<end>A</end>
+	<transizione guasto="true">
+		<start>A</start>
+		<end>B</end>
 	</transizione>
 
 	<!-- Transizione 3 -->
 	<transizione evento="b">
+		<start>D</start>
+		<end>F</end>
+	</transizione>
+
+	<!-- Transizione 4 -->
+	<transizione evento="b">
+		<start>F</start>
+		<end>A</end>
+	</transizione>
+
+	<!-- Transizione 5 -->
+	<transizione>
+		<start>C</start>
+		<end>G</end>
+	</transizione>
+
+	<!-- Transizione 6 -->
+	<transizione evento="a">
 		<start>G</start>
 		<end>D</end>
 	</transizione>
 
-	<!-- Transizione 4 -->
-	<transizione evento="c">
-		<start>C</start>
-		<end>F</end>
-	</transizione>
-
-	<!-- Transizione 5 -->
-	<transizione evento="b">
-		<start>G</start>
-		<end>A</end>
-	</transizione>
-
-	<!-- Transizione 6 -->
-	<transizione evento="c">
-		<start>E</start>
-		<end>B</end>
-	</transizione>
-
 	<!-- Transizione 7 -->
-	<transizione guasto="true">
+	<transizione>
 		<start>E</start>
-		<end>B</end>
+		<end>D</end>
 	</transizione>
 
-	<!-- Transizione 8 -->
-	<transizione evento="b">
-		<start>E</start>
-		<end>F</end>
+	<!-- Transizione 8-->
+	<transizione evento="a">
+		<start>D</start>
+		<end>E</end>
 	</transizione>
 
 	<!-- Transizione 9 -->
 	<transizione evento="c">
-		<start>A</start>
+		<start>G</start>
 		<end>G</end>
 	</transizione>
 
 	<!-- Transizione 10 -->
-	<transizione evento="c">
-		<start>D</start>
-		<end>B</end>
-	</transizione>
-
-	<!-- Transizione 11 -->
-	<transizione evento="b">
-		<start>E</start>
+	<transizione evento="a">
+		<start>C</start>
 		<end>A</end>
 	</transizione>
 
+	<!-- Transizione 11 -->
+	<transizione evento="a">
+		<start>G</start>
+		<end>C</end>
+	</transizione>
+
 	<!-- Transizione 12 -->
+	<transizione guasto="true">
+		<start>B</start>
+		<end>F</end>
+	</transizione>
+
+	<!-- Transizione 13 -->
+	<transizione evento="c">
+		<start>E</start>
+		<end>G</end>
+	</transizione>
+
+	<!-- Transizione 14 -->
 	<transizione evento="b">
 		<start>E</start>
 		<end>C</end>
 	</transizione>
 
-	<!-- Transizione 13 -->
-	<transizione guasto="true">
+	<!-- Transizione 15 -->
+	<transizione>
 		<start>F</start>
-		<end>C</end>
+		<end>E</end>
 	</transizione>
-
-</transizioni>
+		
+	</transizioni>
 </automa>
