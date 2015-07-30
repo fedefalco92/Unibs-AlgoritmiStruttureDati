@@ -30,11 +30,11 @@ public class main {
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
 			
-		/*
+		
 		if(true){
 			simulazione(5);
 			return;
-		}*/
+		}
 
 		if(args.length<2){
 			System.out.println("ERRORE");
@@ -372,7 +372,7 @@ public class main {
 		int lambdamax = 2;
 		
 		int neventimin = 3;
-		int neventimax = 3;
+		int neventimax = 5;
 		
 		int niterazionitripletta = 10;
 		

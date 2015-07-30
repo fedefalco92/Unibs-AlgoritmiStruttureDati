@@ -17,7 +17,7 @@
 	</transizione>
 
 	<!-- Transizione 2 -->
-	<transizione evento="c" guasto="true">
+	<transizione guasto="true">
 		<start>A</start>
 		<end>B</end>
 	</transizione>

@@ -25,7 +25,7 @@
 	</transizione>
 
 	<!-- Transizione 2 -->
-	<transizione evento="b" guasto="true">
+	<transizione guasto="true">
 		<start>G</start>
 		<end>F</end>
 	</transizione>
@@ -37,7 +37,7 @@
 	</transizione>
 
 	<!-- Transizione 4 -->
-	<transizione evento="b" guasto="true">
+	<transizione guasto="true">
 		<start>H</start>
 		<end>F</end>
 	</transizione>
@@ -187,7 +187,7 @@
 	</transizione>
 
 	<!-- Transizione 29 -->
-	<transizione evento="c" guasto="true">
+	<transizione guasto="true">
 		<start>E</start>
 		<end>M</end>
 	</transizione>
@@ -247,7 +247,7 @@
 	</transizione>
 
 	<!-- Transizione 39 -->
-	<transizione evento="b" guasto="true">
+	<transizione guasto="true">
 		<start>L</start>
 		<end>I</end>
 	</transizione>

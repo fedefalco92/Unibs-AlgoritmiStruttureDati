@@ -76,6 +76,9 @@ public class GenerazioneAutoma {
 				}
 				double probGuasto = Math.random();
 				boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+				if(guasto){
+					evento = new Evento();
+				}
 				
 				Transizione t = new Transizione(s1,s2,evento,guasto);
 				if(!aggiunte.contains(t)){
