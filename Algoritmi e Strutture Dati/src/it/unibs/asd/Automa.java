@@ -461,5 +461,16 @@ public class Automa {
 	    return out.toString();
 	  }
 
+	public Set<Transizione> getTransizioniNonOsservabiliUscenti(Stato stato) {
+		 Set<Transizione> tstato = getTransizioni(stato);
+		  Set<Transizione> tuscenti = new HashSet<Transizione>();
+		  for(Transizione t : tstato){
+			  if (t.getStatoSorgente().equals(stato)&&t.nonOsservabile()){
+				  tuscenti.add(t);
+			  }
+		  }
+		  return tuscenti;
+	}
+
 
 }

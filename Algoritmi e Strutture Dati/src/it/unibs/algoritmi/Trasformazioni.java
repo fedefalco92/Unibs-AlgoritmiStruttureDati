@@ -28,16 +28,18 @@ public class Trasformazioni {
 	 */
 	public static Automa badtwin0to1(Automa a){
 		Automa badtwin1 = inizializzaBadTwin1(a);
-		Set<Transizione> tNonOsservabili = a.getTransizioniNonOsservabili();
-		for(Transizione t : tNonOsservabili){
-			Set<Transizione> triplette = find(a,t.getStatoDestinazione(),1,t.isGuasto(),new Evento());
-			if(!triplette.isEmpty()){
-				for (Transizione tripletta:triplette){
-					badtwin1.add(t.getStatoSorgente(), tripletta.getStatoDestinazione(), tripletta.getEvento(), tripletta.isGuasto());
-				}					
-			}
+		for (Stato s: a.getStati()) {
+			Set<Transizione> tNonOsservabili = a.getTransizioniNonOsservabiliUscenti(s);
+			for (Transizione t : tNonOsservabili) {
+				Set<Transizione> triplette = find(a, t.getStatoDestinazione(), 1, t.isGuasto(), new Evento());
+				if (!triplette.isEmpty()) {
+					for (Transizione tripletta : triplette) {
+						badtwin1.add(t.getStatoSorgente(), tripletta.getStatoDestinazione(), tripletta.getEvento(),
+								tripletta.isGuasto());
+					}
+				}
+			} 
 		}
-		
 		Set<Stato> raggiungibili = bfs(badtwin1);
 		Set<Stato> statiAutoma = badtwin1.getStati();
 		if(!setUguali(raggiungibili, statiAutoma)){
