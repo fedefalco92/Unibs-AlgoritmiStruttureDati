@@ -489,7 +489,7 @@ public class Trasformazioni {
 	public static Set<Stato> bfs(Automa a){
 		Stato s = a.getStatoIniziale();
 		Set<Stato> stati = a.getStati();
-		Set<Stato> raggiungibili = new HashSet<Stato>();
+		
 		Set<Stato> bianchi = new HashSet<Stato>();
 		Set<Stato> grigi = new HashSet<Stato>();
 		Set<Stato> neri = new HashSet<Stato>();
@@ -520,7 +520,7 @@ public class Trasformazioni {
 			grigi.remove(u);
 		}
 		
-		return raggiungibili;		
+		return neri;		
 	}
 
 }
