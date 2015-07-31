@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.Set;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,8 +89,9 @@ public class main {
 			writer.println("Prestazioni:");
 			writer.flush();
 			
+			int [] livelliMax = new int [4];
 			long start, end;
-			int livelloMax;
+			int livelloMax = 0;
 			System.out.println("\n****************************************************************");
 			
 			/* METODO 1 *******************************************************************************/
@@ -102,6 +104,8 @@ public class main {
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
+			livelliMax[0] = livelloMax;
+			
 			// Fine misura tempo
 			long alg1 = (end-start);
 			System.out.println("\tTempo: " + alg1 + " ns" );
@@ -129,6 +133,7 @@ public class main {
 				livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			// Fine misura tempo
+			livelliMax[1] = livelloMax;
 			
 			long alg2 = (end-start);
 			System.out.println("\tTempo: " + alg2 + " ns");
@@ -156,6 +161,7 @@ public class main {
 				livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			// Fine misura tempo
+			livelliMax[2] = livelloMax;
 			long alg3v1= (end-start);
 			System.out.println("\tTempo: " + alg3v1+ " ns");
 			if(livelloMax == livelloDiagnosticabilita)
@@ -182,6 +188,7 @@ public class main {
 				livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
 			// Fine misura tempo
+			livelliMax[3] = livelloMax;
 			long alg3v2 = (end-start);
 			System.out.println("\tTempo: " + alg3v2 + " ns");
 			if(livelloMax == livelloDiagnosticabilita)
@@ -379,6 +386,11 @@ public class main {
 		String nomeDir = "./simulazioni/simulazione - " + System.currentTimeMillis() + "/";
 		File dir = new File(nomeDir);
 		dir.mkdir();
+		
+		String nomeDirErrori = nomeDir + "AutomiErrati/";
+		File dirErrori = new File(nomeDirErrori);
+		dirErrori.mkdir();
+		
 		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + "_l" + lambdamin + "-" + lambdamax + "_e" + neventimin + "-" + neventimax ;
 		File csvfile = new File(nomeDir + nomef);
 		try {
@@ -395,10 +407,10 @@ public class main {
 					for(int i = 0; i < niterazionitripletta; i++){
 						
 						try {
-							String nomeFile = nomeDir + "automa_" + "s" + (nstati > 10 ? nstati : "0" + nstati) + "_l"
+							String nomeFile =  "automa_" + "s" + (nstati > 10 ? nstati : "0" + nstati) + "_l"
 									+ (lambda > 10 ? lambda : "0" + lambda) + "_e"
 									+ (neventi > 10 ? neventi : "0" + neventi) + "_n" + (i > 10 ? i : "0" + i) + ".txt";
-							File file = new File(nomeFile);
+							File file = new File(nomeDir + nomeFile);
 							try {
 								file.createNewFile();
 							} catch (Exception e) {
@@ -419,6 +431,7 @@ public class main {
 							writer.println("Prestazioni:");
 							writer.flush();
 							long start, end;
+							Set<Integer> livelliMax = new HashSet<Integer>();
 							int livelloMax = 0;
 							System.out.println("\n****************************************************************");
 							System.out.println(nomeFile);
@@ -430,6 +443,7 @@ public class main {
 							livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
+							livelliMax.add(livelloMax);
 							long alg1 = (end - start);
 							System.out.println("\tTempo: " + alg1 + " ns");
 							if (livelloMax == livelloDiagnosticabilita)
@@ -451,6 +465,7 @@ public class main {
 							livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
+							livelliMax.add(livelloMax);
 							long alg2 = (end - start);
 							System.out.println("\tTempo: " + alg2 + " ns");
 							if (livelloMax == livelloDiagnosticabilita)
@@ -472,6 +487,7 @@ public class main {
 							livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
+							livelliMax.add(livelloMax);
 							long alg3v1 = (end - start);
 							System.out.println("\tTempo: " + alg3v1 + " ns");
 							if (livelloMax == livelloDiagnosticabilita)
@@ -493,6 +509,7 @@ public class main {
 							livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
+							livelliMax.add(livelloMax);
 							long alg3v2 = (end - start);
 							System.out.println("\tTempo: " + alg3v2 + " ns");
 							if (livelloMax == livelloDiagnosticabilita)
@@ -517,6 +534,20 @@ public class main {
 							String riga = nstati + "," + lambda + "," + neventi + "," + livelloMax + "," + alg1 + "," + alg2 + "," + alg3v1 + "," + alg3v2;
 							writercsv.println(riga);
 							writercsv.flush();
+							
+							if(livelliMax.size()>1){
+								//i risultati dei tre metodi non coincidono D:
+								File automaErrato = new File(nomeDirErrori + nomeFile);
+								try {
+									automaErrato.createNewFile();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								PrintWriter writerErrore = new PrintWriter(automaErrato);
+								writerErrore.println("L'automa ha dato risultati diversi per i metodi risolventi. Controlla il file omonimo nella cartella " + nomeDir);
+								
+							}
 						} catch (StackOverflowError e) {
 							System.out.println("Automa non valido ha generato eccezione");
 							contatoreAutomiScartati++;
