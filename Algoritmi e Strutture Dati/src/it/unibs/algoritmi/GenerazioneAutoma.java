@@ -228,8 +228,7 @@ public class GenerazioneAutoma {
 		Set<Transizione> taggiunte = new HashSet<Transizione>();
 		
 		for(int i = 0; i < transizioniUscenti.get(s);i++){
-			double probGuasto = Math.random();
-			boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+			boolean guasto = (Math.random()< PROBABILITA_GUASTO)? true:false;
 			Evento evento = new Evento();
 			Stato dest = statoRandom(stati);
 			if(guasto){
@@ -237,19 +236,16 @@ public class GenerazioneAutoma {
 					dest = statoRandom(stati);
 				}
 			} else {
-				double probNonOsservabile = Math.random();
-				if(!(probNonOsservabile< pNonOsservabile)||s.equals(dest)){
+				boolean nonOsservabile = (Math.random() < pNonOsservabile)? true: false;
+				if(!nonOsservabile||s.equals(dest)){
 					evento = eventoRandom(numeroEventiSemplici);
 				}
-				if(probNonOsservabile < pNonOsservabile){
-					if(!s.equals(dest)){
-						pNonOsservabile = 0.0;						
-					}
+				if(nonOsservabile){
+						pNonOsservabile = pNonOsservabile/4;						
 				} else {
 					pNonOsservabile = PROBABILITA_NON_OSSERVABILE;
 				}
 			}
-	
 			Transizione t = new Transizione(s,dest,evento,guasto);
 			if(!a.getTransizioni().contains(t)){
 				a.add(t);
