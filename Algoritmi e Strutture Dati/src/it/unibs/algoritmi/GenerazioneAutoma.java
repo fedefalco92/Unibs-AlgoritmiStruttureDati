@@ -154,7 +154,7 @@ public class GenerazioneAutoma {
 			a = new Automa();
 			a.setStatoIniziale(transizioniUscenti.keySet().iterator().next());
 			Stato iniziale = a.getStatoIniziale();
-			aggiungiTransizione(a, iniziale, transizioniUscenti, stati, numeroEventiSemplici);
+			aggiungiTransizione(a, iniziale, transizioniUscenti, stati, numeroEventiSemplici, PROBABILITA_NON_OSSERVABILE);
 			if(a.numeroStati() == numeroStati){
 				numeroStatiRispettato = true;
 			} else {
@@ -171,7 +171,7 @@ public class GenerazioneAutoma {
 				for(Stato s: statiNonAggiunti){ //sicuramente non è vuoto
 					Stato inizialeRandom = statoRandom(statiAggiunti);
 					aggiungiTransizioneSingola(a,inizialeRandom, s, numeroEventiSemplici);
-					aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici);	
+					aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici, PROBABILITA_NON_OSSERVABILE);	
 				}
 				numeroStatiRispettato = true;
 			}
@@ -224,7 +224,7 @@ public class GenerazioneAutoma {
 		return  stati.elementAt(statoRandom);
 	}
 
-	private static void aggiungiTransizione(Automa a, Stato s, HashMap<Stato, Integer> transizioniUscenti, Vector<Stato> stati, int numeroEventiSemplici){
+	private static void aggiungiTransizione(Automa a, Stato s, HashMap<Stato, Integer> transizioniUscenti, Vector<Stato> stati, int numeroEventiSemplici, double pNonOsservabile){
 		Set<Transizione> taggiunte = new HashSet<Transizione>();
 		
 		for(int i = 0; i < transizioniUscenti.get(s);i++){
@@ -238,8 +238,13 @@ public class GenerazioneAutoma {
 				}
 			} else {
 				double probNonOsservabile = Math.random();
-				if(!(probNonOsservabile< PROBABILITA_NON_OSSERVABILE)||s.equals(dest)){
+				if(!(probNonOsservabile< pNonOsservabile)||s.equals(dest)){
 					evento = eventoRandom(numeroEventiSemplici);
+				}
+				if(probNonOsservabile < pNonOsservabile && !s.equals(dest)){
+					pNonOsservabile = pNonOsservabile/2;
+				} else {
+					pNonOsservabile = PROBABILITA_NON_OSSERVABILE;
 				}
 			}
 	
@@ -251,7 +256,7 @@ public class GenerazioneAutoma {
 		}
 		transizioniUscenti.put(s, 0);
 		for(Transizione t: taggiunte){
-			aggiungiTransizione(a,t.getStatoDestinazione(),transizioniUscenti, stati, numeroEventiSemplici);
+			aggiungiTransizione(a,t.getStatoDestinazione(),transizioniUscenti, stati, numeroEventiSemplici, pNonOsservabile);
 		}
 		
 	}
