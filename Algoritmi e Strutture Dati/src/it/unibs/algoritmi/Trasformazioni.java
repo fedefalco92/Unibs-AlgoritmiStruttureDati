@@ -3,7 +3,10 @@
  */
 package it.unibs.algoritmi;
 
+import java.util.AbstractQueue;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
@@ -35,7 +38,17 @@ public class Trasformazioni {
 			}
 		}
 		
-		
+		Set<Stato> raggiungibili = bfs(a);
+		Set<Stato> statiAutoma = a.getStati();
+		if(!setUguali(raggiungibili, statiAutoma)){
+			Set<Stato> daRimuovere = new HashSet<Stato>();
+			daRimuovere.addAll(statiAutoma);
+			daRimuovere.removeAll(raggiungibili);
+			
+			for(Stato r: daRimuovere){
+				a.remove(r);
+			}
+		}
 		return badtwin1;
 	}
 	
@@ -466,6 +479,48 @@ public class Trasformazioni {
 			}
 		}
 		return uscenti;
+	}
+	/**
+	 * Esegue una visita in ampiezza dell'automa, restituendo tutti i nodi raggiungibli dalla sorgente (stato iniziale)
+	 * @param a
+	 * @param s
+	 * @return il Set degli stati raggiungibili dallo stato iniziale.
+	 */
+	public static Set<Stato> bfs(Automa a){
+		Stato s = a.getStatoIniziale();
+		Set<Stato> stati = a.getStati();
+		Set<Stato> raggiungibili = new HashSet<Stato>();
+		Set<Stato> bianchi = new HashSet<Stato>();
+		Set<Stato> grigi = new HashSet<Stato>();
+		Set<Stato> neri = new HashSet<Stato>();
+		for(Stato st: stati){
+			bianchi.add(st);
+		}
+		bianchi.remove(s);
+		grigi.add(s);
+		
+		Queue<Stato> coda = new LinkedList<Stato>();
+		coda.add(s);
+		while(!coda.isEmpty()){
+			Stato u = coda.poll();
+			Set<Stato> adju = new HashSet<Stato>();
+			Set<Transizione> tuscenti = a.getTransizioniUscenti(u);
+			for(Transizione t: tuscenti){
+				adju.add(t.getStatoDestinazione());
+			}
+			
+			for(Stato v: adju){
+				if (bianchi.contains(v)){
+					bianchi.remove(v);
+					grigi.add(v);
+					coda.add(v);
+				}
+			}
+			neri.add(u);
+			grigi.remove(u);
+		}
+		
+		return raggiungibili;		
 	}
 
 }
