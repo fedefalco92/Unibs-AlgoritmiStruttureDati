@@ -90,7 +90,6 @@ public class main {
 			/* METODO 1 *******************************************************************************/
 			System.out.println("\n#############################");
 			System.out.println("Sto eseguendo metodo 1...");
-			dumpMemoryStats();
 			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
@@ -98,7 +97,6 @@ public class main {
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
-			dumpMemoryStats();
 			livelliMax[0] = livelloMax;
 			
 			// Fine misura tempo
@@ -121,14 +119,12 @@ public class main {
 			System.out.println("Sto eseguendo metodo 2...");
 			
 			// Inizio misura tempo
-			dumpMemoryStats();
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
-			dumpMemoryStats();
 			// Fine misura tempo
 			livelliMax[1] = livelloMax;
 			
@@ -151,14 +147,12 @@ public class main {
 			System.out.println("\n#############################");
 			System.out.println("Sto eseguendo metodo 3v1...");
 			// Inizio misura tempo
-			dumpMemoryStats();
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo3v1debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
-			dumpMemoryStats();
 			// Fine misura tempo
 			
 			livelliMax[2] = livelloMax;
@@ -181,14 +175,12 @@ public class main {
 			System.out.println("\n#############################");
 			System.out.println("Sto eseguendo metodo 3v2...");
 			// Inizio misura tempo
-			dumpMemoryStats();
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo3v2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
-			dumpMemoryStats();
 			// Fine misura tempo
 			livelliMax[3] = livelloMax;
 			long alg3v2 = (end-start);
@@ -371,6 +363,12 @@ public class main {
 	        bean.getCurrentThreadCpuTime() : 0L;
 	}
 	
+	public static long getMemory(){
+		MemoryMXBean memoryMXBean=ManagementFactory.getMemoryMXBean();
+		MemoryUsage memHeap = memoryMXBean.getHeapMemoryUsage();
+		return memHeap.getUsed();
+	}
+	
 	public static void dumpMemoryStats(){
 		MemoryMXBean memoryMXBean=ManagementFactory.getMemoryMXBean();
 		MemoryUsage memHeap = memoryMXBean.getHeapMemoryUsage();
@@ -401,7 +399,7 @@ public class main {
 		File dirErrori = new File(nomeDirErrori);
 		dirErrori.mkdir();
 		
-		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + "_l" + lambdamin + "-" + lambdamax + "_e" + neventimin + "-" + neventimax ;
+		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + "_l" + lambdamin + "-" + lambdamax + "_e" + neventimin + "-" + neventimax + ".csv" ;
 		File csvfile = new File(nomeDir + nomef);
 		try {
 			csvfile.createNewFile();
