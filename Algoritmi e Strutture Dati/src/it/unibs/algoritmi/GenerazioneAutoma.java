@@ -243,7 +243,7 @@ public class GenerazioneAutoma {
 				}
 				if(probNonOsservabile < pNonOsservabile){
 					if(!s.equals(dest)){
-						pNonOsservabile = pNonOsservabile/2;						
+						pNonOsservabile = 0.0;						
 					}
 				} else {
 					pNonOsservabile = PROBABILITA_NON_OSSERVABILE;
