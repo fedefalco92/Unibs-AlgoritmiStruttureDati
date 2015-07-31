@@ -595,7 +595,9 @@ public class Metodi {
 				//aggiungo agli stati visitati anche lo stato di partenza di ta (da controllare)
 				//intendendo che e' possibile che la transizione faccia parte del ciclo.
 				
-				return visitaRicorsiva(sincronizzato, visitati,successivo);
+				if(visitaRicorsiva(sincronizzato, visitati,successivo)){
+					return true;
+				}
 			}
 		}
 		
@@ -658,9 +660,8 @@ public class Metodi {
 				visitati.add(statoArrivo);
 				if(visitaRicorsiva(sincronizzato, visitati, statoArrivo)){
 					return true;
-					
 				}	
-			}			
+			}
 		}
 		return false;
 		
