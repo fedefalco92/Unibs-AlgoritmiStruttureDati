@@ -102,18 +102,15 @@ public class GenerazioneAutoma {
 		
 		
 		if(a.getTransizioniDiGuasto().isEmpty()){
-			Set<Transizione> nonoss = a.getTransizioniNonOsservabili();
-			if(nonoss.size() > 0){
-				nonoss.iterator().next().setGuasto(true);
-			} else {
-				Stato s1 = statoRandom(stati);
-				Stato s2 = statoRandom(stati);
-				while(s1.equals(s2)){
-					s2 = statoRandom(stati);
-				}
-				Transizione t = new Transizione(s1, s2, new Evento(), true);
-				a.add(t);
+			
+			Stato s1 = statoRandom(stati);
+			Stato s2 = statoRandom(stati);
+			while(s1.equals(s2)){
+				s2 = statoRandom(stati);
 			}
+			Transizione t = new Transizione(s1, s2, new Evento(), true);
+			a.add(t);
+			
 		}
 		
 		return a;
