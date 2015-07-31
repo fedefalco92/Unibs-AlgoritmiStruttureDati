@@ -1,23 +1,14 @@
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.management.*;
 import it.unibs.algoritmi.CostruisciAutoma;
-import it.unibs.algoritmi.CostruisciFileXML;
 import it.unibs.algoritmi.GenerazioneAutoma;
 import it.unibs.algoritmi.Metodi;
-import it.unibs.algoritmi.Trasformazioni;
 import it.unibs.asd.Automa;
-import it.unibs.asd.Evento;
-
-/**
- * 
- */
 
 /**
  * @author federicofalcone
@@ -25,6 +16,8 @@ import it.unibs.asd.Evento;
  */
 public class main {
 	
+	private static final long KBytes = 1024;
+
 	/**
 	 * @param args
 	 * @throws FileNotFoundException 
@@ -72,11 +65,11 @@ public class main {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
+			Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
 			int numeroStati = 10;
 			int numeroEventiSemplici = 8;
 			double lambda = 3;
-			Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
+			//Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
 			System.out.println(a);
 			writer.println("Numero stati:" + a.numeroStati());
 			writer.println("Numero transizioni:" + a.numeroTransizioni());
@@ -97,6 +90,7 @@ public class main {
 			/* METODO 1 *******************************************************************************/
 			System.out.println("\n#############################");
 			System.out.println("Sto eseguendo metodo 1...");
+			dumpMemoryStats();
 			// Inizio misura tempo
 			start = getCpuTime();
 			if(debug)
@@ -104,6 +98,7 @@ public class main {
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
+			dumpMemoryStats();
 			livelliMax[0] = livelloMax;
 			
 			// Fine misura tempo
@@ -126,12 +121,14 @@ public class main {
 			System.out.println("Sto eseguendo metodo 2...");
 			
 			// Inizio misura tempo
+			dumpMemoryStats();
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
+			dumpMemoryStats();
 			// Fine misura tempo
 			livelliMax[1] = livelloMax;
 			
@@ -154,13 +151,16 @@ public class main {
 			System.out.println("\n#############################");
 			System.out.println("Sto eseguendo metodo 3v1...");
 			// Inizio misura tempo
+			dumpMemoryStats();
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo3v1debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
 			end = getCpuTime();
+			dumpMemoryStats();
 			// Fine misura tempo
+			
 			livelliMax[2] = livelloMax;
 			long alg3v1= (end-start);
 			System.out.println("\tTempo: " + alg3v1+ " ns");
@@ -181,12 +181,14 @@ public class main {
 			System.out.println("\n#############################");
 			System.out.println("Sto eseguendo metodo 3v2...");
 			// Inizio misura tempo
+			dumpMemoryStats();
 			start = getCpuTime();
 			if(debug)
 				livelloMax = Metodi.diagnosticabilitaMetodo3v2debug(a, livelloDiagnosticabilita, nomeDir);
 			else 
 				livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
 			end = getCpuTime();
+			dumpMemoryStats();
 			// Fine misura tempo
 			livelliMax[3] = livelloMax;
 			long alg3v2 = (end-start);
@@ -369,6 +371,14 @@ public class main {
 	        bean.getCurrentThreadCpuTime() : 0L;
 	}
 	
+	public static void dumpMemoryStats(){
+		MemoryMXBean memoryMXBean=ManagementFactory.getMemoryMXBean();
+		MemoryUsage memHeap = memoryMXBean.getHeapMemoryUsage();
+		MemoryUsage memNonHeap = memoryMXBean.getNonHeapMemoryUsage();
+		float utilizationRatio = ((float) memHeap.getUsed()) / ((float) memHeap.getMax());
+		System.out.println("Heap Size: " + memHeap.getUsed() / KBytes + " (KB)" + " - " + "Non Heap Size: " + memNonHeap.getUsed() / KBytes  + " (KB)");
+	}
+	
 	public static void simulazione(int livelloDiagnosticabilita) throws FileNotFoundException{
 		int contatoreAutomiScartati = 0;
 		
@@ -379,7 +389,7 @@ public class main {
 		int lambdamax = 2;
 		
 		int neventimin = 3;
-		int neventimax = 5;
+		int neventimax = 3;
 		
 		int niterazionitripletta = 10;
 		
