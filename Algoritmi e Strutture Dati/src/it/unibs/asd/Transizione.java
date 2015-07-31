@@ -65,6 +65,10 @@ public class Transizione {
 		this.ambigua = false;
 	}
 
+	public void setGuasto(boolean guasto) {
+		this.guasto = guasto;
+	}
+
 	public Stato getStatoSorgente() {
 		return statoSorgente;
 	}
