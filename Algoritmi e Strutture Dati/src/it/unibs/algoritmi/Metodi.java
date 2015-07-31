@@ -658,6 +658,7 @@ public class Metodi {
 				visitati.add(statoArrivo);
 				if(visitaRicorsiva(sincronizzato, visitati, statoArrivo)){
 					return true;
+					
 				}	
 			}			
 		}
