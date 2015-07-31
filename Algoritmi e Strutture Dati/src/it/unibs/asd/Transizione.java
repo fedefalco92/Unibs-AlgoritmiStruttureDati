@@ -104,7 +104,24 @@ public class Transizione {
 	}
 	
 	public boolean equals(Transizione t){
-		return this.hashCode() == t.hashCode();
+		//return this.hashCode() == t.hashCode();
+		boolean equal = true;
+		if(!t.getStatoSorgente().equals(this.statoSorgente)){
+			return false;
+		}
+		if(!t.getStatoDestinazione().equals(this.statoDestinazione)){
+			return false;
+		}
+		if(!t.getEvento().equals(this.evento)){
+			return false;
+		}
+		if(t.isGuasto() != this.guasto){
+			return false;
+		}
+		if(t.isAmbigua() != this.ambigua){
+			return false;
+		}
+		return equal;
 	}
 
 	

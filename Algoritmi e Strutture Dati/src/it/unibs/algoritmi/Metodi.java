@@ -603,6 +603,36 @@ public class Metodi {
 		return false;
 	}
 	
+	/**
+	 * Controlla se esiste almeno un cammino in cui la prima transizione ambigua &egrave; seguita (anche non immediatamente) da un ciclo (infinito).
+	 * (Per definizione la negazione di questa condizione &egrave; la condizione di diagnosticabilit&agrave;)
+	 * @return true se la condizione descritta &egrave; vera
+	 */
+	private static boolean controllaCicli_NEW(Automa sincronizzato) {
+		Set<Transizione> tambigue = sincronizzato.getTransizioniAmbigue();
+		if(!tambigue.isEmpty()){
+			for(Transizione ta: tambigue){
+				Set<Stato> visitati = new HashSet<Stato>();
+				Stato successivo = ta.getStatoDestinazione();
+				visitati.add(successivo);
+				
+				//aggiungo agli stati visitati anche lo stato di partenza di ta (da controllare)
+				//intendendo che e' possibile che la transizione faccia parte del ciclo.
+				Stato precedente = ta.getStatoSorgente();
+				visitati.add(precedente);
+				
+				boolean cicloPresente = visitaRicorsiva(sincronizzato, visitati,successivo);
+				if(cicloPresente){
+					//devo controllare che TA sia raggiungibile dallo stato iniziale
+					//e che il cammino che porta a TA contenga almeno una transizione il cui
+					//evento osservabile
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	
 	/**
 	 * Visita progressivamente l'automa a partire dallo stato partenza.

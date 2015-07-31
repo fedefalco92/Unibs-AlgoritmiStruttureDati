@@ -211,8 +211,9 @@ public class Trasformazioni {
 			Stato _statoArrivo = new Stato();
 			_statoArrivo.add(tr.getStatoDestinazione().toString());
 			_statoArrivo.add(tr.getStatoDestinazione().toString());
-			sincronizzato.add(_statoPartenza, _statoArrivo, tr.getEvento(), tr.isGuasto(), tr.isAmbigua());
-		} 
+			
+			sincronizzato.add(_statoPartenza, _statoArrivo, tr.getEvento(), false);
+		} 	
 		
 		//questa parte viene eseguita solo se l'automa ï¿½ non deterministico
 		
@@ -224,7 +225,7 @@ public class Trasformazioni {
 		//seleziono gli stati del good twin
 		Set<Stato> stati = gt.getStati();
 		//creo un set di transizioni ambigue (da riempire)
-		//alternativa : attributo booleano che dice se una transizione ï¿½ ambigua o no
+		//alternativa : attributo booleano che dice se una transizione è ambigua o no
 		for(Stato s: stati){
 			//seleziono le transizioni uscenti da s nel bad twin
 			Set<Transizione> transizioni1 = bt.getTransizioniUscenti(s);
@@ -236,7 +237,7 @@ public class Trasformazioni {
 				//transizioni2.remove(t1);
 				for(Transizione t2: transizioni2){
 					if(!t1.equals(t2)){		
-						if(t1.getEvento().equals(t2.getEvento()) && t1.getStatoSorgente().equals(t2.getStatoSorgente())){
+						if(t1.getEvento().equals(t2.getEvento()) /*&& t1.getStatoSorgente().equals(t2.getStatoSorgente())*/){
 							//System.out.println("t1: " + t1 + " - t2:"+t2);
 							//se arrivo qui la transizione t ï¿½ ambigua
 							/*
@@ -250,8 +251,10 @@ public class Trasformazioni {
 							//se arrivo qui la transizione t ï¿½ ambigua
 							Stato statoPartenza = new Stato();
 							//gli stati di partenza in realtï¿½ sono uguali
-							statoPartenza.add(t1.getStatoSorgente().toString());
-							statoPartenza.add(t2.getStatoSorgente().toString());
+							//statoPartenza.add(t1.getStatoSorgente().toString());
+							//statoPartenza.add(t2.getStatoSorgente().toString());
+							statoPartenza.add(s.toString());
+							statoPartenza.add(s.toString());
 							Stato statoArrivo = new Stato();
 							statoArrivo.add(t1.getStatoDestinazione().toString());
 							statoArrivo.add(t2.getStatoDestinazione().toString());
@@ -277,8 +280,11 @@ public class Trasformazioni {
 			Set<Stato> sdiff = new HashSet<Stato>();
 			sdiff.addAll(ssecondo);		
 			sdiff.removeAll(sprev);
-			sprev = new HashSet<Stato>();
+			//ora sdiff contiene solo gli stati "doppi" del tipo (s1, s2) con s1 != s2
+			
+			sprev.clear();
 			sprev.addAll(ssecondo);
+			
 			for (Stato sasb : sdiff){
 				String sasbstring = sasb.toString();
 				Stato sa = new Stato(sasbstring.substring(0,1));
@@ -301,8 +307,7 @@ public class Trasformazioni {
 								//Stato statoArrivo = new Stato(t1.getStatoArrivo().toString()+t2.getStatoArrivo().toString());
 								//da verificare quale stato di guasto mettere in questa transizione
 								//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), false);
-								Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(),
-										t1.isGuasto());
+								Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(), t1.isGuasto());
 								if (t1.isGuasto()) {
 									ta.setAmbigua(true);
 								}
@@ -313,7 +318,8 @@ public class Trasformazioni {
 				}
 				
 			}
-			ssecondo = sincronizzato.getStati();
+			ssecondo.clear();
+			ssecondo.addAll(sincronizzato.getStati());
 		}
 		return sincronizzato;
 	}
@@ -344,8 +350,8 @@ public class Trasformazioni {
 		Set<Stato> stemp = new HashSet<Stato>();
 		stemp.addAll(sincronizzato.getStati());
 		
-		Set<Stato> sprimo = new HashSet<Stato>();
-		sprimo.addAll(sincronizzatoPrev.getStati());
+		//Set<Stato> sprimo = new HashSet<Stato>();
+		//sprimo.addAll(sincronizzatoPrev.getStati());
 		
 		Set<Transizione> transizioniAggiunteNonGuasto = new HashSet<Transizione>();
 		for(Transizione t: transizioniAggiunte){
@@ -354,7 +360,7 @@ public class Trasformazioni {
 			}
 		}
 		
-		for(Stato sasb: sprimo){ //sasb ï¿½ uno stato "doppio"
+		for(Stato sasb: sincronizzatoPrev.getStati()){ //sasb ï¿½ uno stato "doppio"
 			String sasbstring = sasb.toString();
 			Stato sa = new Stato(sasbstring.substring(0,1));
 			Stato sb = new Stato(sasbstring.substring(1, 2));
@@ -369,6 +375,7 @@ public class Trasformazioni {
 							_statoArrivo.add(t1.getStatoDestinazione().toString());
 							_statoArrivo.add(t2.getStatoDestinazione().toString());
 							Transizione ta = new Transizione(_statoPartenza, _statoArrivo, t1.getEvento(), t1.isGuasto());
+							//Transizione ta = new Transizione(_statoPartenza, _statoArrivo, t1.getEvento(), false);
 							if (t1.isGuasto()) {
 								ta.setAmbigua(true);
 							}
@@ -387,7 +394,7 @@ public class Trasformazioni {
 			sdiff.addAll(ssecondo);
 			sdiff.removeAll(stemp);
 			
-			stemp = new HashSet<Stato>();
+			stemp.clear();
 			stemp.addAll(ssecondo);
 			
 			for (Stato sasb : sdiff){
@@ -409,6 +416,7 @@ public class Trasformazioni {
 								statoArrivo.add(t1.getStatoDestinazione().toString());
 								statoArrivo.add(t2.getStatoDestinazione().toString());
 								Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(),t1.isGuasto());
+								//Transizione ta = new Transizione(statoPartenza, statoArrivo, t1.getEvento(),false);
 								if (t1.isGuasto()) {
 									ta.setAmbigua(true);
 								}
@@ -418,7 +426,7 @@ public class Trasformazioni {
 					}		
 				}
 			}
-			ssecondo = new HashSet<Stato>();
+			ssecondo.clear();
 			ssecondo.addAll(sincronizzato.getStati());
 		}
 		
@@ -434,8 +442,10 @@ public class Trasformazioni {
 	private static Automa inizializzaSincronizzato(Automa sincronizzatoPrev) {
 		Automa sincronizzato = new Automa();
 		sincronizzato.setStatoIniziale(sincronizzatoPrev.getStatoIniziale());
-		Set<Transizione> transizioni = sincronizzatoPrev.getTransizioni();
+		Set<Transizione> transizioni = new HashSet<Transizione>();
+		transizioni.addAll(sincronizzatoPrev.getTransizioni());
 		for(Transizione t:transizioni){
+			//if(!t.isAmbigua())
 			sincronizzato.add(t);				
 		}		
 		return sincronizzato;
