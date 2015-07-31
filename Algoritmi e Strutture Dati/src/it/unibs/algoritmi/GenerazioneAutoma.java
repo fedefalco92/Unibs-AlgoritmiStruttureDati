@@ -4,6 +4,7 @@
 package it.unibs.algoritmi;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -41,7 +42,7 @@ public class GenerazioneAutoma {
 	 * @param lambda
 	 * @return
 	 */
-	public static Automa generaAutoma(int numeroStati, int numeroEventiSemplici, double lambda){
+	public static Automa generaAutoma_OLD(int numeroStati, int numeroEventiSemplici, double lambda){
 		Automa a = new Automa();
 		
 		if(numeroStati>NUMERO_MAX_STATI) return null;
@@ -102,6 +103,179 @@ public class GenerazioneAutoma {
 		
 		
 		return a;
+	}
+	
+	/**
+	 * Genera casualmente un automa in cui:<br>
+	 * - il numero di stati &egrave; pari a numeroStati <br>
+	 * - il numero di transizioni &egrave; dato da una funzione casuale con distribuzione di poisson <br>
+	 * - il numero di eventi semplici &egrave; pari a numeroEventiSemplici
+	 * 
+	 * CONDIZIONE NECESSARIA: non deve essere presente alcun ciclo nell'automa che non contenga
+	 * alcuna transizione osservabile.
+	 * 
+	 * @param numeroStati
+	 * @param numeroEventiSemplici
+	 * @param lambda
+	 * @return
+	 */
+	public static Automa generaAutoma(int numeroStati, int numeroEventiSemplici, double lambda){
+		Automa a = new Automa();
+		HashMap<Stato,Integer> transizioniUscenti = new HashMap<Stato, Integer>();
+		if(numeroStati>NUMERO_MAX_STATI) return null;
+		//String[] stati = Arrays.copyOfRange(STATI,0,numeroStati);
+		/*for(int i = 0; i<stati.length;i++){
+			a.add(new Stato(stati[i]));
+		}*/
+		
+		Vector<Stato> stati = new Vector<Stato>();
+		for(int i = 0; i<numeroStati;i++){
+			Stato nuovo = new Stato(STATI[i]);
+			stati.add(nuovo);
+			if (!transizioniUscenti.containsKey(nuovo)) {
+				int numeroTransizioniUscenti = 1 + StdRandom.poisson(lambda-1);
+			    transizioniUscenti.put(nuovo, numeroTransizioniUscenti);
+			}
+		}
+		//a.setStatoIniziale(transizioniUscenti.keySet().iterator().next());
+		boolean numeroStatiRispettato = false;
+		while(!numeroStatiRispettato){
+			a = new Automa();
+			a.setStatoIniziale(transizioniUscenti.keySet().iterator().next());
+			Stato iniziale = a.getStatoIniziale();
+			aggiungiTransizione(a, iniziale, transizioniUscenti, stati, numeroEventiSemplici);
+			if(a.numeroStati() == numeroStati){
+				numeroStatiRispettato = true;
+			} else {
+				Set<Stato> statiNonAggiunti = new HashSet<Stato>();
+				Vector<Stato> statiAggiunti = new Vector<Stato>();
+				for(Stato s: transizioniUscenti.keySet()){
+					if(transizioniUscenti.get(s)>0){
+						statiNonAggiunti.add(s);
+					} else {
+						statiAggiunti.addElement(s);
+					}
+				}
+				
+				for(Stato s: statiNonAggiunti){ //sicuramente non è vuoto
+					Stato inizialeRandom = statoRandom(statiAggiunti);
+					aggiungiTransizioneSingola(a,inizialeRandom, s, numeroEventiSemplici);
+					aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici);	
+				}
+				numeroStatiRispettato = true;
+			}
+		}
+		
+		
+		/*
+		for(Stato s1: stati){
+			//ci deve essere almeno una transizione uscente per ogni stato.
+			int numeroTransizioniUscenti = 1 + StdRandom.poisson(lambda-1);
+			Set<Transizione> aggiunte = new HashSet<Transizione>();
+			for(int i = 0; i < numeroTransizioniUscenti; i++){
+				Stato s2 = statoRandom(stati);
+				Evento evento = new Evento();
+				double probNonOsservabile = Math.random();
+				if(!(probNonOsservabile< PROBABILITA_NON_OSSERVABILE)||s1.equals(s2)){
+					int eventoRandom = random(0,numeroEventiSemplici);
+					evento.add(EVENTI_SEMPLICI[eventoRandom]);
+				}
+				double probGuasto = Math.random();
+				boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+				if(guasto){
+					evento = new Evento();
+				}
+				
+				Transizione t = new Transizione(s1,s2,evento,guasto);
+				if(!aggiunte.contains(t)){
+					a.add(t);
+					aggiunte.add(t);
+				} else i--;
+				
+				
+			}
+		}*/
+		/*
+		Set<Transizione> tguasto = a.getTransizioniDiGuasto();
+		if(a.getTransizioniDiGuasto().isEmpty()){
+			Set<Transizione> transizioni = a.getTransizioni();
+			Transizione [] tarray = new Transizione [transizioni.size()]; 
+			transizioni.toArray(tarray);
+			int acaso = random(0,transizioni.size());
+			
+		}*/
+			
+		return a;
+	}
+	
+	private static Stato statoRandom(Vector<Stato> stati) {
+		int statoRandom = random(0, stati.size());
+		return  stati.elementAt(statoRandom);
+	}
+
+	private static void aggiungiTransizione(Automa a, Stato s, HashMap<Stato, Integer> transizioniUscenti, Vector<Stato> stati, int numeroEventiSemplici){
+		Set<Transizione> taggiunte = new HashSet<Transizione>();
+		
+		for(int i = 0; i < transizioniUscenti.get(s);i++){
+			double probGuasto = Math.random();
+			boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+			Evento evento = new Evento();
+			Stato dest = statoRandom(stati);
+			if(guasto){
+				while(s.equals(dest)){
+					dest = statoRandom(stati);
+				}
+			} else {
+				double probNonOsservabile = Math.random();
+				if(!(probNonOsservabile< PROBABILITA_NON_OSSERVABILE)||s.equals(dest)){
+					evento = eventoRandom(numeroEventiSemplici);
+				}
+			}
+	
+			Transizione t = new Transizione(s,dest,evento,guasto);
+			if(!a.getTransizioni().contains(t)){
+				a.add(t);
+				taggiunte.add(t);
+			} else i--;
+		}
+		transizioniUscenti.put(s, 0);
+		for(Transizione t: taggiunte){
+			aggiungiTransizione(a,t.getStatoDestinazione(),transizioniUscenti, stati, numeroEventiSemplici);
+		}
+		
+	}
+	
+	/**
+	 * Aggiunge una transizione da s a dest
+	 * PRECONDIZIONE: s diverso da dest
+	 * @param a
+	 * @param s
+	 * @param dest
+	 * @param numeroEventiSemplici
+	 */
+	private static void aggiungiTransizioneSingola(Automa a, Stato s, Stato dest, int numeroEventiSemplici){
+		
+		double probGuasto = Math.random();
+		boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+		Evento evento = new Evento();
+		if(!guasto){
+			double probNonOsservabile = Math.random();
+			if(!(probNonOsservabile< PROBABILITA_NON_OSSERVABILE)){
+				evento = eventoRandom(numeroEventiSemplici);
+			}
+		}
+
+		Transizione t = new Transizione(s,dest,evento,guasto);
+		if(!a.getTransizioni().contains(t)){
+			a.add(t);
+		}
+	}
+
+	private static Evento eventoRandom(int numeroEventiSemplici) {
+		int eventoRandom = random(0,numeroEventiSemplici);
+		Evento evento = new Evento();
+		evento.add(EVENTI_SEMPLICI[eventoRandom]);
+		return evento;
 	}
 
 	public static int random(int min, int max){

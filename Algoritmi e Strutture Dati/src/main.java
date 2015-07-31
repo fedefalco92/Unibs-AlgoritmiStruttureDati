@@ -71,11 +71,11 @@ public class main {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
+			//Automa a = CostruisciAutoma.costruisciAutoma(percorsoFile);
 			int numeroStati = 10;
 			int numeroEventiSemplici = 8;
 			double lambda = 3;
-			//Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
+			Automa a = GenerazioneAutoma.generaAutoma(numeroStati, numeroEventiSemplici, lambda);
 			System.out.println(a);
 			writer.println("Numero stati:" + a.numeroStati());
 			writer.println("Numero transizioni:" + a.numeroTransizioni());
