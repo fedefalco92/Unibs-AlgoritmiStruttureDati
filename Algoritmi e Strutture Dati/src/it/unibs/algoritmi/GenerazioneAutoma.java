@@ -241,8 +241,10 @@ public class GenerazioneAutoma {
 				if(!(probNonOsservabile< pNonOsservabile)||s.equals(dest)){
 					evento = eventoRandom(numeroEventiSemplici);
 				}
-				if(probNonOsservabile < pNonOsservabile && !s.equals(dest)){
-					pNonOsservabile = pNonOsservabile/2;
+				if(probNonOsservabile < pNonOsservabile){
+					if(!s.equals(dest)){
+						pNonOsservabile = pNonOsservabile/2;						
+					}
 				} else {
 					pNonOsservabile = PROBABILITA_NON_OSSERVABILE;
 				}
