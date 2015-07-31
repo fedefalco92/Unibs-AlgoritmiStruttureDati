@@ -38,15 +38,15 @@ public class Trasformazioni {
 			}
 		}
 		
-		Set<Stato> raggiungibili = bfs(a);
-		Set<Stato> statiAutoma = a.getStati();
+		Set<Stato> raggiungibili = bfs(badtwin1);
+		Set<Stato> statiAutoma = badtwin1.getStati();
 		if(!setUguali(raggiungibili, statiAutoma)){
 			Set<Stato> daRimuovere = new HashSet<Stato>();
 			daRimuovere.addAll(statiAutoma);
 			daRimuovere.removeAll(raggiungibili);
 			
 			for(Stato r: daRimuovere){
-				a.remove(r);
+				badtwin1.remove(r);
 			}
 		}
 		return badtwin1;
