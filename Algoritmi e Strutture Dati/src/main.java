@@ -546,7 +546,7 @@ public class main {
 								}
 								PrintWriter writerErrore = new PrintWriter(automaErrato);
 								writerErrore.println("L'automa ha dato risultati diversi per i metodi risolventi. Controlla il file omonimo nella cartella " + nomeDir);
-								
+								writerErrore.close();
 							}
 						} catch (StackOverflowError e) {
 							System.out.println("Automa non valido ha generato eccezione");
