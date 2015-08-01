@@ -88,7 +88,7 @@ public class Transizione {
 	public boolean equals(Object t) {
 		  if (t instanceof Transizione) {
 			Transizione trans = (Transizione) t;	
-			return (statoSorgente.equals(trans.statoSorgente) && statoDestinazione.equals(trans.statoDestinazione) && evento.equals(trans.evento) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
+			return (statoSorgente.equals(trans.statoSorgente) && statoDestinazione.equals(trans.statoDestinazione) && evento.equals(trans.getEvento()) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
 		  }
 		  return false;
 	}
@@ -109,7 +109,7 @@ public class Transizione {
 	
 	public boolean equals(Transizione t){
 		//return this.hashCode() == t.hashCode();
-		return (statoSorgente.equals(t.statoSorgente) && statoDestinazione.equals(t.statoDestinazione) && evento.equals(t.evento) && guasto == t.isGuasto() && ambigua == t.isAmbigua());
+		return (statoSorgente.equals(t.statoSorgente) && statoDestinazione.equals(t.statoDestinazione) && evento.equals(t.getEvento()) && guasto == t.isGuasto() && ambigua == t.isAmbigua());
 	}
 
 	
