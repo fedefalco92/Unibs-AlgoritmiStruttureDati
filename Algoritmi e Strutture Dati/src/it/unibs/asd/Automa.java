@@ -26,11 +26,18 @@ public class Automa {
 	private HashMap<Stato,Set<Transizione>> stati;
 	private int numeroTransizioni;
 	private Stato statoIniziale;
+	
+	//variabili nuove per migliorare tempi esecuzione
+	private Set<Transizione> Ta;
+	private Set<Transizione> Tf;
 	 
 	public Automa(){
 		this.stati =  new HashMap<Stato,Set<Transizione>>();
 		this.numeroTransizioni = 0;
 		this.statoIniziale=null;
+		
+		this.Ta = new HashSet<Transizione>();
+		this.Tf = new HashSet<Transizione>();
 	}
 
 	public Stato getStatoIniziale() {
@@ -73,9 +80,10 @@ public class Automa {
 	  }
 	  
 	  /**
-	   * rimuove lo stato x dall'automa se x e' presente nell'automa, 
-	   * altrimenti non modifica l'automa.
+	   * Rimuove lo stato x dall'automa (e tutte le transizioni associate ad esso) se x &egrave;
+	   * presente nell'automa, altrimenti non modifica l'automa.
 	   * 
+	   * Questo metodo &egrave; usato dal metodo badtwin0to1
 	   * @param x lo stato da rimuovere
 	   */
 	  public void remove(Stato x) {
@@ -86,8 +94,12 @@ public class Automa {
 	      while (transizioni.hasNext()) {
 	        t = (Transizione) transizioni.next();
 	        y = ( t.getStatoSorgente().equals(x) ) ? t.getStatoDestinazione() : t.getStatoSorgente();
-	        if ( ((HashSet) stati.get(y)).remove(t) )
-	          numeroTransizioni--;
+	        if ( ((HashSet) stati.get(y)).remove(t) ){
+	        	numeroTransizioni--;
+	        	//per sicurezza rimuovo la transizione da Tf nel caso sia ivi presente.
+	        	//non e' necessario rimuoverla da Ta perche' nel bad twin non ci sono transizioni ambigue
+	        	Tf.remove(t);
+	        }
 	      }
 	      stati.remove(x);
 	    }
@@ -123,8 +135,12 @@ public class Automa {
 	    }
 	    
 	    flag = flag && flag1;
-	    if (flag)
-	      numeroTransizioni++;
+	    if (flag){
+	    	numeroTransizioni++;
+	    	if(guasto){
+	    		Tf.add(t);
+	    	}
+	    }
 	    return flag;
 	  }
 	  
@@ -158,8 +174,15 @@ public class Automa {
 	    	flag1 =(stati.get(y) ).add(t);	    	
 	    }
 	    flag = flag && flag1;
-	    if (flag)
-	      numeroTransizioni++;
+	    if (flag){
+	    	numeroTransizioni++;
+	    	if(ambigua){
+	    		Ta.add(t);
+	    	}
+	    	if(guasto){
+	    		Tf.add(t);
+	    	}
+	    }
 	    return flag;
 	  }
 
@@ -174,7 +197,7 @@ public class Automa {
 	    return add(t.getStatoSorgente(), t.getStatoDestinazione(), t.getEvento(), t.isGuasto(), t.isAmbigua());
 	    
 	  }
-
+	  /*
 	  /**
 	   * Rimuove la transizione tra gli stati  x e y se tale transizione &egrave; presente e restituisce true, 
 	   * altrimenti non modifica l'automa e restituisce false. 
@@ -185,11 +208,12 @@ public class Automa {
 	   * @param guasto boolean che indica se la transizione &egrave; di guasto
 	   * @return vero se l'arco e' stato rimosso false altrimenti
 	   */
+	  /*
 	  public boolean remove(Stato x, Stato y, Evento value, boolean guasto) {
 	    Transizione t = new Transizione(x,y,value, guasto);
 	    return remove(t);
-	  }
-
+	  }*/
+	  
 	  /**
 	   * Rimuove la transizione dall'automa se la transizione &egrave; presente e restituisce true,
 	   * altrimenti non modifica l'automa e restituisce false
@@ -203,6 +227,7 @@ public class Automa {
 	      flag = ( (HashSet) stati.get(t.getStatoSorgente()) ).remove(t);
 	      flag1 = ( (HashSet) stati.get(t.getStatoDestinazione()) ).remove(t);
 	    }
+	    //non diminusco il numero di transizioni perché lo faccio già a monte nel metodo remove(Stato)
 	    return flag || flag1;
 	  }
 
@@ -307,6 +332,7 @@ public class Automa {
 	  }
 	  
 	  public Set<Transizione> getTransizioniDiGuasto(){
+		  /*
 		  Set<Transizione> setTransizioniDiGuasto= new HashSet<Transizione>();
 		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
 		    while (hashSetI.hasNext()){
@@ -318,10 +344,18 @@ public class Automa {
 		    	}
 		    }
 
-		    return setTransizioniDiGuasto;
+		    return setTransizioniDiGuasto;*/
+		  return Tf;
 	  }
 	  
+	  /*
+	  /**
+	   * Ritorna le transizioni di guasto, che in un bad twin di livello &geq; 1 sono necessariamente osservabili.
+	   * @return
+	   *//*
 	  public Set<Transizione> getTransizioniDiGuastoOsservabili(){
+		  //VERSIONE OLD
+		  /*
 		  Set<Transizione> setTransizioniDiGuastoOsservabili= new HashSet<Transizione>();
 		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
 		    while (hashSetI.hasNext()){
@@ -333,9 +367,27 @@ public class Automa {
 		    	}
 		    }
 
-		    return setTransizioniDiGuastoOsservabili;
-	  }
+		    return setTransizioniDiGuastoOsservabili;*/
+		  
+		 //VERSIONE MIGLIORATA DOPO L'INTRODUZIONE DI Tf
+		  /*
+		    Set<Transizione> setTransizioniDiGuastoOsservabili = new HashSet<Transizione>();
+		    	for(Transizione t : Tf){
+		    		if (t.isGuasto()&&!t.nonOsservabile()){
+		    			setTransizioniDiGuastoOsservabili.add(t);
+		    		}
+		    	}
+		    return setTransizioniDiGuastoOsservabili;*/
+		  
+		  //VERSIONE DEFINITIVA
+		  /*
+		   * Spiegazione: questo metodo e' invocato solo dal metodo diagnosticabilitaC3() che a sua volta e'
+		   * invocato su un bad twin di livello >=1. Il bad twin non contiene pertanto transizioni non osservabili.
+		   *//*
+		  return Ta;
+	  }*/
 	  
+	  /*
 	  public Set<Transizione> getTransizioniNonDiGuastoOsservabili(){
 		  Set<Transizione> setTransizioniNonDiGuastoOsservabili= new HashSet<Transizione>();
 		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
@@ -349,7 +401,7 @@ public class Automa {
 		    }
 
 		    return setTransizioniNonDiGuastoOsservabili;
-	  }
+	  }*/
 	  
 	  public Set<Transizione> getTransizioniNonDiGuasto(){
 		  Set<Transizione> setTransizioniNonDiGuasto= new HashSet<Transizione>();
@@ -367,7 +419,7 @@ public class Automa {
 	  }
 	  
 	  public Set<Transizione> getTransizioniAmbigue(){
-		  Set<Transizione> setTransizioniAmbigue= new HashSet<Transizione>();
+		  /*Set<Transizione> setTransizioniAmbigue= new HashSet<Transizione>();
 		    Iterator<Set<Transizione>> hashSetI = stati.values().iterator();
 		    while (hashSetI.hasNext()){
 		    	Set<Transizione> setCorrente = (Set<Transizione>) hashSetI.next();
@@ -378,16 +430,18 @@ public class Automa {
 		    	}
 		    }
 
-		    return setTransizioniAmbigue;
+		    return setTransizioniAmbigue;*/
+		  return Ta;
 	  }	  
 	  
 	  
 	  /**
 	   * Verifica la condizione di diagnosticabilit&agrave; C1, cio&egrave; se l'insieme della transizioni ambigue &egrave; vuoto.
-	   * @return
+	   * @return true se sussiste la condizione di diagnosticabilit&agrave; C1.
 	   */
 	  public boolean diagnosticabilitaC1(){
-		  return !(getTransizioniAmbigue().size() > 0);
+		  //return !(getTransizioniAmbigue().size() > 0);  //vecchio modo
+		  return !(Ta.size() > 0);
 	  }
 	  
 	  /**
@@ -420,11 +474,20 @@ public class Automa {
 		  return out;
 	  }
 	  
+	  /**
+	   * Verifica la condizione di diagnosticabilit&agrave; C3:
+	   * se nel bad twin gli eventi osservabili fino al livello considerato associati alle 
+	   * transizioni di guasto non sono associati ad alcuna transizione che non sia di guasto,
+	   * allora a tale livello sussiste la diagnosticabilit&agrave;
+	   * @return true se sussiste la condizione di diagnosticabilit&agrave; C3.
+	   */
 	  public boolean diagnosticabilitaC3(){
 		  boolean out = true;
 		  
-		  Set<Transizione> tosservabiliguasto  = getTransizioniDiGuastoOsservabili();
-		  Set<Transizione> tosservabilinonguasto = getTransizioniNonDiGuastoOsservabili();
+		  //Set<Transizione> tosservabiliguasto  = getTransizioniDiGuastoOsservabili();
+		  //Set<Transizione> tosservabilinonguasto = getTransizioniNonDiGuastoOsservabili();
+		  Set<Transizione> tosservabiliguasto  = getTransizioniDiGuasto(); //in un bad twin di livello >= 1 le transizioni di guasto sono necessariamente osservabili 
+		  Set<Transizione> tosservabilinonguasto = getTransizioniNonDiGuasto(); //in un bad twin di livello >= 1 tutte le transizioni sono necessariamente osservabili
 		  for(Transizione tguasto: tosservabiliguasto){
 			  for(Transizione toss: tosservabilinonguasto){
 				  if(tguasto.getEvento().equals(toss.getEvento())){

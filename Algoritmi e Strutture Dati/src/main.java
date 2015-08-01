@@ -24,11 +24,11 @@ public class main {
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
 			
-		/*
+		
 		if(true){
 			simulazione(5);
 			return;
-		}*/
+		}
 
 		if(args.length<2){
 			System.out.println("ERRORE");
