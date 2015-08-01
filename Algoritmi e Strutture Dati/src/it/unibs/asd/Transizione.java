@@ -85,14 +85,6 @@ public class Transizione {
 		return guasto;
 	}
 	
-	public boolean equals(Object t) {
-		  if (t instanceof Transizione) {
-			Transizione trans = (Transizione) t;	
-			return (statoSorgente.equals(trans.statoSorgente) && statoDestinazione.equals(trans.statoDestinazione) && evento.equals(trans.getEvento()) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
-		  }
-		  return false;
-	}
-
 	public boolean nonOsservabile(){
 		if(evento.getSetEventiSemplici().isEmpty()) return true; else return false;
 	}
@@ -107,9 +99,17 @@ public class Transizione {
 
 	}
 	
+	public boolean equals(Object t) {
+		  if (t instanceof Transizione) {
+			Transizione trans = (Transizione) t;	
+			return (statoSorgente.equals(trans.getStatoSorgente()) && statoDestinazione.equals(trans.getStatoDestinazione()) && evento.equals(trans.getEvento()) && guasto == trans.isGuasto() && ambigua == trans.isAmbigua());		
+		  }
+		  return false;
+	}
+
 	public boolean equals(Transizione t){
 		//return this.hashCode() == t.hashCode();
-		return (statoSorgente.equals(t.statoSorgente) && statoDestinazione.equals(t.statoDestinazione) && evento.equals(t.getEvento()) && guasto == t.isGuasto() && ambigua == t.isAmbigua());
+		return (statoSorgente.equals(t.getStatoSorgente()) && statoDestinazione.equals(t.getStatoDestinazione()) && evento.equals(t.getEvento()) && guasto == t.isGuasto() && ambigua == t.isAmbigua());
 	}
 
 	
