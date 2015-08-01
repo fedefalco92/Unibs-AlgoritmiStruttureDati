@@ -299,7 +299,6 @@ public class Metodi {
 			writer.println("*********************************************************************************************************\n");
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
 			writer.println("Il bad twin di livello "+i+" e':\n" + bti);
-			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
 				btiprev =  bti;
 				System.out.println("Livello "+i+" diagnosticabile (Condizione C2 || C3 verificate)");
@@ -308,8 +307,7 @@ public class Metodi {
 				writer.flush();
 				continue;
 			}
-			
-			
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if(livelloSincronizzatoPrev < (i-1)){ // allora devo calcolare l'automa sincronizzato di livello i-1
 				Automa gtiprev = Trasformazioni.badToGoodTwin(btiprev);
 				writer.println("Il good twin di livello "+i+" e':\n" + gtiprev);
@@ -377,12 +375,12 @@ public class Metodi {
 		int livelloSincronizzatoPrev = 1;
 		while (i<=livello){
 			Automa bti = Trasformazioni.badtwinLevelUp(btiprev, i);
-			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if((bti.diagnosticabilitaC2()||bti.diagnosticabilitaC3())){
 				btiprev = bti;
 				i++;
 				continue;
 			}
+			Set<Transizione> transizioniAggiunte = transizioniAggiunte(bti, btiprev);
 			if(livelloSincronizzatoPrev < (i-1)){ // allora devo calcolare l'automa sincronizzato di livello i-1
 				Automa gtiprev = Trasformazioni.badToGoodTwin(btiprev);
 				sincronizzatoPrev = Trasformazioni.sincronizzazione(gtiprev, btiprev);
