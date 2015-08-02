@@ -280,9 +280,9 @@ public class GenerazioneAutoma {
 		}
 
 		Transizione t = new Transizione(s,dest,evento,guasto);
-		if(!a.getTransizioni().contains(t)){
+		//if(!a.getTransizioni().contains(t)){
 			a.add(t);
-		}
+		//}
 	}
 
 	private static Evento eventoRandom(int numeroEventiSemplici) {
