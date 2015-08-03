@@ -33,7 +33,7 @@ public class main {
 	 * @param args
 	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
 		System.out.println("########################################################");
 		System.out.println("##             Analisi di Diagnosticabilita           ##");
@@ -64,29 +64,23 @@ public class main {
 	    try {        
 			// parse the command line arguments
 	        CommandLine cmd = parser.parse( options, args );
-	        //formatter.printHelp( "Analisi di Diagnosticabilita", options);
 	        
-	        // Options livello diagnosticabilita
-	        if(cmd.hasOption("l")){
-	        	int livello = Integer.parseInt(cmd.getOptionValue("l"));
-	        	
-	        	if( cmd.hasOption("a") && !cmd.hasOption("s")) {
-		            String path = cmd.getOptionValue("a");
-		            diagnosticaAutoma(path, livello, cmd.hasOption("v"));
-		        } else if (cmd.hasOption("s") && !cmd.hasOption("a")){
-		        	System.out.println( cmd.getOptionValue("s") );
-		        	//simulazione(livello);
-		        }else{
-		        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
-		        	System.out.println("Le opzioni -a e -s sono mutuamente esclusive.");
-		        }
+        	int livello = Integer.parseInt(cmd.getOptionValue("l"));
+        	
+        	if( cmd.hasOption("a") && !cmd.hasOption("s")) {
+	            String path = cmd.getOptionValue("a");
+	            diagnosticaAutoma(path, livello, cmd.hasOption("v"));
+	        } else if (cmd.hasOption("s") && !cmd.hasOption("a")){
+	        	System.out.println( cmd.getOptionValue("s") );
+	        	simulazione(livello);
 	        }else{
 	        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
+	        	System.out.println("Le opzioni -a e -s sono mutuamente esclusive.");
 	        }
 	    }
 	    catch( ParseException exp ) {
-	        // oops, something went wrong
-	        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
+	    	formatter.printHelp( "Analisi di Diagnosticabilita", options);
+	        System.err.println( "Parsing fallito. Spiegazione: " + exp.getMessage() );
 	    }
 
 	}
@@ -271,8 +265,8 @@ public class main {
 		
 		/* FINE ******************/
 		writer.close();
-		System.out.println("Terminato.");
 		
+		System.out.println("\n#############################");
 		// Confronto tempi
 		if(alg1>alg2){ // 1 impiega di piu' di 2
 			if(alg2>alg3v1){ // 2 impiega piu' di 3v1
@@ -314,10 +308,11 @@ public class main {
 				}
 			}
 		}
+		System.out.println("Terminato.");
 	}
 	
 	
-	public static void simulazione(int livelloDiagnosticabilita)throws FileNotFoundException{
+	public static void simulazione(int livelloDiagnosticabilita) throws FileNotFoundException{
 		System.out.println("**************************************");
 		System.out.println("**          Simulazione             **");
 		System.out.println("**************************************");
