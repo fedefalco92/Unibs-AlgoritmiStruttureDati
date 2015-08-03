@@ -77,11 +77,11 @@ public class main {
 	        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
 	        	System.out.println("Le opzioni -a e -s sono mutuamente esclusive.");
 	        }
-	    }
-	    catch( ParseException exp ) {
-	    	formatter.printHelp( "Analisi di Diagnosticabilita", options);
-	        System.err.println( "Parsing fallito. Spiegazione: " + exp.getMessage() );
-	    }
+		}
+		catch( ParseException exp ) {
+			formatter.printHelp( "Analisi di Diagnosticabilita", options);
+		    System.err.println( "Parsing fallito. Spiegazione: " + exp.getMessage() );
+		}
 
 	}
 	
@@ -312,13 +312,20 @@ public class main {
 	}
 	
 	
-	public static void simulazione(int livelloDiagnosticabilita) throws FileNotFoundException{
+	public static void simulazione(int livelloDiagnosticabilita, 
+			int nstatimin, int nstatimax, 
+			int lambdamin, int lambdamax, 
+			int neventimin, int neventimax, 
+			int niterazionitripletta, 
+			double pquasto, double pnonosservabile,
+			boolean debug) throws FileNotFoundException{
 		System.out.println("**************************************");
 		System.out.println("**          Simulazione             **");
 		System.out.println("**************************************");
 		
 		int contatoreAutomiScartati = 0;
 		
+		/*
 		int nstatimin = 5;
 		int nstatimax = 15;
 		
@@ -329,6 +336,7 @@ public class main {
 		int neventimax = 3;
 		
 		int niterazionitripletta = 10;
+		*/
 		
 		File root = new File("simulazioni");
 		root.mkdir();
