@@ -123,8 +123,9 @@ public class GenerazioneAutoma {
 	 * - il numero di transizioni &egrave; dato da una funzione casuale con distribuzione di poisson <br>
 	 * - il numero di eventi semplici &egrave; pari a numeroEventiSemplici
 	 * 
-	 * CONDIZIONE NECESSARIA: non deve essere presente alcun ciclo nell'automa che non contenga
-	 * alcuna transizione osservabile.
+	 * CONDIZIONE NECESSARIA1: non deve essere presente alcun ciclo nell'automa che non contenga
+	 * alcuna transizione osservabile. --> NON SODDISFATTA (viene gestita a monte)
+	 * CONDIZIONE NECESSARIA2: l'insieme delle transizioni di guasto deve essere non vuoto.
 	 * 
 	 * @param numeroStati
 	 * @param numeroEventiSemplici
@@ -162,15 +163,15 @@ public class GenerazioneAutoma {
 					statiAggiunti.addElement(s);
 				}
 			}
-			for(Stato s: statiNonAggiunti){ //sicuramente non � vuoto
+			for(Stato s: statiNonAggiunti){ //sicuramente non e' vuoto
 				Stato inizialeRandom = statoRandom(statiAggiunti);
 				aggiungiTransizioneSingola(a,inizialeRandom, s, numeroEventiSemplici, probabilita_guasto, probabilita_non_osservabile);
 				aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici, probabilita_non_osservabile, probabilita_guasto, probabilita_non_osservabile);	
 			}
 		}
 		
+		//se fino ad ora non e' stata aggiunta alcuna condizione di guasto ne viene aggiunta una
 		if(a.getTransizioniDiGuasto().isEmpty()){
-			
 			Stato s1 = statoRandom(stati);
 			Stato s2 = statoRandom(stati);
 			while(s1.equals(s2)){
@@ -178,9 +179,7 @@ public class GenerazioneAutoma {
 			}
 			Transizione t = new Transizione(s1, s2, new Evento(), true);
 			a.add(t);
-			
 		}
-
 		return a;
 	}
 	
@@ -259,7 +258,7 @@ public class GenerazioneAutoma {
 		return evento;
 	}
 
-	public static int random(int min, int max){
+	private static int random(int min, int max){
 		Random r = new Random();
 		int out = r.nextInt(max-min);
 		out+=min;
