@@ -94,9 +94,9 @@ public class Transizione {
 	}
 
 	public String toString() {
-		return "\n<"+statoSorgente.toString()+", "+statoDestinazione.toString()+"; "+evento.toString()+"; "+((guasto)?"guasto; ":"") + ((ambigua)?"ambigua; ": "")+hashCode()+">";
+		//return "\n<"+statoSorgente.toString()+", "+statoDestinazione.toString()+"; "+evento.toString()+"; "+((guasto)?"guasto; ":"") + ((ambigua)?"ambigua; ": "")+hashCode()+">";
 		//return "\n<"+statoPartenza.toString()+statoPartenza.hashCode()+", "+statoArrivo.toString()+statoArrivo.hashCode()+"; "+value.toString()+"; "+guasto+"; "+hashCode()+">";
-
+		return "\n<"+statoSorgente.toString()+" -> "+statoDestinazione.toString()+"; "+evento.toString()+"; "+((guasto)?"guasto; ":"") + ((ambigua)?"ambigua; ": "")+">";
 	}
 	
 	public boolean equals(Object t) {

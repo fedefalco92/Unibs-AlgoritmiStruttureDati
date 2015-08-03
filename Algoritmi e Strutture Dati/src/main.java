@@ -1,5 +1,4 @@
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.cli.CommandLine;
@@ -7,7 +6,6 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import java.io.File;
@@ -37,6 +35,10 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		
+		System.out.println("########################################################");
+		System.out.println("##             Analisi di Diagnosticabilita           ##");
+		System.out.println("########################################################");
+		
 		// create the parser
 	    CommandLineParser parser = new DefaultParser();
 	    
@@ -47,7 +49,7 @@ public class main {
 	    Option automa = Option.builder("a").longOpt("automa").hasArg().argName("file").desc("Inserire il percorso del file xml dell'automa").build();
 	    options.addOption(automa);
 	    
-	    Option livelloDiagnosticabilita = Option.builder("l").hasArg().argName("numeroLivello").longOpt("livello").desc("Livello di diagnosticabilita' da verificare").build();
+	    Option livelloDiagnosticabilita = Option.builder("l").hasArg().argName("numeroLivello").required().longOpt("livello").desc("Livello di diagnosticabilita' da verificare").build();
 	    options.addOption(livelloDiagnosticabilita);
 	    
 	    Option simulazione = Option.builder("s").longOpt("simulazione").desc("Esegue la simulazione").build();
@@ -73,7 +75,7 @@ public class main {
 		            diagnosticaAutoma(path, livello, cmd.hasOption("v"));
 		        } else if (cmd.hasOption("s") && !cmd.hasOption("a")){
 		        	System.out.println( cmd.getOptionValue("s") );
-		        	System.out.println("Solo simulazione");
+		        	//simulazione(livello);
 		        }else{
 		        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
 		        	System.out.println("Le opzioni -a e -s sono mutuamente esclusive.");
@@ -86,15 +88,6 @@ public class main {
 	        // oops, something went wrong
 	        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
 	    }
-	    
-	      
-	    
-	    /*
-		// -a pathautoma 5 true
-		if(true){
-			simulazione(5);
-			return;
-		}*/
 
 	}
 	
@@ -119,7 +112,15 @@ public class main {
 		System.out.println("Heap Size: " + memHeap.getUsed() / KBytes + " (KB)" + " - " + "Non Heap Size: " + memNonHeap.getUsed() / KBytes  + " (KB)");
 	}
 	
-	public static void diagnosticaAutoma(String percorsoFile, int livelloDiagnosticabilita, boolean debug){			
+	public static void diagnosticaAutoma(String percorsoFile, int livelloDiagnosticabilita, boolean debug){	
+		System.out.println("**************************************");
+		System.out.println("**     Diagnosticabilita Automa     **");
+		System.out.println("**************************************");
+		System.out.println("Percorso file xml automa: " + percorsoFile);
+		System.out.println("Livello di Diagnosticabilita da verificare: " + livelloDiagnosticabilita);
+		System.out.println("Modalita' debug (verbose): " + debug);
+		System.out.println("**************************************");
+		
 		File root = new File("output");
 		root.mkdir();
 		String nomeDir = "./output/time-" + System.currentTimeMillis() + (debug?"-debug":"")+"/";
@@ -316,7 +317,11 @@ public class main {
 	}
 	
 	
-	public static void simulazione(int livelloDiagnosticabilita) throws FileNotFoundException{
+	public static void simulazione(int livelloDiagnosticabilita)throws FileNotFoundException{
+		System.out.println("**************************************");
+		System.out.println("**          Simulazione             **");
+		System.out.println("**************************************");
+		
 		int contatoreAutomiScartati = 0;
 		
 		int nstatimin = 5;
