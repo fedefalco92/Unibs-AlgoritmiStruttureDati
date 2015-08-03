@@ -1,5 +1,6 @@
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -52,7 +53,7 @@ public class main {
 	    Option livelloDiagnosticabilita = Option.builder("l").hasArg().argName("numeroLivello").required().longOpt("livello").desc("Livello di diagnosticabilita' da verificare").build();
 	    options.addOption(livelloDiagnosticabilita);
 	    
-	    Option simulazione = Option.builder("s").longOpt("simulazione").desc("Esegue la simulazione").build();
+	    Option simulazione = Option.builder("s").hasArg().argName("Stringa Parametri").longOpt("simulazione").desc("Esegue la simulazione. E' necessario passare la stringa tra apici. \nUn esempio di stringa e' la seguente \"s=5-15 l=3-4 e=4-6 i=10 g=0.1 no=0.3\"").build();
 	    options.addOption(simulazione);
 	    
 	    // Boolean option 
@@ -64,6 +65,7 @@ public class main {
 	    try {        
 			// parse the command line arguments
 	        CommandLine cmd = parser.parse( options, args );
+	        //formatter.printHelp( "Analisi di Diagnosticabilita", options);
 	        
         	int livello = Integer.parseInt(cmd.getOptionValue("l"));
         	
@@ -71,15 +73,67 @@ public class main {
 	            String path = cmd.getOptionValue("a");
 	            diagnosticaAutoma(path, livello, cmd.hasOption("v"));
 	        } else if (cmd.hasOption("s") && !cmd.hasOption("a")){
-	        	System.out.println( cmd.getOptionValue("s") );
-	        	//parsing delle variabili da stringa comando
-	        	int nstatimin, nstatimax, lambdamin, lambdamax, neventimin, neventimax, niterazionitripletta;
-	        	double pguasto, pnonosservabile;
+	        	boolean controlloParametriOk = true;
+	        	
+	        	//Parsing parametri Simulazione
+	        	int nstatimin=0, nstatimax=0, lambdamin=0, lambdamax=0, neventimin=0, neventimax=0, niterazionitripletta=0;
+	        	double pguasto=0.2, pnonosservabile=0.4;
 	        	boolean debug;
-	        	//stringa di esempio "s=5-15 l=3-4 e=4-6 i=10 g=0.1 no=0.3"
-	        	
-	        	
-	        	simulazione(livello,nstatimin, nstatimax, lambdamin, lambdamax, neventimin, neventimax, niterazionitripletta, pguasto, pnonosservabile, debug);
+	        	String stringaParametri = cmd.getOptionValue("s");
+	        	StringTokenizer st = new StringTokenizer(stringaParametri," "); // Spazio per i parametri
+	        	if(st.countTokens() != 6){
+	        		System.out.println("ERRORE! Hai inserito " + st.countTokens() +" parametri!");
+	        		System.out.println("Devi inserire una stringa con ESATTAMENTE 6 Parametri.");
+	        		controlloParametriOk = false;
+	        	}else{
+	        		while (st.hasMoreTokens()) {
+	        			String [] splittingArray = st.nextToken().split("=");
+		                switch (splittingArray[0]) {
+						case "s":
+							String [] splitStato = splittingArray[1].split("-");
+							nstatimin = Integer.parseInt(splitStato[0]);
+							nstatimax = Integer.parseInt(splitStato[1]);
+							break;
+						
+						case "l":
+							String [] splitLambda = splittingArray[1].split("-");
+							lambdamin = Integer.parseInt(splitLambda[0]);
+							lambdamax = Integer.parseInt(splitLambda[1]);
+							break;
+						
+						case "e":
+							String [] splitEventi = splittingArray[1].split("-");
+							neventimin = Integer.parseInt(splitEventi[0]);
+							neventimax = Integer.parseInt(splitEventi[1]);
+							break;
+						
+						case "i":
+							niterazionitripletta = Integer.parseInt(splittingArray[1]);
+							break;
+							
+						case "g":
+							pguasto = Double.parseDouble(splittingArray[1]);
+							break;
+							
+						case "no":
+							pnonosservabile = Double.parseDouble(splittingArray[1]);
+							break;
+							
+						default:
+							System.out.println("ERRORE! Parametro non riconosciuto.");
+							controlloParametriOk = false;
+						}
+		            }
+	        	}
+	        	if(controlloParametriOk){
+		        	simulazione(livello,nstatimin, nstatimax, lambdamin, lambdamax, neventimin, neventimax, niterazionitripletta, pguasto, pnonosservabile, cmd.hasOption("v"));
+	        	}else{
+	        		System.out.println();
+	        		System.out.println("Riesegui il programma!");
+	        		System.out.println("Ti ricordo che per la simulazione devi inserire una stringa con esattamente 6 parametri.");
+	        		System.out.println("Esempio stringa: s=5-15 l=3-4 e=4-6 i=10 g=0.1 no=0.3");
+	        		System.out.println("Con s=stati, l=lambda, e=eventi_semplici, i=iterazioni, g=probabilita'_guasto, no=probabilita'_non_osservabile.");
+	        	}
 	        }else{
 	        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
 	        	System.out.println("Le opzioni -a e -s sono mutuamente esclusive.");
@@ -329,6 +383,16 @@ public class main {
 		System.out.println("**************************************");
 		System.out.println("**          Simulazione             **");
 		System.out.println("**************************************");
+		System.out.println("Parametri Simulazione");
+		System.out.println("Livello di Diagnosticabilita': " + livelloDiagnosticabilita);
+    	System.out.println("Stati = min: " + nstatimin + " - max: " + nstatimax);
+    	System.out.println("Lambda = min: " + lambdamin + " - max: " + lambdamax);
+    	System.out.println("Eventi Semplici = min: " + neventimin + " - max " + neventimax);
+    	System.out.println("Iterazioni = " + niterazionitripletta);
+    	System.out.println("Probabilita' di Guasto = " + pguasto);
+    	System.out.println("Probabilita' evento Non osservabile = " + pnonosservabile);
+		System.out.println("Modalita' debug (verbose): " + debug);
+    	System.out.println("**************************************");
 		
 		int contatoreAutomiScartati = 0;
 		
@@ -400,7 +464,7 @@ public class main {
 							writer.println("\tNumero eventi semplici: " + neventi);
 							writer.println("\tNumero medio di transizioni uscenti da ogni stato: " + lambda);
 							writer.println("Probabilita' di guasto" + pguasto);
-							writer.println("Probabilità di non osservabilita'" + pnonosservabile);
+							writer.println("Probabilitï¿½ di non osservabilita'" + pnonosservabile);
 							writer.println("Livello di diagnosticabilita' di input: " + livelloDiagnosticabilita);
 							writer.println("Prestazioni:");
 							writer.flush();
