@@ -12,7 +12,7 @@ import javax.xml.bind.Marshaller;
 import it.unibs.asd.Automa;
 
 /**
- * @author Manutenzione
+ * Costruzione File XML
  *
  */
 public class CostruisciFileXML {

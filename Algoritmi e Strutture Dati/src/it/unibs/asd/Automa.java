@@ -6,7 +6,6 @@ package it.unibs.asd;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -227,7 +226,7 @@ public class Automa {
 	      flag = ( (HashSet) stati.get(t.getStatoSorgente()) ).remove(t);
 	      flag1 = ( (HashSet) stati.get(t.getStatoDestinazione()) ).remove(t);
 	    }
-	    //non diminusco il numero di transizioni perché lo faccio già a monte nel metodo remove(Stato)
+	    //non diminusco il numero di transizioni perchï¿½ lo faccio giï¿½ a monte nel metodo remove(Stato)
 	    return flag || flag1;
 	  }
 

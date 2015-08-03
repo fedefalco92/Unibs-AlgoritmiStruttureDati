@@ -3,13 +3,10 @@
  */
 package it.unibs.algoritmi;
 
-import java.util.AbstractQueue;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 import it.unibs.asd.Automa;
 import it.unibs.asd.Evento;
@@ -17,7 +14,7 @@ import it.unibs.asd.Stato;
 import it.unibs.asd.Transizione;
 
 /**
- * @author Manutenzione
+ * Classe che contiene i metodi per le trasformazioni dell'automa.
  *
  */
 public class Trasformazioni {	
@@ -241,7 +238,7 @@ public class Trasformazioni {
 		//seleziono gli stati del good twin
 		Set<Stato> stati = gt.getStati();
 		//creo un set di transizioni ambigue (da riempire)
-		//alternativa : attributo booleano che dice se una transizione è ambigua o no
+		//alternativa : attributo booleano che dice se una transizione ï¿½ ambigua o no
 		for(Stato s: stati){
 			//seleziono le transizioni uscenti da s nel bad twin
 			Set<Transizione> transizioni1 = bt.getTransizioniUscenti(s);

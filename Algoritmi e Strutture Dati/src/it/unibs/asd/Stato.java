@@ -3,13 +3,9 @@
  */
 package it.unibs.asd;
 
-import java.util.Iterator;
-
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 
 /**
- * @author Manutenzione
+ * Classe Stato
  *
  */
 public class Stato {

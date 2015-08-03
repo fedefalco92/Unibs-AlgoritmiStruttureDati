@@ -14,7 +14,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.SAXParseException;
 
 import it.unibs.asd.Automa;
@@ -22,7 +21,7 @@ import it.unibs.asd.Evento;
 import it.unibs.asd.Stato;
 
 /**
- * 
+ * Classe per costruire L'automa partendo da un file xml.
  */
 public class CostruisciAutoma {
 	

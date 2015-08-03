@@ -1,13 +1,15 @@
 package it.unibs.asd;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
+/**
+ * Classe Evento
+ *
+ */
 public class Evento {
 	private Multiset<String> value;
 	

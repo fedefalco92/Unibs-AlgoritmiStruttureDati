@@ -21,9 +21,8 @@ import it.unibs.algoritmi.CostruisciAutoma;
 import it.unibs.algoritmi.GenerazioneAutoma;
 import it.unibs.algoritmi.Metodi;
 import it.unibs.asd.Automa;
-
 /**
- * @author federicofalcone
+ * Main Class
  *
  */
 public class main {
@@ -31,6 +30,8 @@ public class main {
 	private static final long KBytes = 1024;
 
 	/**
+	 * Metodo main
+	 * 
 	 * @param args
 	 * @throws FileNotFoundException 
 	 */
