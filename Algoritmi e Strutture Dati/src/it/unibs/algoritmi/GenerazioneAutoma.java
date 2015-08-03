@@ -21,13 +21,14 @@ import it.unibs.asd.Transizione;
  */
 public class GenerazioneAutoma {
 	
-	private static final double PROBABILITA_GUASTO = 0.01;
-	private static final double PROBABILITA_NON_OSSERVABILE = 0.01;
+	//public static double probabilita_guasto = 0.01;
+	//public static double probabilita_non_osservabile = 0.01;
 	private static final String [] EVENTI_SEMPLICI = new String []{"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"};
 	private static final String[] STATI = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"};
 	private static final int NUMERO_MAX_EVENTI = EVENTI_SEMPLICI.length;
 	private static final int NUMERO_MAX_STATI = STATI.length;
 	
+	/*
 	/**
 	 * Genera casualmente un automa in cui:<br>
 	 * - il numero di stati &egrave; pari a numeroStati <br>
@@ -41,7 +42,7 @@ public class GenerazioneAutoma {
 	 * @param numeroEventiSemplici
 	 * @param lambda
 	 * @return
-	 */
+	 *//*
 	public static Automa generaAutoma_OLD(int numeroStati, int numeroEventiSemplici, double lambda){
 		Automa a = new Automa();
 		
@@ -50,7 +51,7 @@ public class GenerazioneAutoma {
 		/*for(int i = 0; i<stati.length;i++){
 			a.add(new Stato(stati[i]));
 		}*/
-		
+		/*
 		Vector<Stato> stati = new Vector<Stato>();
 		for(int i = 0; i<numeroStati;i++){
 			stati.add(new Stato(STATI[i]));
@@ -61,7 +62,7 @@ public class GenerazioneAutoma {
 		for(int i = 0; i<numeroEventiSemplici;i++){
 			eventiSemplici.add(new Evento(EVENTI_SEMPLICI[i]));
 		}
-		*/
+		*//*
 		for(Stato s1: stati){
 			//ci deve essere almeno una transizione uscente per ogni stato.
 			int numeroTransizioniUscenti = 1 + StdRandom.poisson(lambda-1);
@@ -71,12 +72,12 @@ public class GenerazioneAutoma {
 				Stato s2 = stati.elementAt(statoRandom);
 				Evento evento = new Evento();
 				double probNonOsservabile = Math.random();
-				if(!(probNonOsservabile< PROBABILITA_NON_OSSERVABILE)||s1.equals(s2)){
+				if(!(probNonOsservabile< probabilita_non_osservabile)||s1.equals(s2)){
 					int eventoRandom = random(0,numeroEventiSemplici);
 					evento.add(EVENTI_SEMPLICI[eventoRandom]);
 				}
 				double probGuasto = Math.random();
-				boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+				boolean guasto = (probGuasto<probabilita_guasto)? true:false;
 				if(guasto){
 					evento = new Evento();
 				}
@@ -89,7 +90,7 @@ public class GenerazioneAutoma {
 				
 				
 			}
-		}
+		}*/
 		/*
 		Set<Transizione> tguasto = a.getTransizioniDiGuasto();
 		if(a.getTransizioniDiGuasto().isEmpty()){
@@ -99,7 +100,7 @@ public class GenerazioneAutoma {
 			int acaso = random(0,transizioni.size());
 			
 		}*/
-		
+		/*
 		
 		if(a.getTransizioniDiGuasto().isEmpty()){
 			
@@ -114,7 +115,7 @@ public class GenerazioneAutoma {
 		}
 		
 		return a;
-	}
+	}*/
 	
 	/**
 	 * Genera casualmente un automa in cui:<br>
@@ -128,9 +129,11 @@ public class GenerazioneAutoma {
 	 * @param numeroStati
 	 * @param numeroEventiSemplici
 	 * @param lambda
+	 * @param probabilita_guasto TODO
+	 * @param probabilita_non_osservabile TODO
 	 * @return
 	 */
-	public static Automa generaAutoma(int numeroStati, int numeroEventiSemplici, double lambda){
+	public static Automa generaAutoma(int numeroStati, int numeroEventiSemplici, double lambda, double probabilita_guasto, double probabilita_non_osservabile){
 		if(numeroStati > NUMERO_MAX_STATI ||
 				numeroEventiSemplici > NUMERO_MAX_EVENTI) return null;
 		Automa a = new Automa();
@@ -148,7 +151,7 @@ public class GenerazioneAutoma {
 		a.setStatoIniziale(transizioniUscenti.keySet().iterator().next());
 		Stato iniziale = a.getStatoIniziale();
 		//transizioni aggiunte in modo ricorsivo
-		aggiungiTransizione(a, iniziale, transizioniUscenti, stati, numeroEventiSemplici, PROBABILITA_NON_OSSERVABILE);
+		aggiungiTransizione(a, iniziale, transizioniUscenti, stati, numeroEventiSemplici, probabilita_non_osservabile, probabilita_guasto, probabilita_non_osservabile);
 		if(a.numeroStati() != numeroStati){
 			Set<Stato> statiNonAggiunti = new HashSet<Stato>();
 			Vector<Stato> statiAggiunti = new Vector<Stato>();
@@ -161,8 +164,8 @@ public class GenerazioneAutoma {
 			}
 			for(Stato s: statiNonAggiunti){ //sicuramente non è vuoto
 				Stato inizialeRandom = statoRandom(statiAggiunti);
-				aggiungiTransizioneSingola(a,inizialeRandom, s, numeroEventiSemplici);
-				aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici, PROBABILITA_NON_OSSERVABILE);	
+				aggiungiTransizioneSingola(a,inizialeRandom, s, numeroEventiSemplici, probabilita_guasto, probabilita_non_osservabile);
+				aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici, probabilita_non_osservabile, probabilita_guasto, probabilita_non_osservabile);	
 			}
 		}
 		return a;
@@ -173,11 +176,11 @@ public class GenerazioneAutoma {
 		return  stati.elementAt(statoRandom);
 	}
 
-	private static void aggiungiTransizione(Automa a, Stato s, HashMap<Stato, Integer> transizioniUscenti, Vector<Stato> stati, int numeroEventiSemplici, double pNonOsservabile){
+	private static void aggiungiTransizione(Automa a, Stato s, HashMap<Stato, Integer> transizioniUscenti, Vector<Stato> stati, int numeroEventiSemplici, double pNonOsservabile, double probabilita_guasto, double probabilita_non_osservabile){
 		Set<Transizione> taggiunte = new HashSet<Transizione>();
 		
 		for(int i = 0; i < transizioniUscenti.get(s);i++){
-			boolean guasto = (Math.random()< PROBABILITA_GUASTO)? true:false;
+			boolean guasto = (Math.random()< probabilita_guasto)? true:false;
 			Evento evento = new Evento();
 			Stato dest = statoRandom(stati);
 			if(guasto){
@@ -192,7 +195,7 @@ public class GenerazioneAutoma {
 				if(nonOsservabile){
 						pNonOsservabile = pNonOsservabile/4;						
 				} else {
-					pNonOsservabile = PROBABILITA_NON_OSSERVABILE;
+					pNonOsservabile = probabilita_non_osservabile;
 				}
 			}
 			Transizione t = new Transizione(s,dest,evento,guasto);
@@ -203,7 +206,7 @@ public class GenerazioneAutoma {
 		}
 		transizioniUscenti.put(s, 0);
 		for(Transizione t: taggiunte){
-			aggiungiTransizione(a,t.getStatoDestinazione(),transizioniUscenti, stati, numeroEventiSemplici, pNonOsservabile);
+			aggiungiTransizione(a,t.getStatoDestinazione(),transizioniUscenti, stati, numeroEventiSemplici, pNonOsservabile, probabilita_guasto, probabilita_non_osservabile);
 		}
 		
 	}
@@ -215,15 +218,17 @@ public class GenerazioneAutoma {
 	 * @param s
 	 * @param dest
 	 * @param numeroEventiSemplici
+	 * @param probabilita_guasto TODO
+	 * @param probabilita_non_osservabile TODO
 	 */
-	private static void aggiungiTransizioneSingola(Automa a, Stato s, Stato dest, int numeroEventiSemplici){
+	private static void aggiungiTransizioneSingola(Automa a, Stato s, Stato dest, int numeroEventiSemplici, double probabilita_guasto, double probabilita_non_osservabile){
 		
 		double probGuasto = Math.random();
-		boolean guasto = (probGuasto<PROBABILITA_GUASTO)? true:false;
+		boolean guasto = (probGuasto<probabilita_guasto)? true:false;
 		Evento evento = new Evento();
 		if(!guasto){
 			double probNonOsservabile = Math.random();
-			if(!(probNonOsservabile< PROBABILITA_NON_OSSERVABILE)){
+			if(!(probNonOsservabile< probabilita_non_osservabile)){
 				evento = eventoRandom(numeroEventiSemplici);
 			}
 		}

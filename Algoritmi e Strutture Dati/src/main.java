@@ -72,7 +72,14 @@ public class main {
 	            diagnosticaAutoma(path, livello, cmd.hasOption("v"));
 	        } else if (cmd.hasOption("s") && !cmd.hasOption("a")){
 	        	System.out.println( cmd.getOptionValue("s") );
-	        	simulazione(livello);
+	        	//parsing delle variabili da stringa comando
+	        	int nstatimin, nstatimax, lambdamin, lambdamax, neventimin, neventimax, niterazionitripletta;
+	        	double pguasto, pnonosservabile;
+	        	boolean debug;
+	        	//stringa di esempio "s=5-15 l=3-4 e=4-6 i=10 g=0.1 no=0.3"
+	        	
+	        	
+	        	simulazione(livello,nstatimin, nstatimax, lambdamin, lambdamax, neventimin, neventimax, niterazionitripletta, pguasto, pnonosservabile, debug);
 	        }else{
 	        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
 	        	System.out.println("Le opzioni -a e -s sono mutuamente esclusive.");
@@ -111,12 +118,12 @@ public class main {
 		System.out.println("**     Diagnosticabilita Automa     **");
 		System.out.println("**************************************");
 		System.out.println("Percorso file xml automa: " + percorsoFile);
-		System.out.println("Livello di Diagnosticabilita da verificare: " + livelloDiagnosticabilita);
+		System.out.println("Livello di Diagnosticabilita' da verificare: " + livelloDiagnosticabilita);
 		System.out.println("Modalita' debug (verbose): " + debug);
 		System.out.println("**************************************");
 		
 		File root = new File("output");
-		root.mkdir();
+		if(!root.exists()) root.mkdir();
 		String nomeDir = "./output/time-" + System.currentTimeMillis() + (debug?"-debug":"")+"/";
 		File dir = new File(nomeDir);
 		dir.mkdir();
@@ -317,7 +324,7 @@ public class main {
 			int lambdamin, int lambdamax, 
 			int neventimin, int neventimax, 
 			int niterazionitripletta, 
-			double pquasto, double pnonosservabile,
+			double pguasto, double pnonosservabile,
 			boolean debug) throws FileNotFoundException{
 		System.out.println("**************************************");
 		System.out.println("**          Simulazione             **");
@@ -339,7 +346,7 @@ public class main {
 		*/
 		
 		File root = new File("simulazioni");
-		root.mkdir();
+		if(!root.exists()) root.mkdir();
 		String nomeDir = "./simulazioni/simulazione - " + System.currentTimeMillis() + "/";
 		File dir = new File(nomeDir);
 		dir.mkdir();
@@ -348,7 +355,12 @@ public class main {
 		File dirErrori = new File(nomeDirErrori);
 		dirErrori.mkdir();
 		
-		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + "_l" + lambdamin + "-" + lambdamax + "_e" + neventimin + "-" + neventimax + ".csv" ;
+		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + 
+				"_l" + lambdamin + "-" + lambdamax + 
+				"_e" + neventimin + "-" + neventimax + 
+				"_g" + Double.toString(pguasto).substring(Double.toString(pguasto).indexOf('.')+1) + 
+				"_no" + Double.toString(pnonosservabile).substring(Double.toString(pnonosservabile).indexOf('.')+1) + 
+				".csv" ;
 		File csvfile = new File(nomeDir + nomef);
 		try {
 			csvfile.createNewFile();
@@ -366,7 +378,10 @@ public class main {
 						try {
 							String nomeFile =  "automa_" + "s" + (nstati > 10 ? nstati : "0" + nstati) + "_l"
 									+ (lambda > 10 ? lambda : "0" + lambda) + "_e"
-									+ (neventi > 10 ? neventi : "0" + neventi) + "_n" + (i > 10 ? i : "0" + i) + ".txt";
+									+ (neventi > 10 ? neventi : "0" + neventi) + "_n" + (i > 10 ? i : "0" + i) +
+									"_g" + Double.toString(pguasto).substring(Double.toString(pguasto).indexOf('.')+1) + 
+									"_no" + Double.toString(pnonosservabile).substring(Double.toString(pnonosservabile).indexOf('.')+1) + 
+									".txt";
 							File file = new File(nomeDir + nomeFile);
 							try {
 								file.createNewFile();
@@ -375,7 +390,7 @@ public class main {
 								e.printStackTrace();
 							}
 							PrintWriter writer = new PrintWriter(file);
-							Automa a = GenerazioneAutoma.generaAutoma(nstati, neventi, lambda);
+							Automa a = GenerazioneAutoma.generaAutoma(nstati, neventi, lambda, pguasto, pnonosservabile);
 							//System.out.println(a);
 							writer.println("Numero stati:" + a.numeroStati());
 							writer.println("Numero transizioni:" + a.numeroTransizioni());
@@ -384,6 +399,8 @@ public class main {
 							writer.println("\tNumero stati:" + nstati);
 							writer.println("\tNumero eventi semplici: " + neventi);
 							writer.println("\tNumero medio di transizioni uscenti da ogni stato: " + lambda);
+							writer.println("Probabilita' di guasto" + pguasto);
+							writer.println("Probabilità di non osservabilita'" + pnonosservabile);
 							writer.println("Livello di diagnosticabilita' di input: " + livelloDiagnosticabilita);
 							writer.println("Prestazioni:");
 							writer.flush();
