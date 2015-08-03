@@ -53,7 +53,7 @@ public class main {
 	    Option livelloDiagnosticabilita = Option.builder("l").hasArg().argName("numeroLivello").required().longOpt("livello").desc("Livello di diagnosticabilita' da verificare").build();
 	    options.addOption(livelloDiagnosticabilita);
 	    
-	    Option simulazione = Option.builder("s").hasArg().argName("Stringa Parametri").longOpt("simulazione").desc("Esegue la simulazione. E' necessario passare la stringa tra apici. \nUn esempio di stringa e' la seguente \"s=5-15 l=3-4 e=4-6 i=10 g=0.1 no=0.3\"").build();
+	    Option simulazione = Option.builder("s").hasArg().argName("Stringa Parametri").longOpt("simulazione").desc("Esegue la simulazione. E' necessario passare la stringa tra apici. \nUn esempio di stringa e' la seguente \"s=5-15 l=3-4 e=4-6 g=0.1 no=0.3 i=10\"").build();
 	    options.addOption(simulazione);
 	    
 	    // Boolean option 
@@ -107,16 +107,16 @@ public class main {
 							neventimax = Integer.parseInt(splitEventi[1]);
 							break;
 						
-						case "i":
-							niterazionitripletta = Integer.parseInt(splittingArray[1]);
-							break;
-							
 						case "g":
 							pguasto = Double.parseDouble(splittingArray[1]);
 							break;
 							
 						case "no":
 							pnonosservabile = Double.parseDouble(splittingArray[1]);
+							break;
+						
+						case "i":
+							niterazionitripletta = Integer.parseInt(splittingArray[1]);
 							break;
 							
 						default:
@@ -131,8 +131,8 @@ public class main {
 	        		System.out.println();
 	        		System.out.println("Riesegui il programma!");
 	        		System.out.println("Ti ricordo che per la simulazione devi inserire una stringa con esattamente 6 parametri.");
-	        		System.out.println("Esempio stringa: s=5-15 l=3-4 e=4-6 i=10 g=0.1 no=0.3");
-	        		System.out.println("Con s=stati, l=lambda, e=eventi_semplici, i=iterazioni, g=probabilita'_guasto, no=probabilita'_non_osservabile.");
+	        		System.out.println("Esempio stringa: s=5-15 l=3-4 e=4-6 g=0.1 no=0.3 i=10");
+	        		System.out.println("Con s=stati, l=lambda, e=eventi_semplici, g=probabilita'_guasto, no=probabilita'_non_osservabile, i=iterazioni.");
 	        	}
 	        }else{
 	        	formatter.printHelp( "Analisi di Diagnosticabilita", options);
@@ -140,8 +140,11 @@ public class main {
 	        }
 		}
 		catch( ParseException exp ) {
-			formatter.printHelp( "Analisi di Diagnosticabilita", options);
 		    System.err.println( "Parsing fallito. Spiegazione: " + exp.getMessage() );
+		    formatter.printHelp( "Analisi di Diagnosticabilita", options);
+		} catch(NumberFormatException exp){
+			System.err.println("Errore ParseInt. Quando e' richiesto un numero devi inserire un numero.");
+			formatter.printHelp( "Analisi di Diagnosticabilita", options);
 		}
 
 	}
@@ -414,10 +417,12 @@ public class main {
 		String nomeDir = "./simulazioni/simulazione - " + System.currentTimeMillis() + "/";
 		File dir = new File(nomeDir);
 		dir.mkdir();
-		
+
+		/*
 		String nomeDirErrori = nomeDir + "AutomiErrati/";
 		File dirErrori = new File(nomeDirErrori);
 		dirErrori.mkdir();
+		*/
 		
 		String nomef = "_tempi_s" + nstatimin + "-" + nstatimax + 
 				"_l" + lambdamin + "-" + lambdamax + 
@@ -440,14 +445,26 @@ public class main {
 					for(int i = 0; i < niterazionitripletta; i++){
 						
 						try {
-							String nomeFile =  "automa_" + "s" + (nstati > 10 ? nstati : "0" + nstati) + "_l"
+							/*String nomeDirFile =  "automa_" + "s" + (nstati > 10 ? nstati : "0" + nstati) + "_l"
 									+ (lambda > 10 ? lambda : "0" + lambda) + "_e"
 									+ (neventi > 10 ? neventi : "0" + neventi) + "_n" + (i > 10 ? i : "0" + i) +
 									"_g" + Double.toString(pguasto).substring(Double.toString(pguasto).indexOf('.')+1) + 
 									"_no" + Double.toString(pnonosservabile).substring(Double.toString(pnonosservabile).indexOf('.')+1) + 
-									".txt";
-							File file = new File(nomeDir + nomeFile);
+									".txt";*/
+							
+							String nomeDirFile =  "automa_" 
+									+ "s" + (nstati >= 10 ? nstati : "0" + nstati) 
+									+ "_l" + (lambda >= 10 ? lambda : "0" + lambda) 
+									+ "_e" + (neventi >= 10 ? neventi : "0" + neventi)
+									+ "_g" + Double.toString(pguasto).substring(Double.toString(pguasto).indexOf('.')+1) 
+									+ "_no" + Double.toString(pnonosservabile).substring(Double.toString(pnonosservabile).indexOf('.')+1) 
+									+ "_i" + (i >= 10 ? i : "0" + i)
+									+ "/";
+							
+							File fileDirFile = new File(nomeDir + nomeDirFile);
+							File file = new File(nomeDir + nomeDirFile + "automa.txt");
 							try {
+								fileDirFile.mkdir();
 								file.createNewFile();
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
@@ -464,7 +481,7 @@ public class main {
 							writer.println("\tNumero eventi semplici: " + neventi);
 							writer.println("\tNumero medio di transizioni uscenti da ogni stato: " + lambda);
 							writer.println("Probabilita' di guasto" + pguasto);
-							writer.println("Probabilit� di non osservabilita'" + pnonosservabile);
+							writer.println("Probabilita' di non osservabilita'" + pnonosservabile);
 							writer.println("Livello di diagnosticabilita' di input: " + livelloDiagnosticabilita);
 							writer.println("Prestazioni:");
 							writer.flush();
@@ -472,13 +489,18 @@ public class main {
 							Set<Integer> livelliMax = new HashSet<Integer>();
 							int livelloMax = 0;
 							System.out.println("\n****************************************************************");
-							System.out.println(nomeFile);
+							System.out.println(nomeDirFile);
+							
 							/* METODO 1 *******************************************************************************/
 							System.out.println("\n#############################");
 							System.out.println("Sto eseguendo metodo 1...");
 							// Inizio misura tempo
 							start = getCpuTime();
-							livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
+							//livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
+							if(debug)
+								livelloMax = Metodi.diagnosticabilitaMetodo1debug(a, livelloDiagnosticabilita, nomeDir + nomeDirFile);
+							else 
+								livelloMax = Metodi.diagnosticabilitaMetodo1(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
 							livelliMax.add(livelloMax);
@@ -495,12 +517,17 @@ public class main {
 								writer.println("\tLivello max: " + livelloMax);
 							writer.flush();
 							System.gc();
+							
 							/* METODO 2 *******************************************************************************/
 							System.out.println("\n#############################");
 							System.out.println("Sto eseguendo metodo 2...");
 							// Inizio misura tempo
 							start = getCpuTime();
-							livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
+							//livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
+							if(debug)
+								livelloMax = Metodi.diagnosticabilitaMetodo2debug(a, livelloDiagnosticabilita, nomeDir + nomeDirFile);
+							else 
+								livelloMax = Metodi.diagnosticabilitaMetodo2(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
 							livelliMax.add(livelloMax);
@@ -517,12 +544,17 @@ public class main {
 								writer.println("\tLivello max: " + livelloMax);
 							writer.flush();
 							System.gc();
+							
 							/* METODO 3v1*******************************************************************************/
 							System.out.println("\n#############################");
 							System.out.println("Sto eseguendo metodo 3v1...");
 							// Inizio misura tempo
 							start = getCpuTime();
-							livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
+							//livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
+							if(debug)
+								livelloMax = Metodi.diagnosticabilitaMetodo3v1debug(a, livelloDiagnosticabilita, nomeDir + nomeDirFile);
+							else 
+								livelloMax = Metodi.diagnosticabilitaMetodo3v1(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
 							livelliMax.add(livelloMax);
@@ -539,12 +571,17 @@ public class main {
 								writer.println("\tLivello max: " + livelloMax);
 							writer.flush();
 							System.gc();
+							
 							/* METODO 3v2 *******************************************************************************/
 							System.out.println("\n#############################");
 							System.out.println("Sto eseguendo metodo 3v2...");
 							// Inizio misura tempo
 							start = getCpuTime();
-							livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
+							//livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
+							if(debug)
+								livelloMax = Metodi.diagnosticabilitaMetodo3v2debug(a, livelloDiagnosticabilita, nomeDir + nomeDirFile);
+							else 
+								livelloMax = Metodi.diagnosticabilitaMetodo3v2(a, livelloDiagnosticabilita);
 							end = getCpuTime();
 							// Fine misura tempo
 							livelliMax.add(livelloMax);
@@ -561,6 +598,7 @@ public class main {
 								writer.println("\tLivello max: " + livelloMax);
 							writer.flush();
 							System.gc();
+							
 							/* FINE ******************/
 							writer.close();
 							System.out.println("Terminato.");
@@ -573,6 +611,7 @@ public class main {
 							writercsv.println(riga);
 							writercsv.flush();
 							
+							/*
 							if(livelliMax.size()>1){
 								//i risultati dei tre metodi non coincidono D:
 								File automaErrato = new File(nomeDirErrori + nomeFile);
@@ -585,7 +624,7 @@ public class main {
 								PrintWriter writerErrore = new PrintWriter(automaErrato);
 								writerErrore.println("L'automa ha dato risultati diversi per i metodi risolventi. Controlla il file omonimo nella cartella " + nomeDir);
 								writerErrore.close();
-							}
+							} */
 						} catch (StackOverflowError e) {
 							System.out.println("Automa non valido ha generato eccezione");
 							contatoreAutomiScartati++;
