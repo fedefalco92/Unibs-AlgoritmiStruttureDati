@@ -23,8 +23,8 @@ public class GenerazioneAutoma {
 	
 	//public static double probabilita_guasto = 0.01;
 	//public static double probabilita_non_osservabile = 0.01;
-	private static final String [] EVENTI_SEMPLICI = new String []{"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"};
-	private static final String[] STATI = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"};
+	private static final String [] EVENTI_SEMPLICI = new String []{"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+	private static final String[] STATI = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	private static final int NUMERO_MAX_EVENTI = EVENTI_SEMPLICI.length;
 	private static final int NUMERO_MAX_STATI = STATI.length;
 	
