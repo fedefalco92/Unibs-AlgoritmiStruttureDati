@@ -129,8 +129,8 @@ public class GenerazioneAutoma {
 	 * @param numeroStati
 	 * @param numeroEventiSemplici
 	 * @param lambda
-	 * @param probabilita_guasto TODO
-	 * @param probabilita_non_osservabile TODO
+	 * @param probabilita_guasto
+	 * @param probabilita_non_osservabile
 	 * @return
 	 */
 	public static Automa generaAutoma(int numeroStati, int numeroEventiSemplici, double lambda, double probabilita_guasto, double probabilita_non_osservabile){
@@ -162,12 +162,25 @@ public class GenerazioneAutoma {
 					statiAggiunti.addElement(s);
 				}
 			}
-			for(Stato s: statiNonAggiunti){ //sicuramente non è vuoto
+			for(Stato s: statiNonAggiunti){ //sicuramente non ï¿½ vuoto
 				Stato inizialeRandom = statoRandom(statiAggiunti);
 				aggiungiTransizioneSingola(a,inizialeRandom, s, numeroEventiSemplici, probabilita_guasto, probabilita_non_osservabile);
 				aggiungiTransizione(a,s,transizioniUscenti,stati,numeroEventiSemplici, probabilita_non_osservabile, probabilita_guasto, probabilita_non_osservabile);	
 			}
 		}
+		
+		if(a.getTransizioniDiGuasto().isEmpty()){
+			
+			Stato s1 = statoRandom(stati);
+			Stato s2 = statoRandom(stati);
+			while(s1.equals(s2)){
+				s2 = statoRandom(stati);
+			}
+			Transizione t = new Transizione(s1, s2, new Evento(), true);
+			a.add(t);
+			
+		}
+
 		return a;
 	}
 	
@@ -218,8 +231,8 @@ public class GenerazioneAutoma {
 	 * @param s
 	 * @param dest
 	 * @param numeroEventiSemplici
-	 * @param probabilita_guasto TODO
-	 * @param probabilita_non_osservabile TODO
+	 * @param probabilita_guasto 
+	 * @param probabilita_non_osservabile 
 	 */
 	private static void aggiungiTransizioneSingola(Automa a, Stato s, Stato dest, int numeroEventiSemplici, double probabilita_guasto, double probabilita_non_osservabile){
 		
@@ -251,62 +264,6 @@ public class GenerazioneAutoma {
 		int out = r.nextInt(max-min);
 		out+=min;
 		return out;		
-	}
-	
-	/**
-	 * Controlla se esiste un ciclo in cui non compaiono transizioni ambigue. In questo caso l'automa non &egrave; valido 
-	 * ed &egrave da scartare. 
-	 * @return true se l'automa &grave; da scartare.
-	 */
-	private static boolean controllaCicli(Automa a) {
-		Set<Transizione> tnonoss = a.getTransizioniNonOsservabili();
-		if(!tnonoss.isEmpty()){
-			/*
-			for(Transizione t: tnonoss){
-				Set<Stato> visitati = new HashSet<Stato>();
-				Stato successivo = t.getStatoDestinazione();
-				visitati.add(successivo);
-				
-				//aggiungo agli stati visitati anche lo stato di partenza di ta (da controllare)
-				//intendendo che e' possibile che la transizione faccia parte del ciclo.
-				Stato precedente = t.getStatoSorgente();
-				visitati.add(precedente);
-				
-				return visitaRicorsiva(a, visitati,successivo);
-			}*/
-		}
-		return false;
-	}
-	
-	
-	/**
-	 * Visita progressivamente l'automa a partire dallo stato partenza.
-	 * Se dallo stato partenza non esce alcuna transizione si &egrave; arrivati in un punto morto.
-	 * Se dallo stato partenza esce una transizione che ha come stato di arrivo uno stato gi&agrave; visitato
-	 * in precendenza, allora si &egrave; incappati in un ciclo.
-	 * @param sincronizzato
-	 * @param visitati
-	 * @param partenza
-	 * @return true se c'&egrave; un ciclo.
-	 */
-	private static boolean visitaRicorsiva(Automa sincronizzato, Set<Stato> visitati, Stato partenza){
-		//writer.println(partenza+" ");
-		Set<Transizione> uscenti = sincronizzato.getTransizioniUscenti(partenza);
-		if(uscenti.isEmpty()){	
-			return false;
-		} else {
-			for(Transizione tuscente: uscenti){
-				Stato statoArrivo = tuscente.getStatoDestinazione();
-				if(visitati.contains(statoArrivo)){
-					return true;
-				}
-				visitati.add(statoArrivo);
-				return visitaRicorsiva(sincronizzato, visitati, statoArrivo);
-						
-			}			
-		}
-		return false;
-		
 	}
 
 }
