@@ -649,7 +649,7 @@ public class main {
 		System.out.println("Automi scartati: " + contatoreAutomiScartati);
 	}
 	
-	public static boolean cercaAutoma(int livelloMax){
+	public static boolean cercaAutoma(int livelloMax) throws FileNotFoundException{
 		System.out.println("########################################################");
 		System.out.println("##             Cerca Automa                           ##");
 		System.out.println("########################################################");
@@ -676,6 +676,22 @@ public class main {
 		} while (livello != livelloMax);
 		System.out.println("Automa TROVATO!!!");
 		System.out.println(a);
+		
+		File root = new File("ricerca_automa");
+		if(!root.exists()) root.mkdir();
+		String nomeDir = "./ricerca_automa/ricerca - " + System.currentTimeMillis() + "/";
+		File dir = new File(nomeDir);
+		dir.mkdir();
+		File file = new File(nomeDir +  "automa_ricercato_livello_"+ livelloMax + ".xml");
+		try {
+			file.createNewFile();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter writer = new PrintWriter(file);
+		writer.print(a.getXML());
+		writer.close();
 		System.out.println("Automi scartati: " + contatoreAutomiScartati);
 		return true;
 	}

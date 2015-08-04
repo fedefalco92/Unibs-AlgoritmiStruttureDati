@@ -522,6 +522,40 @@ public class Automa {
 	    }*/
 	    return out.toString();
 	  }
+	  
+	public String getXML(){
+		StringBuffer out = new StringBuffer();
+		out.append("<?xml version='1.0' encoding='UTF-8'?>\n");
+		out.append("<automa>\n");
+		out.append("<stati>\n");
+		for(Stato s: stati.keySet()){
+			String iniziale = "";
+			if(s.equals(statoIniziale)){
+				iniziale = "start=\"true\"";
+			}
+			out.append("\t<stato " + iniziale +">" + s + "</stato>\n");
+	    }
+	   out.append("</stati>\n");
+	   out.append("<transizioni>\n");
+	   for(Transizione t: getTransizioni()){
+		   String guasto = "";
+		   String evento = "";
+		   if(t.isGuasto()){
+			   guasto = "guasto=\"true\"";
+		   }
+		   if(!t.nonOsservabile()){
+			   evento = "evento=\""+ t.getEvento()+"\"";
+		   }
+		   out.append("\t<transizione " + guasto + " "+ evento +">\n");
+		   out.append("\t\t<start>" + t.getStatoSorgente() + "</start>\n");
+		   out.append("\t\t<end>" + t.getStatoDestinazione() + "</end>\n");
+		   out.append("\t</transizione>");
+		}
+		out.append("</transizioni>\n");
+		out.append("</automa>");
+		return out.toString();
+		  
+	 }
 
 	public Set<Transizione> getTransizioniNonOsservabiliUscenti(Stato stato) {
 		 Set<Transizione> tstato = getTransizioni(stato);
