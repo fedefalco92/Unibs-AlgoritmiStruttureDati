@@ -143,7 +143,8 @@ public class GenerazioneAutoma {
 			Stato nuovo = new Stato(STATI[i]);
 			stati.add(nuovo);
 			if (!transizioniUscenti.containsKey(nuovo)) {
-				int numeroTransizioniUscenti = 1 + StdRandom.poisson(lambda-1);
+				int nt = StdRandom.poisson(lambda);
+				int numeroTransizioniUscenti = (nt>1)?nt:1;
 			    transizioniUscenti.put(nuovo, numeroTransizioniUscenti);
 			}
 		}
@@ -182,7 +183,7 @@ public class GenerazioneAutoma {
 	}
 	
 	private static Stato statoRandom(Vector<Stato> stati) {
-		int statoRandom = random(0, stati.size());
+		int statoRandom = random(0, stati.size()-1);
 		return  stati.elementAt(statoRandom);
 	}
 
@@ -250,15 +251,21 @@ public class GenerazioneAutoma {
 	}
 
 	private static Evento eventoRandom(int numeroEventiSemplici) {
-		int eventoRandom = random(0,numeroEventiSemplici);
+		int eventoRandom = random(0,numeroEventiSemplici-1);
 		Evento evento = new Evento();
 		evento.add(EVENTI_SEMPLICI[eventoRandom]);
 		return evento;
 	}
 
-	private static int random(int min, int max){
+	/**
+	 * restituisce un numero casuale tra min max (compresi)
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static int random(int min, int max){
 		Random r = new Random();
-		int out = r.nextInt(max-min);
+		int out = r.nextInt(max-min+1);
 		out+=min;
 		return out;		
 	}

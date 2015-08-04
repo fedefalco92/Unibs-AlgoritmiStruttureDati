@@ -36,7 +36,7 @@ public class main {
 	 * @throws FileNotFoundException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
-		
+
 		System.out.println("########################################################");
 		System.out.println("##             Analisi di Diagnosticabilita           ##");
 		System.out.println("########################################################");
@@ -59,7 +59,7 @@ public class main {
 	    
 	    // Boolean option 
 	    options.addOption("v","verbose", false, "Salva files dettagliati dei metodi risolventi");
-	    
+	    options.addOption("g", "genera", false, "Cerca un automa di diagnosticabilita' esattamente pari a -l");
 	 	// automatically generate the help statement
 	    HelpFormatter formatter = new HelpFormatter();
 	    
@@ -70,6 +70,13 @@ public class main {
 	        
         	int livello = Integer.parseInt(cmd.getOptionValue("l"));
         	
+        	if( cmd.hasOption("g")&& !cmd.hasOption("s") &&!cmd.hasOption("a")){
+        		cercaAutoma(livello);
+        		return;
+        	} else {
+        		formatter.printHelp( "Analisi di Diagnosticabilita", options);
+	        	System.out.println("L'opzione -g non può essere usata contemporaneamente alle opzioni -a e -s.");
+        	}
         	if( cmd.hasOption("a") && !cmd.hasOption("s")) {
 	            String path = cmd.getOptionValue("a");
 	            diagnosticaAutoma(path, livello, cmd.hasOption("v"));
@@ -640,6 +647,37 @@ public class main {
 		
 		writercsv.close();
 		System.out.println("Automi scartati: " + contatoreAutomiScartati);
+	}
+	
+	public static boolean cercaAutoma(int livelloMax){
+		System.out.println("########################################################");
+		System.out.println("##             Cerca Automa                           ##");
+		System.out.println("########################################################");
+		System.out.println("Ricerca di un automa diagnosticabile ESATTAMENTE fino al livello " + livelloMax);
+		int livello = 0;
+		int contatoreAutomiScartati = 0;
+		Automa a = new Automa();
+		int automiProvati = 0;
+		do{
+			try {
+				int nstati = GenerazioneAutoma.random(5, 7);
+				double lambda = GenerazioneAutoma.random(1,3);
+				int neventi = GenerazioneAutoma.random(2, 3);
+				double pguasto = GenerazioneAutoma.random(0, 20)/100.;
+				double pnonosservabile = GenerazioneAutoma.random(0, 30)/100.;
+				a = GenerazioneAutoma.generaAutoma(nstati, neventi, lambda, pguasto, pnonosservabile);
+				livello = Metodi.diagnosticabilitaMetodo3v2(a, livelloMax + 1);
+				System.out.println("Automi generati: " + (++automiProvati));
+			} catch (StackOverflowError e) {
+				System.out.println("Automa non valido ha generato eccezione");
+				contatoreAutomiScartati++;
+				continue;
+			}
+		} while (livello != livelloMax);
+		System.out.println("Automa TROVATO!!!");
+		System.out.println(a);
+		System.out.println("Automi scartati: " + contatoreAutomiScartati);
+		return true;
 	}
 	
 
