@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<automa>
+<stati>
+	<stato start="true">C</stato>
+	<stato >B</stato>
+	<stato >F</stato>
+	<stato >D</stato>
+	<stato >A</stato>
+	<stato >E</stato>
+</stati>
+<transizioni>
+	<transizione  evento="b">
+		<start>A</start>
+		<end>D</end>
+	</transizione>	<transizione  evento="a">
+		<start>F</start>
+		<end>A</end>
+	</transizione>	<transizione  evento="b">
+		<start>D</start>
+		<end>D</end>
+	</transizione>	<transizione  evento="c">
+		<start>C</start>
+		<end>E</end>
+	</transizione>	<transizione  evento="b">
+		<start>C</start>
+		<end>F</end>
+	</transizione>	<transizione  evento="c">
+		<start>B</start>
+		<end>B</end>
+	</transizione>	<transizione guasto="true" >
+		<start>D</start>
+		<end>F</end>
+	</transizione>	<transizione  evento="c">
+		<start>A</start>
+		<end>F</end>
+	</transizione>	<transizione  evento="c">
+		<start>E</start>
+		<end>A</end>
+	</transizione>	<transizione  evento="a">
+		<start>E</start>
+		<end>C</end>
+	</transizione>	<transizione  evento="a">
+		<start>E</start>
+		<end>B</end>
+	</transizione></transizioni>
+</automa>
