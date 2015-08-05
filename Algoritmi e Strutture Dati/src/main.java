@@ -75,7 +75,7 @@ public class main {
         		return;
         	} else {
         		formatter.printHelp( "Analisi di Diagnosticabilita", options);
-	        	System.out.println("L'opzione -g non può essere usata contemporaneamente alle opzioni -a e -s.");
+	        	System.out.println("L'opzione -g non puo' essere usata contemporaneamente alle opzioni -a e -s.");
         	}
         	if( cmd.hasOption("a") && !cmd.hasOption("s")) {
 	            String path = cmd.getOptionValue("a");
